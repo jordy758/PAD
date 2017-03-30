@@ -10,6 +10,8 @@ public class Profile {
 
     public enum Gender {male, female};
 
+    public Profile() {};
+
     public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;

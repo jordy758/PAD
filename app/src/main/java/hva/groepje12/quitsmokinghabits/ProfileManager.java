@@ -26,6 +26,7 @@ public class ProfileManager {
 
     public Profile getProfile() {
         Gson gson = new Gson();
-        return gson.fromJson(prefs.getString("profile", ""), Profile.class);
+        String profileJson = prefs.getString("profile", "");
+        return profileJson == "" ? new Profile() : gson.fromJson(profileJson, Profile.class);
     }
 }
