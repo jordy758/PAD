@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Quit Smoking Habits</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="prompt_first_name">Voornaam</string>
+    <string name="prompt_last_name">Achternaam</string>
+    <string name="prompt_birthDate">Geboortedatum</string>
+    <string name="action_register">Registreren</string>
+    <string name="button_choose_date">Kies</string>
+    <string name="send_notification">Stuur Notificatie</string>
+    <string name="send_timed_notification">Stuur Notificatie (na 1 minuut)</string>
 </resources>
