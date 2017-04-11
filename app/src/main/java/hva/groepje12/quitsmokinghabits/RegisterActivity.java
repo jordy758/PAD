@@ -3,6 +3,8 @@ package hva.groepje12.quitsmokinghabits;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -89,7 +91,12 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void registerUser() {
-        Profile profile = new Profile(firstName.getText().toString(), lastName.getText().toString(), pickedTime, Profile.Gender.female);
+        Profile profile = new Profile(
+                firstName.getText().toString(),
+                lastName.getText().toString(),
+                pickedTime,
+                Profile.Gender.female
+        );
 
         Toast.makeText(this, "Profiel opgeslagen!", Toast.LENGTH_SHORT).show();
 
@@ -103,12 +110,16 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
+            int year = c.get(Calendar.YEAR) - 20;
+            int month = 0;
+            int day = 1;
 
-            return new DatePickerDialog(getActivity(),
+            DatePickerDialog dpd = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog,
                     (DatePickerDialog.OnDateSetListener) getActivity(),year,month,day);
+
+            dpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            return dpd;
         }
     }
 
