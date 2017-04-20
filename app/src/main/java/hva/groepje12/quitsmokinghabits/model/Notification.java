@@ -1,4 +1,4 @@
-package hva.groepje12.quitsmokinghabits.ui.notification;
+package hva.groepje12.quitsmokinghabits.model;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,10 +11,6 @@ import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.ui.activity.RegisterActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-
-/**
- * Created by Lucas van Leijen
- */
 
 public class Notification {
 
@@ -33,7 +29,7 @@ public class Notification {
                         .setContentTitle("Quit Smoking Habits")
                         .setContentText(text)
                         .setAutoCancel(true)
-                        .setVibrate(new long[] { 200, 200, 200, 200 })
+                        .setVibrate(new long[]{200, 200, 200, 200})
                         .setLights(Color.CYAN, 3000, 3000);
 
         Intent resultIntent = new Intent(context, RegisterActivity.class);

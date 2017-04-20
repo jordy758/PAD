@@ -11,7 +11,7 @@ import android.widget.Button;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.ui.activity.RegisterActivity;
 
-public class homeFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class homeFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getActivity(), RegisterActivity.class);
-                homeFragment.this.startActivity(myIntent);
+                HomeFragment.this.startActivity(myIntent);
             }
         });
 

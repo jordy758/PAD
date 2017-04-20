@@ -8,9 +8,14 @@ public class Profile {
     private Calendar birthDate;
     private Gender gender;
 
-    public enum Gender {male, female};
+    public enum Gender {male, female}
 
-    public Profile() {};
+    ;
+
+    public Profile() {
+    }
+
+    ;
 
     public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
         this.firstName = firstName;
@@ -35,7 +40,9 @@ public class Profile {
         return this.lastName;
     }
 
-    public String getFullName() { return this.getFirstName() + " " + this.getLastName(); }
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
+    }
 
     public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;

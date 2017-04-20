@@ -8,11 +8,7 @@ import android.view.ViewGroup;
 
 import hva.groepje12.quitsmokinghabits.R;
 
-/**
- * Created by lucas on 17-4-2017.
- */
-
-public class gameFragment extends Fragment {
+public class AlarmFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -22,7 +18,7 @@ public class gameFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.games_fragment_main, container, false);
+        return inflater.inflate(R.layout.alarms_fragment_main, container, false);
     }
 
 }

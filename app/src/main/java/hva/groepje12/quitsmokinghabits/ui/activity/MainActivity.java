@@ -15,9 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.ui.fragment.alarmFragment;
-import hva.groepje12.quitsmokinghabits.ui.fragment.gameFragment;
-import hva.groepje12.quitsmokinghabits.ui.fragment.homeFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
+    
     private FloatingActionButton fab;
 
     /**
@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrollStateChanged(int state) {
+            }
         });
     }
 
@@ -123,19 +125,16 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-           switch(position) {
-               case 0:
-                   homeFragment tab0 = new homeFragment();
-                   return tab0;
-               case 1:
-                   gameFragment tab1 = new gameFragment();
-                   return  tab1;
-               case 2:
-                   alarmFragment tab2 = new alarmFragment();
-                   return tab2;
-               default:
-                   return null;
-           }
+            switch (position) {
+                case 0:
+                    return new HomeFragment();
+                case 1:
+                    return new GameFragment();
+                case 2:
+                    return new AlarmFragment();
+                default:
+                    return null;
+            }
         }
 
         @Override

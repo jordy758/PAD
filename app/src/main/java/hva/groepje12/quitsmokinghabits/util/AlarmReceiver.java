@@ -4,11 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import hva.groepje12.quitsmokinghabits.ui.notification.Notification;
-
-/**
- * Created by Lucas van Leijen
- */
+import hva.groepje12.quitsmokinghabits.model.Notification;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
