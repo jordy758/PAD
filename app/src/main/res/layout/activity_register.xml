@@ -53,24 +53,24 @@
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_marginTop="5pt"
                 android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_marginTop="5pt">
+                android:weightSum="1">
 
                 <EditText
                     android:id="@+id/edit_text_birth_date"
                     android:layout_width="256dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1.16"
                     android:hint="@string/prompt_birthDate"
-                    android:inputType="date"
-                    android:layout_weight="1.16" />
+                    android:inputType="date" />
 
                 <Button
                     android:id="@+id/button_choose_date"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/button_choose_date"
-                    android:onClick="datePicker"/>
+                    android:onClick="datePicker"
+                    android:text="@string/button_choose_date" />
             </LinearLayout>
 
             <Button
@@ -84,8 +84,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_marginTop="7pt"/>
+                android:layout_marginTop="7pt"
+                android:background="@android:color/darker_gray" />
 
             <Button
                 android:id="@+id/button_send_notification"
