@@ -8,20 +8,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
+    <Button
+        android:id="@+id/button_send_notification"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Home" />
+        android:text="@string/send_notification"
+        android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button_registreer"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_send_timed_notification"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="179dp"
-        android:text="@string/action_register" />
-
-
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_send_notification"
+        android:text="@string/send_timed_notification"
+        android:textStyle="bold" />
 </RelativeLayout>

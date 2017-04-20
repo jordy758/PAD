@@ -3,6 +3,7 @@ package hva.groepje12.quitsmokinghabits.ui.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,14 +15,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.Time;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.model.Alarm;
-import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -30,8 +28,8 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
  */
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    EditText birthDate, firstName, lastName;
-    Button mEmailSignInButton, sendNotificationButton, sendTimedNotificationButton;
+    EditText firstNameEditText, lastNameEditText, birthDateEditText;
+    Button createAccountButton;
 
     Calendar pickedTime;
 
@@ -40,42 +38,15 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        birthDate = (EditText) findViewById(R.id.edit_text_birth_date);
-        firstName = (EditText) findViewById(R.id.edit_text_first_name);
-        lastName = (EditText) findViewById(R.id.edit_text_last_name);
+        birthDateEditText = (EditText) findViewById(R.id.edit_text_birth_date);
+        firstNameEditText = (EditText) findViewById(R.id.edit_text_first_name);
+        lastNameEditText = (EditText) findViewById(R.id.edit_text_last_name);
 
-        mEmailSignInButton = (Button) findViewById(R.id.button_create_account);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        createAccountButton = (Button) findViewById(R.id.button_create_account);
+        createAccountButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 registerUser();
-            }
-        });
-
-        ProfileManager profileManager = new ProfileManager(this);
-        Profile profile = profileManager.getProfile();
-
-        Toast.makeText(this, "Hoi ik ben " + profile.getFullName(), Toast.LENGTH_LONG).show();
-
-        final Notification notify = new Notification("Klik hier om afgeleid te worden", getApplicationContext());
-        final Alarm alarm = new Alarm(00, 00, getApplicationContext());
-
-        final Button button_notify = (Button) findViewById(R.id.button_send_notification);
-        button_notify.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                notify.startNotification();
-            }
-        });
-
-        final Button button_alarm = (Button) findViewById(R.id.button_send_timed_notification);
-        button_alarm.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int hour = new Time(System.currentTimeMillis()).getHours();
-                int minutes = new Time(System.currentTimeMillis()).getMinutes();
-
-                alarm.setHour(hour);
-                alarm.setMinutes(minutes + 1);
-                alarm.startAlarm();
             }
         });
     }
@@ -88,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     private void setDate(final Calendar calendar) {
         pickedTime = calendar;
         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        birthDate.setText(dateFormat.format(calendar.getTime()));
+        birthDateEditText.setText(dateFormat.format(calendar.getTime()));
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -97,22 +68,42 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void registerUser() {
-        Profile profile = new Profile(firstName.getText().toString(), lastName.getText().toString(),
-                pickedTime, Profile.Gender.female);
+        String firstName = this.firstNameEditText.getText().toString();
+        String lastName = this.lastNameEditText.getText().toString();
+        String birthDate = this.birthDateEditText.getText().toString();
 
-        Toast.makeText(this, "Profiel opgeslagen!", Toast.LENGTH_SHORT).show();
+        if (firstName.isEmpty() || firstName.length() > 20) {
+            this.firstNameEditText.setError("Voornaam leeg of te lang!");
+            return;
+        }
+
+        if (lastName.isEmpty() || lastName.length() > 20) {
+            this.lastNameEditText.setError("Achternaam leeg of te lang!");
+            return;
+        }
+
+        if (birthDate.isEmpty()) {
+            this.birthDateEditText.setError("Vul een geboortedatum in!");
+            return;
+        }
+
+        Profile profile = new Profile(firstName, lastName, pickedTime, Profile.Gender.female);
+
+        Toast.makeText(this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
 
         //Save the profile with a profile manager into the storage
         ProfileManager profileManager = new ProfileManager(this);
         profileManager.save(profile);
+
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     public static class DatePickerFragment extends DialogFragment {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR) - 20;
+            int year = Calendar.getInstance().get(Calendar.YEAR) - 20;
             int month = 0;
             int day = 1;
 

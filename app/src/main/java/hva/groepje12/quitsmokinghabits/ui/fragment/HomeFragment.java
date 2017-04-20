@@ -1,6 +1,5 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.Calendar;
+
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.ui.activity.RegisterActivity;
+import hva.groepje12.quitsmokinghabits.model.TimedNotification;
+import hva.groepje12.quitsmokinghabits.model.Notification;
 
 public class HomeFragment extends Fragment {
 
@@ -23,11 +25,26 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
 
-        final Button button = (Button) rootView.findViewById(R.id.button_registreer);
-        button.setOnClickListener(new View.OnClickListener() {
+        final Notification notify = new Notification("Klik hier om afgeleid te wordennn", getActivity().getApplicationContext());
+        final TimedNotification alarm = new TimedNotification(00, 00, getActivity().getApplicationContext(), notify);
+
+        Button buttonNotify = (Button) rootView.findViewById(R.id.button_send_notification);
+        buttonNotify.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent myIntent = new Intent(getActivity(), RegisterActivity.class);
-                HomeFragment.this.startActivity(myIntent);
+                notify.startNotification();
+            }
+        });
+
+        Button buttonAlarm = (Button) rootView.findViewById(R.id.button_send_timed_notification);
+        buttonAlarm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                final Calendar calendar = Calendar.getInstance();
+                int hour = calendar.get(Calendar.HOUR);
+                int minutes = calendar.get(Calendar.MINUTE);
+
+                alarm.setHour(hour);
+                alarm.setMinutes(minutes);
+                alarm.startTimer();
             }
         });
 

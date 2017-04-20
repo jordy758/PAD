@@ -10,8 +10,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        final Notification notify = new Notification("Klik hier om afgeleid te worden", context);
-
-        notify.startNotification();
+        Notification notification = new Notification("Bla test", context);
+        notification.startNotification();
     }
+
 }

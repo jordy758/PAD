@@ -6,15 +6,14 @@ import android.content.SharedPreferences.Editor;
 
 import com.google.gson.Gson;
 
+import hva.groepje12.quitsmokinghabits.exceptions.ProfileNotFoundException;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 
 public class ProfileManager {
 
-    private Context context;
-    SharedPreferences prefs;
+    private SharedPreferences prefs;
 
     public ProfileManager(Context context) {
-        this.context = context;
         prefs = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
     }
 
@@ -23,12 +22,16 @@ public class ProfileManager {
         Gson gson = new Gson();
 
         prefEditor.putString("profile", gson.toJson(profile));
-        prefEditor.commit();
+        prefEditor.apply();
     }
 
-    public Profile getProfile() {
-        Gson gson = new Gson();
+    public Profile getProfile() throws ProfileNotFoundException {
         String profileJson = prefs.getString("profile", "");
-        return profileJson == "" ? new Profile() : gson.fromJson(profileJson, Profile.class);
+
+        if (profileJson.equals("")) {
+            throw new ProfileNotFoundException();
+        }
+
+        return new Gson().fromJson(profileJson, Profile.class);
     }
 }

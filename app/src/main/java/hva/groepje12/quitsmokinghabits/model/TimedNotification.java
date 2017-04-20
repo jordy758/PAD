@@ -4,15 +4,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+
 import java.util.Calendar;
 
 import hva.groepje12.quitsmokinghabits.util.AlarmReceiver;
 
-/**
- * Created by Lucas van Leijen
- */
-
-public class Alarm {
+public class TimedNotification {
 
     private int hour;
     private int minutes;
@@ -20,17 +18,22 @@ public class Alarm {
     private Context context;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
+    private Notification notification;
+    private SharedPreferences sharedPreferences;
 
-    public Alarm(int hour, int minutes, Context context) {
+    public TimedNotification(int hour, int minutes, Context context, Notification notification) {
         this.hour = hour;
         this.minutes = minutes;
         this.context = context;
+        this.notification = notification;
+        this.sharedPreferences = context.getSharedPreferences("notification", Context.MODE_PRIVATE);
     }
 
-    public void startAlarm() {
+    public void startTimer() {
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
         Intent intent = new Intent(context, AlarmReceiver.class);
-        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarmIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

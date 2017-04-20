@@ -48,4 +48,9 @@ public class Notification {
         mNotifyMgr.notify(001, mBuilder.build());
 
     }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
 }

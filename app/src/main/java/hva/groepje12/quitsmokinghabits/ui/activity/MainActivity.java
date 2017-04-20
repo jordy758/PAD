@@ -1,5 +1,6 @@
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,11 +14,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.exceptions.ProfileNotFoundException;
+import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment;
+import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +46,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ProfileManager profileManager = new ProfileManager(this);
+
+        try {
+            Profile profile = profileManager.getProfile();
+            Toast.makeText(this, "Welkom " + profile.getFullName() + "!", Toast.LENGTH_LONG).show();
+        } catch (ProfileNotFoundException e) {
+            Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
+            startActivity(intent);
+        }
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
