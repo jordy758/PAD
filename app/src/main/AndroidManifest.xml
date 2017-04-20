@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.RegisterActivity"
-            android:label="Registreer"></activity>
+            android:label="Registreer" />
 
         <receiver
             android:name=".util.AlarmReceiver"
@@ -25,7 +25,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
