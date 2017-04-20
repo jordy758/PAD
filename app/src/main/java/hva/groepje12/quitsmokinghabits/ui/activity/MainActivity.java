@@ -1,24 +1,23 @@
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.ui.fragment.alarmsTab;
-import hva.groepje12.quitsmokinghabits.ui.fragment.gamesTab;
-import hva.groepje12.quitsmokinghabits.ui.fragment.homeTab;
+import hva.groepje12.quitsmokinghabits.ui.fragment.alarmFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.gameFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.homeFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    private FloatingActionButton fab;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -55,17 +56,36 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Nog wat voor bedenken.", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Hier een tijd toevoegen", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
+        fab.hide();
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 2:
+                        fab.show();
+                        break;
+                    default:
+                        fab.hide();
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
 
@@ -105,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
            switch(position) {
                case 0:
-                   homeTab tab0 = new homeTab();
+                   homeFragment tab0 = new homeFragment();
                    return tab0;
                case 1:
-                   gamesTab tab1 = new gamesTab();
+                   gameFragment tab1 = new gameFragment();
                    return  tab1;
                case 2:
-                   alarmsTab tab2 = new alarmsTab();
+                   alarmFragment tab2 = new alarmFragment();
                    return tab2;
                default:
                    return null;

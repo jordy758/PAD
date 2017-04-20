@@ -48,11 +48,8 @@ public class Notification {
 
         mBuilder.setContentIntent(resultPendingIntent);
 
-        int mNotificationId = 001;
-
         NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        mNotifyMgr.notify(001, mBuilder.build());
 
     }
 }
