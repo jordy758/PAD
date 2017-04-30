@@ -116,7 +116,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
 
             @Override
-            public void taskFailed(JSONObject results) {
+            public void taskFailed(String results) {
                 Toast.makeText(RegisterActivity.this, "Couldn't register profile, try again!", Toast.LENGTH_SHORT).show();
             }
         });

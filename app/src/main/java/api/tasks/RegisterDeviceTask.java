@@ -21,7 +21,7 @@ public class RegisterDeviceTask implements Task {
     }
 
     public void execute(RequestParams params) {
-        PadRestClient.post("notification/register_device", params, new JsonHttpResponseHandler() {
+        PadRestClient.post("notification/register_profile", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
@@ -31,11 +31,11 @@ public class RegisterDeviceTask implements Task {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                super.onFailure(statusCode, headers, throwable, errorResponse);
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
 
-                listener.taskFailed(errorResponse);
-                Log.e(TAG, "onFailure: " + errorResponse);
+                listener.taskFailed(responseString);
+                Log.e(TAG, "onFailure: " + responseString);
             }
         });
     }
