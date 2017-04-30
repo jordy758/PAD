@@ -8,12 +8,11 @@ import android.content.SharedPreferences;
 
 import java.util.Calendar;
 
-import hva.groepje12.quitsmokinghabits.util.AlarmReceiver;
+import hva.groepje12.quitsmokinghabits.receiver.AlarmReceiver;
 
 public class TimedNotification {
 
-    private int hour;
-    private int minutes;
+    private int hour, minutes, seconds;
 
     private Context context;
     private AlarmManager alarmMgr;
@@ -21,12 +20,27 @@ public class TimedNotification {
     private Notification notification;
     private SharedPreferences sharedPreferences;
 
-    public TimedNotification(int hour, int minutes, Context context, Notification notification) {
+    public TimedNotification(Context context, Notification notification, int hour, int minutes) {
         this.hour = hour;
         this.minutes = minutes;
+
         this.context = context;
         this.notification = notification;
         this.sharedPreferences = context.getSharedPreferences("notification", Context.MODE_PRIVATE);
+
+        startTimer();
+    }
+
+    public TimedNotification(Context context, Notification notification, int hour, int minutes, int seconds) {
+        this.hour = hour;
+        this.minutes = minutes;
+        this.seconds = seconds;
+
+        this.context = context;
+        this.notification = notification;
+        this.sharedPreferences = context.getSharedPreferences("notification", Context.MODE_PRIVATE);
+
+        startTimer();
     }
 
     public void startTimer() {
@@ -39,6 +53,7 @@ public class TimedNotification {
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, seconds);
 
         alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
     }

@@ -17,7 +17,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.exceptions.ProfileNotFoundException;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
@@ -48,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ProfileManager profileManager = new ProfileManager(this);
+        Profile profile = profileManager.getCurrentProfile();
 
-        try {
-            Profile profile = profileManager.getProfile();
+        if (profile.getFirstName() != null) {
             Toast.makeText(this, "Welkom " + profile.getFullName() + "!", Toast.LENGTH_LONG).show();
-        } catch (ProfileNotFoundException e) {
+        } else {
             Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
             startActivity(intent);
         }

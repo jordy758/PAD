@@ -7,6 +7,7 @@ public class Profile {
     private String lastName;
     private Calendar birthDate;
     private Gender gender;
+    private String notificationToken;
 
     public enum Gender {male, female}
 
@@ -31,6 +32,10 @@ public class Profile {
     public String getFirstName() {
         return firstName;
     }
+
+    public void setNotificationToken(String notificationToken) { this.notificationToken = notificationToken; }
+
+    public String getNotificationToken() {return this.notificationToken; }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.TimedNotification;
 import hva.groepje12.quitsmokinghabits.model.Notification;
+import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -25,8 +26,8 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
 
-        final Notification notify = new Notification("Klik hier om afgeleid te wordennn", getActivity().getApplicationContext());
-        final TimedNotification alarm = new TimedNotification(00, 00, getActivity().getApplicationContext(), notify);
+        final Notification notify = new Notification("Quit Smoking Habits", "Klik hier om afgeleid te wordennn",
+                MainActivity.class, getActivity().getApplicationContext());
 
         Button buttonNotify = (Button) rootView.findViewById(R.id.button_send_notification);
         buttonNotify.setOnClickListener(new View.OnClickListener() {
@@ -40,11 +41,11 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
                 int hour = calendar.get(Calendar.HOUR);
-                int minutes = calendar.get(Calendar.MINUTE);
+                int minutes = calendar.get(Calendar.MINUTE) + 1;
+                int seconds = calendar.get(Calendar.SECOND);
 
-                alarm.setHour(hour);
-                alarm.setMinutes(minutes);
-                alarm.startTimer();
+                TimedNotification alarm = new TimedNotification(getActivity().getApplicationContext(),
+                        notify, hour, minutes, seconds);
             }
         });
 
