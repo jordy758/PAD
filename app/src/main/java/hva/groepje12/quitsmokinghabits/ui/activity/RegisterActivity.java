@@ -55,6 +55,16 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                 registerUser();
             }
         });
+
+        ProfileManager profileManager = new ProfileManager(this);
+        Profile profile = profileManager.getCurrentProfile();
+
+        if (profile.getFirstName() != null) {
+            firstNameEditText.setText(profile.getFirstName());
+            lastNameEditText.setText(profile.getLastName());
+            setDate(profile.getBirthDate());
+            createAccountButton.setText("Opslaan");
+        }
     }
 
     public void datePicker(View view) {
@@ -110,7 +120,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         RegisterDeviceTask registerDeviceTask = new RegisterDeviceTask(new OnLoopJEvent() {
             @Override
             public void taskCompleted(JSONObject results) {
-                Toast.makeText(RegisterActivity.this, "Profiel is opgelsagen!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }

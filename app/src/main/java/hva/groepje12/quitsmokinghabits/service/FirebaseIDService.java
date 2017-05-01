@@ -4,7 +4,12 @@ import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.tasks.RegisterDeviceTask;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -38,6 +43,21 @@ public class FirebaseIDService extends FirebaseInstanceIdService {
         profile.setNotificationToken(token);
 
         profileManager.saveToPreferences(profile);
+
+        if (profile.getFirstName() != null) {
+            //Attempt to call api to register the profile
+            RequestParams params = profileManager.getParams();
+
+            RegisterDeviceTask registerDeviceTask = new RegisterDeviceTask(new OnLoopJEvent() {
+                @Override
+                public void taskCompleted(JSONObject results) {}
+
+                @Override
+                public void taskFailed(String results) {}
+            });
+
+            registerDeviceTask.execute(params);
+        }
     }
 
 }

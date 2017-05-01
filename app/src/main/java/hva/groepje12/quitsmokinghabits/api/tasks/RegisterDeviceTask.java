@@ -7,9 +7,9 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import cz.msebera.android.httpclient.Header;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.PadRestClient;
-import cz.msebera.android.httpclient.Header;
 
 public class RegisterDeviceTask implements Task {
     private OnLoopJEvent listener;
@@ -36,6 +36,14 @@ public class RegisterDeviceTask implements Task {
 
                 listener.taskFailed(responseString);
                 Log.e(TAG, "onFailure: " + responseString);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                listener.taskFailed(errorResponse.toString());
+                Log.e(TAG, "onFailure: " + errorResponse);
             }
         });
     }

@@ -44,7 +44,8 @@ public class ProfileManager {
 
     public RequestParams getParams()  {
         Calendar birth = profile.getBirthDate();
-        String birthDate = birth.get(Calendar.YEAR) + "-" + birth.get(Calendar.MONTH) + "-" + birth.get(Calendar.DAY_OF_MONTH);;
+        String birthDate = birth.get(Calendar.YEAR) + "-" + (birth.get(Calendar.MONTH) + 1) +
+                "-" + birth.get(Calendar.DAY_OF_MONTH);
 
         RequestParams params = new RequestParams();
         params.put("first_name", profile.getFirstName());
