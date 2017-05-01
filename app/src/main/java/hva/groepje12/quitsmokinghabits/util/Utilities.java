@@ -15,9 +15,35 @@ import java.util.List;
  */
 
 public class Utilities {
-    public static List<ApplicationInfo> getInstalledApplication(Context c) {
 
-        return c.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+
+    public static List<ApplicationInfo> getInstalledApplication(Context c) {
+        List<ApplicationInfo> appList = c.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+
+        final PackageManager pm = c.getPackageManager();
+
+        for (int i = 0; i < appList.size(); i++) {
+            ApplicationInfo ai = null;
+            try {
+                ai = pm.getApplicationInfo(appList.get(i).packageName, 0);
+            } catch (Exception e) {
+            }
+
+            if (appList.get(i).loadLabel(pm) == appList.get(i).packageName) {
+                appList.remove(i);
+            }
+
+
+            if ((ai.flags & ApplicationInfo.FLAG_IS_GAME) != ApplicationInfo.FLAG_IS_GAME) {
+                Log.e("PAD: ", appList.get(i).packageName + "");
+                appList.remove(i);
+
+            }
+
+        }
+
+
+        return appList;
     }
 
     /*

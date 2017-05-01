@@ -49,6 +49,7 @@ public class AppInfoAdapter extends BaseAdapter{
         // get the selected entry
         ApplicationInfo entry = mListAppInfo.get(position);
 
+
         // reference to convertView
         View v = convertView;
 
