@@ -1,4 +1,4 @@
-package api;
+package hva.groepje12.quitsmokinghabits.api;
 
 import org.json.JSONObject;
 

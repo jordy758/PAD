@@ -1,4 +1,4 @@
-package api.tasks;
+package hva.groepje12.quitsmokinghabits.api.tasks;
 
 import com.loopj.android.http.RequestParams;
 

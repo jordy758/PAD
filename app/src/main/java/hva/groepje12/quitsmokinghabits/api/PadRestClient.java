@@ -1,9 +1,9 @@
-package api;
+package hva.groepje12.quitsmokinghabits.api;
 
 import com.loopj.android.http.*;
 
 public class PadRestClient {
-    private static final String BASE_URL = "http://api.jordywijman.nl/api/";
+    private static final String BASE_URL = "https://api.jordywijman.nl/api/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

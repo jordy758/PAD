@@ -1,4 +1,4 @@
-package api.tasks;
+package hva.groepje12.quitsmokinghabits.api.tasks;
 
 import android.util.Log;
 
@@ -7,8 +7,8 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
-import api.OnLoopJEvent;
-import api.PadRestClient;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.PadRestClient;
 import cz.msebera.android.httpclient.Header;
 
 public class RegisterDeviceTask implements Task {
