@@ -14,14 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Alarmen" />
 
-    <TimePicker
-        android:id="@+id/TimePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:padding="20dp"
-        />
+
 
     <TextView
         android:id="@+id/time"
