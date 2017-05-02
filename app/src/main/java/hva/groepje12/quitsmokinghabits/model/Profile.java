@@ -1,6 +1,8 @@
 package hva.groepje12.quitsmokinghabits.model;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class Profile {
     private String firstName;
@@ -8,21 +10,29 @@ public class Profile {
     private Calendar birthDate;
     private Gender gender;
     private String notificationToken;
+    private List<String> alarms;
 
     public enum Gender {male, female}
 
-    ;
-
     public Profile() {
+        alarms = new ArrayList<>();
     }
-
-    ;
 
     public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
+
+        alarms = new ArrayList<>();
+    }
+
+    public void setAlarms(List<String> alarms) {
+        this.alarms = alarms;
+    }
+
+    public List<String> getAlarms() {
+        return alarms;
     }
 
     public void setFirstName(String firstName) {
@@ -33,9 +43,13 @@ public class Profile {
         return firstName;
     }
 
-    public void setNotificationToken(String notificationToken) { this.notificationToken = notificationToken; }
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
+    }
 
-    public String getNotificationToken() {return this.notificationToken; }
+    public String getNotificationToken() {
+        return this.notificationToken;
+    }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
