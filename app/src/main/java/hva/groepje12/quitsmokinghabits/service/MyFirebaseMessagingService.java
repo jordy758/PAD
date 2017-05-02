@@ -1,5 +1,7 @@
 package hva.groepje12.quitsmokinghabits.service;
 
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
+import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -36,8 +39,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> data = remoteMessage.getData();
 
+        Intent destination = getPackageManager().getLaunchIntentForPackage("com.halfbrick.fruitninjafree");
+
         Notification notification = new Notification(data.get("title"),
-                data.get("text"), MainActivity.class, getApplicationContext());
+                data.get("text"), destination, getApplicationContext());
         notification.startNotification();
 
     }
