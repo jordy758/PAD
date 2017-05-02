@@ -14,4 +14,34 @@
         android:layout_height="wrap_content"
         android:text="Alarmen" />
 
+    <TimePicker
+        android:id="@+id/TimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"
+        />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="380dp"
+        android:text=""
+        android:textColor="#000"
+        android:textSize="35sp" />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Add Time"
+        android:id="@+id/add_time"
+        android:clickable="true"
+        android:layout_below="@+id/time"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>
