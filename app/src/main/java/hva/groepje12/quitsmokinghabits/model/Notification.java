@@ -1,4 +1,4 @@
-package hva.groepje12.quitsmokinghabits.ui.notification;
+package hva.groepje12.quitsmokinghabits.model;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,35 +8,34 @@ import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.ui.activity.RegisterActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
-/**
- * Created by Lucas van Leijen
- */
-
 public class Notification {
 
-    private String text;
+    private String title, text;
     private Context context;
+    private Class<?> destination;
 
-    public Notification(String text, Context context) {
+    public Notification(String title, String text, Class<?> destination, Context context) {
+        this.title = title;
         this.text = text;
         this.context = context;
+        this.destination = destination;
     }
 
     public void startNotification() {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setSmallIcon(R.drawable.cig)
-                        .setContentTitle("Quit Smoking Habits")
+                        .setContentTitle(title)
                         .setContentText(text)
                         .setAutoCancel(true)
-                        .setVibrate(new long[] { 200, 200, 200, 200 })
+                        .setVibrate(new long[]{200, 200, 200, 200})
                         .setLights(Color.CYAN, 3000, 3000);
 
-        Intent resultIntent = new Intent(context, RegisterActivity.class);
+        Intent resultIntent = new Intent(context, destination);
 
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
@@ -48,11 +47,13 @@ public class Notification {
 
         mBuilder.setContentIntent(resultPendingIntent);
 
-        int mNotificationId = 001;
-
         NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        mNotifyMgr.notify(001, mBuilder.build());
 
     }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
 }

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1061295831964",
+    "firebase_url": "https://waag-github.firebaseio.com",
+    "project_id": "waag-github",
+    "storage_bucket": "waag-github.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1061295831964:android:e6d93a5655dd193e",
+        "android_client_info": {
+          "package_name": "hva.groepje12.quitsmokinghabits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1061295831964-67enmqrdba6kp7787vpub6078bi2be18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hva.groepje12.quitsmokinghabits",
+            "certificate_hash": "a8de1c5db3417eac1174ab300fc764d7f3033848"
+          }
+        },
+        {
+          "client_id": "1061295831964-o989u52o2tkmae388ef7no3esmb0pnh0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQz7BfRMdMeyCipE2lhl0TkI5Ne9W-nZ0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1061295831964-o989u52o2tkmae388ef7no3esmb0pnh0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

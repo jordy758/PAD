@@ -8,10 +8,11 @@
     <string name="prompt_last_name">Achternaam</string>
     <string name="prompt_birthDate">Geboortedatum</string>
     <string name="action_register">Registreren</string>
-    <string name="button_choose_date">Kies</string>
+    <string name="button_choose_date">Kies Geboortedatum</string>
     <string name="send_notification">Stuur Notificatie</string>
     <string name="send_timed_notification">Stuur Notificatie (na 1 minuut)</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="action_edit_profile">Pas profiel aan</string>
 </resources>

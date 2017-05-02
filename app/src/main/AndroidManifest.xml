@@ -3,6 +3,7 @@
     package="hva.groepje12.quitsmokinghabits">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +14,10 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.activity.RegisterActivity"
-            android:label="Registreer"></activity>
+            android:label="Registreer" />
 
         <receiver
-            android:name=".util.AlarmReceiver"
+            android:name=".receiver.AlarmReceiver"
             android:process=":remote" />
 
         <activity
@@ -25,10 +26,28 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FirebaseIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/cig" />
+
     </application>
 
 </manifest>

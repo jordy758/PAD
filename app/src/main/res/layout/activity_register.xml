@@ -33,7 +33,7 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/prompt_first_name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textCapSentences" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -47,30 +47,30 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/prompt_last_name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textCapSentences" />
             </android.support.design.widget.TextInputLayout>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:weightSum="1"
-                android:layout_marginTop="5pt">
+                android:layout_marginTop="5pt"
+                android:orientation="horizontal">
 
                 <EditText
                     android:id="@+id/edit_text_birth_date"
-                    android:layout_width="256dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
                     android:hint="@string/prompt_birthDate"
-                    android:inputType="date"
-                    android:layout_weight="1.16" />
+                    android:inputType="date" />
 
                 <Button
                     android:id="@+id/button_choose_date"
-                    android:layout_width="80dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/button_choose_date"
-                    android:onClick="datePicker"/>
+                    android:onClick="datePicker"
+                    android:text="@string/button_choose_date" />
             </LinearLayout>
 
             <Button
@@ -80,29 +80,6 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_register"
                 android:textStyle="bold" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray"
-                android:layout_marginTop="7pt"/>
-
-            <Button
-                android:id="@+id/button_send_notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/send_notification"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/button_send_timed_notification"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/send_timed_notification"
-                android:textStyle="bold" />
-
         </LinearLayout>
     </ScrollView>
 

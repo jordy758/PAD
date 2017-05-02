@@ -7,10 +7,16 @@ public class Profile {
     private String lastName;
     private Calendar birthDate;
     private Gender gender;
+    private String notificationToken;
 
-    public enum Gender {male, female};
+    public enum Gender {male, female}
 
-    public Profile() {};
+    ;
+
+    public Profile() {
+    }
+
+    ;
 
     public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
         this.firstName = firstName;
@@ -27,6 +33,10 @@ public class Profile {
         return firstName;
     }
 
+    public void setNotificationToken(String notificationToken) { this.notificationToken = notificationToken; }
+
+    public String getNotificationToken() {return this.notificationToken; }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -35,7 +45,9 @@ public class Profile {
         return this.lastName;
     }
 
-    public String getFullName() { return this.getFirstName() + " " + this.getLastName(); }
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
+    }
 
     public void setBirthDate(Calendar birthDate) {
         this.birthDate = birthDate;

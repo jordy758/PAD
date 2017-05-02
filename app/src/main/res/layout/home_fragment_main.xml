@@ -6,22 +6,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="hva.groepje12.quitsmokinghabits.ui.activity.MainActivity$PlaceholderFragment">
-
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"/>
+    tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
+        android:id="@+id/button_send_notification"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="179dp"
-        android:text="Registreer" />
+        android:text="@string/send_notification"
+        android:textStyle="bold" />
 
-
+    <Button
+        android:id="@+id/button_send_timed_notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_send_notification"
+        android:text="@string/send_timed_notification"
+        android:textStyle="bold" />
 </RelativeLayout>
