@@ -14,10 +14,17 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
 import java.util.Calendar;
 import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.tasks.AddTimeTask;
+import hva.groepje12.quitsmokinghabits.api.tasks.RemoveTimeTask;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -66,12 +73,31 @@ public class AlarmFragment extends Fragment {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        alarms.add(Integer.toString(hourOfDay) + ":" + Integer.toString(minute));
-                        adapter.notifyDataSetChanged();
-                        updateProfileAndList();
+                        final String time = Integer.toString(hourOfDay) + ":" + Integer.toString(minute);
 
-                        Snackbar.make(alarmView, "Tijd toegevoegd!", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        AddTimeTask addTimeTask = new AddTimeTask(new OnLoopJEvent() {
+                            @Override
+                            public void taskCompleted(JSONObject results) {
+                                alarms.add(time);
+                                adapter.notifyDataSetChanged();
+                                updateProfileAndList();
+
+                                Snackbar.make(alarmView, "Tijd toegevoegd!", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+
+                            @Override
+                            public void taskFailed(String results) {
+                                Snackbar.make(alarmView, "Tijd bestaat al!", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            }
+                        });
+
+                        RequestParams params = new RequestParams();
+                        params.add("notification_token", profile.getNotificationToken());
+                        params.add("notification_time", time);
+
+                        addTimeTask.execute(params);
                     }
                 }, hour, minute, false);
 
@@ -90,10 +116,25 @@ public class AlarmFragment extends Fragment {
         timesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                String itemValue = (String) timesListView.getItemAtPosition(position);
+                final String time = (String) timesListView.getItemAtPosition(position);
 
-                alarms.remove(itemValue);
-                updateProfileAndList();
+                RemoveTimeTask removeTimeTask = new RemoveTimeTask(new OnLoopJEvent() {
+                    @Override
+                    public void taskCompleted(JSONObject results) {
+                        alarms.remove(time);
+                        updateProfileAndList();
+                    }
+
+                    @Override
+                    public void taskFailed(String results) {
+                        Toast.makeText(getActivity(), "Failed to remove entry!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                RequestParams params = new RequestParams();
+                params.add("notification_token", profile.getNotificationToken());
+                params.add("notification_time", time);
+                removeTimeTask.execute(params);
 
                 return true;
             }
