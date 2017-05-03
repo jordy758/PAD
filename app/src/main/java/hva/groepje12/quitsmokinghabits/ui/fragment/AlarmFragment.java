@@ -23,8 +23,7 @@ import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.tasks.AddTimeTask;
-import hva.groepje12.quitsmokinghabits.api.tasks.RemoveTimeTask;
+import hva.groepje12.quitsmokinghabits.api.tasks.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -75,7 +74,7 @@ public class AlarmFragment extends Fragment {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         final String time = Integer.toString(hourOfDay) + ":" + Integer.toString(minute);
 
-                        AddTimeTask addTimeTask = new AddTimeTask(new OnLoopJEvent() {
+                        Task addTimeTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
                                 alarms.add(time);
@@ -87,17 +86,20 @@ public class AlarmFragment extends Fragment {
                             }
 
                             @Override
-                            public void taskFailed(String results) {
+                            public void taskFailed(JSONObject results) {
                                 Snackbar.make(alarmView, "Tijd bestaat al!", Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
                             }
+
+                            @Override
+                            public void fatalError(String results) {}
                         });
 
                         RequestParams params = new RequestParams();
                         params.add("notification_token", profile.getNotificationToken());
                         params.add("notification_time", time);
 
-                        addTimeTask.execute(params);
+                        addTimeTask.execute(Task.ADD_TIME, params);
                     }
                 }, hour, minute, false);
 
@@ -118,7 +120,7 @@ public class AlarmFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 final String time = (String) timesListView.getItemAtPosition(position);
 
-                RemoveTimeTask removeTimeTask = new RemoveTimeTask(new OnLoopJEvent() {
+                Task task = new Task(new OnLoopJEvent() {
                     @Override
                     public void taskCompleted(JSONObject results) {
                         alarms.remove(time);
@@ -126,15 +128,18 @@ public class AlarmFragment extends Fragment {
                     }
 
                     @Override
-                    public void taskFailed(String results) {
+                    public void taskFailed(JSONObject results) {
                         Toast.makeText(getActivity(), "Failed to remove entry!", Toast.LENGTH_SHORT).show();
                     }
+
+                    @Override
+                    public void fatalError(String results) {}
                 });
 
                 RequestParams params = new RequestParams();
                 params.add("notification_token", profile.getNotificationToken());
                 params.add("notification_time", time);
-                removeTimeTask.execute(params);
+                task.execute(Task.REMOVE_TIME, params);
 
                 return true;
             }
