@@ -23,9 +23,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.api.tasks.Task;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -131,7 +131,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
 
             @Override
-            public void fatalError(String results) {}
+            public void fatalError(String results) {
+            }
         });
 
         registerProfileTask.execute(Task.REGISTER_PROFILE, params);

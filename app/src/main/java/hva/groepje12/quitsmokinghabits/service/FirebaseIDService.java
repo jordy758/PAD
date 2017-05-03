@@ -9,7 +9,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.tasks.Task;
+import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -50,13 +50,16 @@ public class FirebaseIDService extends FirebaseInstanceIdService {
 
             Task registerProfileTask = new Task(new OnLoopJEvent() {
                 @Override
-                public void taskCompleted(JSONObject results) {}
+                public void taskCompleted(JSONObject results) {
+                }
 
                 @Override
-                public void taskFailed(JSONObject results) {}
+                public void taskFailed(JSONObject results) {
+                }
 
                 @Override
-                public void fatalError(String results) {}
+                public void fatalError(String results) {
+                }
             });
 
             registerProfileTask.execute(Task.REGISTER_PROFILE, params);

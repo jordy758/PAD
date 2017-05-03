@@ -23,7 +23,7 @@ import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.tasks.Task;
+import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -92,7 +92,8 @@ public class AlarmFragment extends Fragment {
                             }
 
                             @Override
-                            public void fatalError(String results) {}
+                            public void fatalError(String results) {
+                            }
                         });
 
                         RequestParams params = new RequestParams();
@@ -133,7 +134,8 @@ public class AlarmFragment extends Fragment {
                     }
 
                     @Override
-                    public void fatalError(String results) {}
+                    public void fatalError(String results) {
+                    }
                 });
 
                 RequestParams params = new RequestParams();

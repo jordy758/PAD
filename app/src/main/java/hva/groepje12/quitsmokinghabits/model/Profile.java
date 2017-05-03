@@ -12,8 +12,6 @@ public class Profile {
     private String notificationToken;
     private List<String> alarms;
 
-    public enum Gender {male, female}
-
     public Profile() {
         alarms = new ArrayList<>();
     }
@@ -27,55 +25,57 @@ public class Profile {
         alarms = new ArrayList<>();
     }
 
-    public void setAlarms(List<String> alarms) {
-        this.alarms = alarms;
-    }
-
     public List<String> getAlarms() {
         return alarms;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setAlarms(List<String> alarms) {
+        this.alarms = alarms;
     }
 
     public String getFirstName() {
         return firstName;
     }
 
-    public void setNotificationToken(String notificationToken) {
-        this.notificationToken = notificationToken;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getNotificationToken() {
         return this.notificationToken;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setNotificationToken(String notificationToken) {
+        this.notificationToken = notificationToken;
     }
 
     public String getLastName() {
         return this.lastName;
     }
 
-    public String getFullName() {
-        return this.getFirstName() + " " + this.getLastName();
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public void setBirthDate(Calendar birthDate) {
-        this.birthDate = birthDate;
+    public String getFullName() {
+        return this.getFirstName() + " " + this.getLastName();
     }
 
     public Calendar getBirthDate() {
         return this.birthDate;
     }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
+    public void setBirthDate(Calendar birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Gender getGender() {
         return this.gender;
     }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public enum Gender {male, female}
 }

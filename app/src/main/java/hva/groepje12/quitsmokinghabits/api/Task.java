@@ -1,4 +1,4 @@
-package hva.groepje12.quitsmokinghabits.api.tasks;
+package hva.groepje12.quitsmokinghabits.api;
 
 import android.util.Log;
 
@@ -8,17 +8,13 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
-import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.PadRestClient;
 
 public class Task {
-    private OnLoopJEvent listener;
-
-    private static final String TAG = "PAD_API";
-
     public static final String REGISTER_PROFILE = "notification/register_profile";
     public static final String REMOVE_TIME = "notification/remove_time";
     public static final String ADD_TIME = "notification/add_time";
+    private static final String TAG = "PAD_API";
+    private OnLoopJEvent listener;
 
     public Task(OnLoopJEvent listener) {
         this.listener = listener;
