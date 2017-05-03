@@ -78,7 +78,7 @@ public class AlarmFragment extends Fragment {
                         time.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         time.set(Calendar.MINUTE, minute);
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
                         final String timeString = simpleDateFormat.format(time.getTime());
 
                         Task addTimeTask = new Task(new OnLoopJEvent() {
