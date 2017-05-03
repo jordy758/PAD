@@ -42,7 +42,7 @@ public class ProfileManager {
         return profile;
     }
 
-    public RequestParams getParams()  {
+    public RequestParams getParams() {
         Calendar birth = profile.getBirthDate();
         String birthDate = birth.get(Calendar.YEAR) + "-" + (birth.get(Calendar.MONTH) + 1) +
                 "-" + birth.get(Calendar.DAY_OF_MONTH);

@@ -10,8 +10,8 @@ import android.widget.Button;
 import java.util.Calendar;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.model.TimedNotification;
 import hva.groepje12.quitsmokinghabits.model.Notification;
+import hva.groepje12.quitsmokinghabits.model.TimedNotification;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class HomeFragment extends Fragment {
