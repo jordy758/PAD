@@ -6,8 +6,6 @@ public interface OnLoopJEvent {
 
     public void taskCompleted(JSONObject results);
 
-    public void taskFailed(JSONObject results);
-
-    public void fatalError(String results);
+    public void taskFailed(String results);
 
 }

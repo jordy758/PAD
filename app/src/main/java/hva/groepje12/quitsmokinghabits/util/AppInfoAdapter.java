@@ -18,7 +18,7 @@ import hva.groepje12.quitsmokinghabits.R;
  * Created by lucas on 1-5-2017.
  */
 
-public class AppInfoAdapter extends BaseAdapter {
+public class AppInfoAdapter extends BaseAdapter{
     private Context mContext;
     private List<ApplicationInfo> mListAppInfo;
     private PackageManager mPackManager;
@@ -54,14 +54,14 @@ public class AppInfoAdapter extends BaseAdapter {
         View v = convertView;
 
         // inflate new layout if null
-        if (v == null) {
+        if(v == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             v = inflater.inflate(R.layout.listview_apps, null);
         }
 
         // load controls from layout resources
-        ImageView ivAppIcon = (ImageView) v.findViewById(R.id.appIcon);
-        TextView tvAppName = (TextView) v.findViewById(R.id.appName);
+        ImageView ivAppIcon = (ImageView)v.findViewById(R.id.appIcon);
+        TextView tvAppName = (TextView)v.findViewById(R.id.appName);
         //TextView tvPkgName = (TextView)v.findViewById(R.id.appPackage);
 
         // set data to display

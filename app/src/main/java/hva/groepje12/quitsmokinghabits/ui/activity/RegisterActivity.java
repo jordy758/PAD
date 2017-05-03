@@ -23,9 +23,9 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.api.tasks.RegisterDeviceTask;
+import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -55,16 +55,6 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                 registerUser();
             }
         });
-
-        ProfileManager profileManager = new ProfileManager(this);
-        Profile profile = profileManager.getCurrentProfile();
-
-        if (profile.getFirstName() != null) {
-            firstNameEditText.setText(profile.getFirstName());
-            lastNameEditText.setText(profile.getLastName());
-            setDate(profile.getBirthDate());
-            createAccountButton.setText("Opslaan");
-        }
     }
 
     public void datePicker(View view) {
@@ -117,25 +107,21 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         //Attempt to call api to register the profile
         RequestParams params = profileManager.getParams();
 
-        Task registerProfileTask = new Task(new OnLoopJEvent() {
+        RegisterDeviceTask registerDeviceTask = new RegisterDeviceTask(new OnLoopJEvent() {
             @Override
             public void taskCompleted(JSONObject results) {
-                Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, "Profiel is opgelsagen!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getBaseContext(), MainActivity.class);
                 startActivity(intent);
             }
 
             @Override
-            public void taskFailed(JSONObject results) {
+            public void taskFailed(String results) {
                 Toast.makeText(RegisterActivity.this, "Couldn't register profile, try again!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void fatalError(String results) {
             }
         });
 
-        registerProfileTask.execute(Task.REGISTER_PROFILE, params);
+        registerDeviceTask.execute(params);
     }
 
     public static class DatePickerFragment extends DialogFragment {

@@ -54,6 +54,10 @@ public class Utilities {
      */
     public static boolean launchApp(Context c, PackageManager pm, String pkgName) {
         // query the intent for lauching
+        if(pkgName == null) {
+            return false;
+        }
+
         Intent intent = pm.getLaunchIntentForPackage(pkgName);
         // if intent is available
         if (intent != null) {

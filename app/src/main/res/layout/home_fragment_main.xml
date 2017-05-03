@@ -8,12 +8,72 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment">
 
+    <!--Middle-->
+    <ImageView
+        android:id="@+id/appIcon3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:src="@drawable/wap"
+        android:layout_centerHorizontal="true"
+        />
+
+
+    <!--2nd-->
+    <ImageView
+        android:id="@+id/appIcon2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:src="@drawable/wap"
+        android:layout_toLeftOf="@id/appIcon3"/>
+    <ImageView
+        android:id="@+id/appIcon1"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:layout_toLeftOf="@id/appIcon2"
+        android:src="@drawable/wap" />
+
+    <!--4th-->
+    <ImageView
+        android:id="@+id/appIcon4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:src="@drawable/wap"
+        android:layout_toRightOf="@id/appIcon3"/>
+    <!--5th-->
+    <ImageView
+        android:id="@+id/appIcon5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dip"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        android:src="@drawable/wap"
+        android:layout_toRightOf="@id/appIcon4"/>
+
     <Button
         android:id="@+id/button_send_notification"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/send_notification"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@id/appIcon1"/>
 
     <Button
         android:id="@+id/button_send_timed_notification"
