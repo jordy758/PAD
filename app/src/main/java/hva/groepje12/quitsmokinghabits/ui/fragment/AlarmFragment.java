@@ -18,8 +18,10 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
@@ -72,12 +74,17 @@ public class AlarmFragment extends Fragment {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        final String time = Integer.toString(hourOfDay) + ":" + Integer.toString(minute);
+                        Calendar time = Calendar.getInstance();
+                        time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        time.set(Calendar.MINUTE, minute);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm", Locale.getDefault());
+                        final String timeString = simpleDateFormat.format(time.getTime());
 
                         Task addTimeTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
-                                alarms.add(time);
+                                alarms.add(timeString);
                                 adapter.notifyDataSetChanged();
                                 updateProfileAndList();
 
@@ -98,7 +105,7 @@ public class AlarmFragment extends Fragment {
 
                         RequestParams params = new RequestParams();
                         params.add("notification_token", profile.getNotificationToken());
-                        params.add("notification_time", time);
+                        params.add("notification_time", timeString);
 
                         addTimeTask.execute(Task.ADD_TIME, params);
                     }
