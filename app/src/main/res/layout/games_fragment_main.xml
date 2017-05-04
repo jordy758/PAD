@@ -6,7 +6,7 @@
 
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment">
 
-<!--Middle-->
+    <!--Middle-->
     <ImageView
         android:id="@+id/appIcon3"
         android:layout_width="50dp"
@@ -15,7 +15,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:src="@drawable/wap"
         android:layout_centerHorizontal="true"
         />
 
@@ -29,7 +28,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:src="@drawable/wap"
         android:layout_toLeftOf="@id/appIcon3"/>
     <ImageView
         android:id="@+id/appIcon1"
@@ -39,8 +37,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@id/appIcon2"
-        android:src="@drawable/wap" />
+        android:layout_toLeftOf="@id/appIcon2" />
 
     <!--4th-->
     <ImageView
@@ -51,7 +48,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:src="@drawable/wap"
         android:layout_toRightOf="@id/appIcon3"/>
     <!--5th-->
     <ImageView
@@ -62,7 +58,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:src="@drawable/wap"
         android:layout_toRightOf="@id/appIcon4"/>
 
     <ListView
