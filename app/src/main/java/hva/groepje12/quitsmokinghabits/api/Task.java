@@ -30,13 +30,13 @@ public class Task {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                listener.fatalError(responseString);
+                //listener.fatalError(responseString);
                 Log.e(TAG, "onFailure: " + responseString);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                listener.taskFailed(errorResponse);
+                //listener.taskFailed(errorResponse);
                 Log.e(TAG, "onFailure: " + errorResponse);
             }
         });
