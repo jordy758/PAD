@@ -21,11 +21,16 @@ import hva.groepje12.quitsmokinghabits.util.AppInfoAdapter;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class SelectAppActivity extends AppCompatActivity {
+    private Context context;
+    private ListView mListAppInfo;
+    private List appsList;
 
+    private PackageManager pm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_app);
+
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -33,17 +38,15 @@ public class SelectAppActivity extends AppCompatActivity {
 
         }
 
-        final Context context = getApplicationContext();
-        ListView mListAppInfo;
+        context = getApplicationContext();
+
         mListAppInfo = (ListView) findViewById(R.id.SelectAppListView);
-        // create new adapter
-        final PackageManager pm = getPackageManager();
-        final List appsList = Utilities.getInstalledApplication(context);
+
+        pm = getPackageManager();
+        appsList = Utilities.getInstalledApplication(context);
 
 
         Collections.sort(appsList, new Comparator<ApplicationInfo>() {
-
-
             @Override
             public int compare(ApplicationInfo one, ApplicationInfo two) {
                 return one.loadLabel(pm).toString().compareTo(two.loadLabel(pm).toString());
@@ -70,8 +73,6 @@ public class SelectAppActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-
     }
 
     @Override
