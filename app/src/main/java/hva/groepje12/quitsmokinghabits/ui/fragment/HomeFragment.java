@@ -6,19 +6,23 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.model.TimedNotification;
 import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
+import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class HomeFragment extends Fragment {
@@ -37,25 +41,11 @@ public class HomeFragment extends Fragment {
         final Notification notify = new Notification("Quit Smoking Habits", "Klik hier om afgeleid te wordennn",
                 MainActivity.class, getActivity().getApplicationContext());
 
-        Button buttonNotify = (Button) rootView.findViewById(R.id.button_send_notification);
-        buttonNotify.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                notify.startNotification();
-            }
-        });
+        ProfileManager profileManager = new ProfileManager(getContext());
+        final Profile profile = profileManager.getCurrentProfile();
+        TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
 
-        Button buttonAlarm = (Button) rootView.findViewById(R.id.button_send_timed_notification);
-        buttonAlarm.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                final Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR);
-                int minutes = calendar.get(Calendar.MINUTE) + 1;
-                int seconds = calendar.get(Calendar.SECOND);
-
-                TimedNotification alarm = new TimedNotification(getActivity().getApplicationContext(),
-                        notify, hour, minutes, seconds);
-            }
-        });
+        welcome.append(profile.getFirstName());
 
 
         return rootView;

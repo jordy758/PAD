@@ -59,11 +59,24 @@
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
         android:layout_toRightOf="@id/appIcon4"/>
+    <TextView
+        android:id="@+id/recommendedGames"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/appIcon1"
 
+        android:layout_marginLeft="10dp"
+        android:text="Aanbevolen spellen:" />
     <ListView
-        android:id="@+id/appListView"
+        android:id="@+id/recommendGameList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/appIcon1"/>
+        android:layout_below="@+id/appIcon3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
+
+
+
 </RelativeLayout>

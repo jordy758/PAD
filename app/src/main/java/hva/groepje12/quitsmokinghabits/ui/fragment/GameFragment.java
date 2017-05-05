@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -24,8 +25,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.model.Game;
 import hva.groepje12.quitsmokinghabits.ui.activity.SelectAppActivity;
 import hva.groepje12.quitsmokinghabits.util.AppInfoAdapter;
+import hva.groepje12.quitsmokinghabits.util.GameInfoAdapter;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -42,39 +45,50 @@ public class GameFragment extends Fragment {
 
         final Context context = getContext();
 
-        mListAppInfo = (ListView) rootView.findViewById(R.id.appListView);
-        // create new adapter
-        final PackageManager pm = getActivity().getPackageManager();
-        final List appsList = Utilities.getInstalledApplication(context);
+
+        ListView recommendedGames = (ListView) rootView.findViewById(R.id.recommendGameList);
+        ArrayList<Game> gamesList = new ArrayList<Game>();
+        //adding games
+        Drawable candyCrush = getResources().getDrawable(R.drawable.candycrush);
+        gamesList.add(new Game("Candy Crush", "Een kleurrijk puzzelspel met verschillende blokken in een drop down achtige beleving met allemaal leuke dingen en je kan ook veel geld besteden.", "com.king.candycrushsaga", candyCrush));
+        gamesList.add(new Game("Candy Test", "Test", "com.king.test", candyCrush));
 
 
-        Collections.sort(appsList, new Comparator<ApplicationInfo>() {
 
+        //removing installed games from list
+        final PackageManager pm = context.getPackageManager();
+        for(int i = 0; i < gamesList.size();) {
+            if(isPackageInstalled(gamesList.get(i).getPackageName(), pm)){
+                gamesList.remove(i);
 
-            @Override
-            public int compare(ApplicationInfo one, ApplicationInfo two) {
-                return one.loadLabel(pm).toString().compareTo(two.loadLabel(pm).toString());
+                
             }
+            else {
+                i++;
+            }
+        }
+
+        GameInfoAdapter gameInfo = new GameInfoAdapter(context, gamesList);
+        recommendedGames.setAdapter(gameInfo);
+
+
+        recommendedGames.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Game selectedGame = (Game) adapterView.getItemAtPosition(i);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + selectedGame.getPackageName())));
+            }
+
+
+
+
+
+
+
         });
 
 
-        AppInfoAdapter adapter = new AppInfoAdapter(context, appsList, getActivity().getPackageManager());
 
-
-        // set adapter to list view
-        mListAppInfo.setAdapter(adapter);
-        // implement event when an item on list view is selected
-        mListAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-                // get the list adapter
-                AppInfoAdapter appInfoAdapter = (AppInfoAdapter) parent.getAdapter();
-                // get selected item on the list
-                ApplicationInfo appInfo = (ApplicationInfo) appInfoAdapter.getItem(pos);
-                // launch the selected application
-                Utilities.launchApp(parent.getContext(), getActivity().getPackageManager(), appInfo.packageName);
-            }
-        });
 
         //OnClick
         final Intent myIntent = new Intent(getActivity(), SelectAppActivity.class);
@@ -159,5 +173,14 @@ public class GameFragment extends Fragment {
 
         }
 
+    }
+
+    private boolean isPackageInstalled(String packagename, PackageManager packageManager) {
+        try {
+            packageManager.getPackageInfo(packagename, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }
