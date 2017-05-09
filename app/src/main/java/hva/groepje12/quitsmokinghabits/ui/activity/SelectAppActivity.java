@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,11 +24,10 @@ import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class SelectAppActivity extends AppCompatActivity {
     private Context context;
-    private ListView mListAppInfo;
-    private List appsList;
     private int appNumber;
 
-    private PackageManager pm;
+    private PackageManager packageManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,35 +35,33 @@ public class SelectAppActivity extends AppCompatActivity {
 
         try {
             getActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        catch (Exception e) {
-
+        } catch (Exception e) {
         }
 
         context = getApplicationContext();
 
-        mListAppInfo = (ListView) findViewById(R.id.SelectAppListView);
+        ListView appListView = (ListView) findViewById(R.id.SelectAppListView);
 
-        pm = getPackageManager();
-        appsList = Utilities.getInstalledApplication(context);
+        packageManager = getPackageManager();
+        List appList = Utilities.getInstalledApplication(context);
 
 
-        Collections.sort(appsList, new Comparator<ApplicationInfo>() {
+        Collections.sort(appList, new Comparator<ApplicationInfo>() {
             @Override
             public int compare(ApplicationInfo one, ApplicationInfo two) {
-                return one.loadLabel(pm).toString().compareTo(two.loadLabel(pm).toString());
+                return one.loadLabel(packageManager).toString().compareTo(two.loadLabel(packageManager).toString());
             }
         });
 
 
-        AppInfoAdapter adapter = new AppInfoAdapter(context, appsList, getPackageManager());
+        AppInfoAdapter adapter = new AppInfoAdapter(context, appList, getPackageManager());
         Intent intent = getIntent();
-        appNumber = Integer.parseInt(intent.getStringExtra("appNumber"));
+        appNumber = intent.getIntExtra("appNumber", 0);
 
         // set adapter to list view
-        mListAppInfo.setAdapter(adapter);
+        appListView.setAdapter(adapter);
         // implement event when an item on list view is selected
-        mListAppInfo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        appListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
                 // get the list adapter
@@ -83,11 +79,10 @@ public class SelectAppActivity extends AppCompatActivity {
                 }
 
                 if (games.size() > appNumber) {
-                    games.remove(appNumber - 1);
+                    games.set(appNumber, appInfo.packageName);
+                } else {
+                    games.add(appInfo.packageName);
                 }
-
-                games.add(appInfo.packageName);
-
 
                 profile.setGames(games);
                 profileManager.saveToPreferences(profile);

@@ -2,81 +2,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment">
 
-    <!--Middle-->
-    <ImageView
-        android:id="@+id/appIcon3"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_centerHorizontal="true"
-        />
+    <LinearLayout
+        android:id="@+id/preferred_app_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
 
+        <!-- Preferred Apps -->
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/add_app" />
 
-    <!--2nd-->
-    <ImageView
-        android:id="@+id/appIcon2"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@id/appIcon3"/>
-    <ImageView
-        android:id="@+id/appIcon1"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@id/appIcon2" />
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/add_app" />
 
-    <!--4th-->
-    <ImageView
-        android:id="@+id/appIcon4"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_toRightOf="@id/appIcon3"/>
-    <!--5th-->
-    <ImageView
-        android:id="@+id/appIcon5"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="5dip"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip"
-        android:layout_toRightOf="@id/appIcon4"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/add_app" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/add_app" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/add_app" />
+        <!-- /Preferred Apps -->
+    </LinearLayout>
+
+    <!-- Recommend games -->
     <TextView
         android:id="@+id/recommendedGames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/appIcon1"
-
+        android:layout_below="@+id/preferred_app_layout"
         android:layout_marginLeft="10dp"
         android:text="Aanbevolen spellen:" />
+
     <ListView
-        android:id="@+id/recommendGameList"
+        android:id="@+id/recommended_game_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appIcon3"
+        android:layout_below="@+id/preferred_app_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp" />
-
-
-
+    <!-- /Recommend games -->
 
 </RelativeLayout>

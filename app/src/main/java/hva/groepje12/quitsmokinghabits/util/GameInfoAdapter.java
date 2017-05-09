@@ -22,6 +22,7 @@ public class GameInfoAdapter extends ArrayAdapter<Game> {
     private Game game;
 
     private ArrayList<Game> gameList;
+
     public GameInfoAdapter(Context context, ArrayList<Game> gameList) {
         super(context, 0, gameList);
         this.gameList = gameList;
@@ -52,7 +53,7 @@ public class GameInfoAdapter extends ArrayAdapter<Game> {
     }
 
     @Override
-    public Game getItem(int position){
+    public Game getItem(int position) {
         return gameList.get(position);
     }
 

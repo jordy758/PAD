@@ -78,11 +78,13 @@ public class Profile {
         this.gender = gender;
     }
 
+    public List<String> getGames() {
+        return this.games;
+    }
+
     public void setGames(List<String> games) {
         this.games = games;
     }
-
-    public List<String> getGames() { return this.games; }
 
     public enum Gender {male, female}
 }

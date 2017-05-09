@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class Utilities {
         final PackageManager pm = c.getPackageManager();
         List<ApplicationInfo> appList = pm.getInstalledApplications(flags);
 
-        for (int i = 0; i < appList.size();) {
+        for (int i = 0; i < appList.size(); ) {
             if ((appList.get(i).flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
                 appList.remove(i);
             } else {
@@ -41,7 +40,7 @@ public class Utilities {
      */
     public static boolean launchApp(Context c, PackageManager pm, String pkgName) {
         // query the intent for lauching
-        if(pkgName == null) {
+        if (pkgName == null) {
             return false;
         }
 
