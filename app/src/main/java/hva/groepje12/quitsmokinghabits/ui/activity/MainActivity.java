@@ -15,9 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Profile;
@@ -29,12 +32,13 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
+    private ProfileManager profileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ProfileManager profileManager = new ProfileManager(this);
+        profileManager = new ProfileManager(this);
         final Profile profile = profileManager.getCurrentProfile();
 
         if (profile.getFirstName() != null) {
@@ -95,18 +99,26 @@ public class MainActivity extends AppCompatActivity {
                     LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.setMargins(45, 0, 45, 0);
 
-            EditText aantalGerookt = new EditText(this);
+            final EditText aantalGerookt = new EditText(this);
             aantalGerookt.setInputType(InputType.TYPE_CLASS_NUMBER);
 
             layout.addView(aantalGerookt, params);
 
-            // set prompts.xml to alertdialog builder
             alertDialogBuilder.setView(layout);
 
-            // set dialog message
             alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    Intent destination = getPackageManager().getLaunchIntentForPackage("com.halfbrick.fruitninjafree");
+                    // Use this amount to work with the statistics
+                    int aantal = Integer.parseInt(aantalGerookt.getText().toString());
+
+                    Random randomGenerator = new Random();
+
+                    Profile profile = profileManager.getCurrentProfile();
+                    String randomApp = profile.getGames().get(
+                            randomGenerator.nextInt(profile.getGames().size())
+                    );
+
+                    Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
                     startActivity(destination);
                 }
             });
@@ -117,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            // create alert dialog
             AlertDialog alertDialog = alertDialogBuilder.create();
-            // show it
+            // make keyboard automatically show
+            alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
             alertDialog.show();
-            aantalGerookt.requestFocus();
         }
     }
 

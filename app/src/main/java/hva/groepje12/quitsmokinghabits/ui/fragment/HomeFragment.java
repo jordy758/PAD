@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.model.Profile;
-import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
@@ -36,10 +34,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
-        final Context context = getContext();
-
-        final Notification notify = new Notification("Quit Smoking Habits", "Klik hier om afgeleid te wordennn",
-                MainActivity.class, getActivity().getApplicationContext());
 
         ProfileManager profileManager = new ProfileManager(getContext());
         final Profile profile = profileManager.getCurrentProfile();
@@ -56,14 +50,12 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        String appPackage;
         Drawable icon;
 
         final Context context = getContext();
         final PackageManager packageManager = getActivity().getPackageManager();
 
         final ArrayList<ImageView> preferredAppList = new ArrayList<ImageView>();
-        final ArrayList<String> packageList = new ArrayList<String>();
 
         LinearLayout preferredAppLayout = (LinearLayout) rootView.findViewById(R.id.preferred_app_layout);
         for (int i = 0; i < preferredAppLayout.getChildCount(); i++) {
