@@ -12,18 +12,22 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.AppInfoAdapter;
+import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class SelectAppActivity extends AppCompatActivity {
     private Context context;
     private ListView mListAppInfo;
     private List appsList;
+    private int appNumber;
 
     private PackageManager pm;
     @Override
@@ -56,7 +60,7 @@ public class SelectAppActivity extends AppCompatActivity {
 
         AppInfoAdapter adapter = new AppInfoAdapter(context, appsList, getPackageManager());
         Intent intent = getIntent();
-        final int appNumber = Integer.parseInt(intent.getStringExtra("appNumber"));
+        appNumber = Integer.parseInt(intent.getStringExtra("appNumber"));
 
         // set adapter to list view
         mListAppInfo.setAdapter(adapter);
@@ -69,7 +73,25 @@ public class SelectAppActivity extends AppCompatActivity {
                 // get selected item on the list
                 ApplicationInfo appInfo = (ApplicationInfo) appInfoAdapter.getItem(pos);
                 // launch the selected application
-                PreferenceManager.getDefaultSharedPreferences(context).edit().putString("App" + appNumber, appInfo.packageName).commit();
+
+                ProfileManager profileManager = new ProfileManager(context);
+                Profile profile = profileManager.getCurrentProfile();
+
+                List<String> games = profile.getGames();
+                if (games == null) {
+                    games = new ArrayList<String>();
+                }
+
+                if (games.size() > appNumber) {
+                    games.remove(appNumber - 1);
+                }
+
+                games.add(appInfo.packageName);
+
+
+                profile.setGames(games);
+                profileManager.saveToPreferences(profile);
+
                 finish();
             }
         });

@@ -38,7 +38,8 @@
         android:layout_marginBottom="5dip"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
-        android:layout_marginTop="5dip" />
+        android:layout_marginTop="5dip"
+        android:src="@drawable/add"/>
 
 
     <!--2nd-->
@@ -51,7 +52,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@id/appIcon3" />
+        android:layout_toLeftOf="@id/appIcon3"
+        android:src="@drawable/add"/>
 
     <ImageView
         android:id="@+id/appIcon1"
@@ -62,7 +64,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:layout_toLeftOf="@id/appIcon2" />
+        android:layout_toLeftOf="@id/appIcon2"
+        android:src="@drawable/add"/>
 
     <!--4th-->
     <ImageView
@@ -74,7 +77,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:layout_toRightOf="@id/appIcon3" />
+        android:layout_toRightOf="@id/appIcon3"
+        android:src="@drawable/add"/>
     <!--5th-->
     <ImageView
         android:id="@+id/appIcon5"
@@ -85,7 +89,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="5dip"
         android:layout_marginTop="5dip"
-        android:layout_toRightOf="@id/appIcon4" />
+        android:layout_toRightOf="@id/appIcon4"
+        android:src="@drawable/add" />
 
 
 

@@ -9,6 +9,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.Map;
 
 import hva.groepje12.quitsmokinghabits.model.Notification;
+import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -36,7 +37,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Map<String, String> data = remoteMessage.getData();
 
-        Intent destination = getPackageManager().getLaunchIntentForPackage("com.halfbrick.fruitninjafree");
+        Intent destination = new Intent(getBaseContext(), MainActivity.class);
+        destination.putExtra("aantalRokenPopup", true);
 
         Notification notification = new Notification(data.get("title"),
                 data.get("text"), destination, getApplicationContext());

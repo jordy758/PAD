@@ -16,11 +16,14 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Game;
+import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.SelectAppActivity;
 import hva.groepje12.quitsmokinghabits.util.GameInfoAdapter;
+import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GameFragment extends Fragment {
 
@@ -82,17 +85,16 @@ public class GameFragment extends Fragment {
         appIcons.add((ImageView) getView().findViewById(R.id.appIcon4));
         appIcons.add((ImageView) getView().findViewById(R.id.appIcon5));
 
-        for (int i = 0; i < 5; i++) {
+        ProfileManager profileManager = new ProfileManager(context);
+        Profile profile = profileManager.getCurrentProfile();
+
+        List<String> games = profile.getGames();
+
+        for (int i = 0; i < (games == null ? 0 : games.size()); i++) {
             try {
-                appPackage = PreferenceManager.getDefaultSharedPreferences(context).getString("App" + (i + 1), null);
-                if (appPackage == null) {
-                    appIcons.get(i).setImageResource(R.drawable.add);
-                } else {
-                    icon = context.getPackageManager().getApplicationIcon(appPackage);
-                    appIcons.get(i).setImageDrawable(icon);
-                }
-            } catch (Exception e) {
-            }
+                icon = context.getPackageManager().getApplicationIcon(games.get(i));
+                appIcons.get(i).setImageDrawable(icon);
+            } catch (Exception e) {}
         }
 
         app1.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +140,15 @@ public class GameFragment extends Fragment {
 
     private void addRecommendedGames() {
         Drawable candyCrush = getResources().getDrawable(R.drawable.candycrush);
-        gamesList.add(new Game("Candy Crush", "Een kleurrijk puzzelspel met verschillende blokken in een drop down achtige beleving met allemaal leuke dingen en je kan ook veel geld besteden.", "com.king.candycrushsaga", candyCrush));
+        gamesList.add(
+                new Game(
+                    "Candy Crush",
+                    "Een kleurrijk puzzelspel met verschillende blokken in een drop down " +
+                    "achtige beleving met allemaal leuke dingen en je kan ook veel geld besteden.",
+                    "com.king.candycrushsaga",
+                    candyCrush
+                )
+        );
 
         for (int i = 0; i < gamesList.size(); ) {
             if (isPackageInstalled(gamesList.get(i).getPackageName(), pm)) {

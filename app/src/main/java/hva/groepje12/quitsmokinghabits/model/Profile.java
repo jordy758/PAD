@@ -11,6 +11,7 @@ public class Profile {
     private Gender gender;
     private String notificationToken;
     private List<String> alarms;
+    private List<String> games;
 
     public Profile() {
         alarms = new ArrayList<>();
@@ -76,6 +77,12 @@ public class Profile {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
+    public void setGames(List<String> games) {
+        this.games = games;
+    }
+
+    public List<String> getGames() { return this.games; }
 
     public enum Gender {male, female}
 }

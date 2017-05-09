@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Profile;
@@ -26,6 +27,8 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class HomeFragment extends Fragment {
+
+    private List<String> games;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,9 @@ public class HomeFragment extends Fragment {
         final Profile profile = profileManager.getCurrentProfile();
         TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
 
-        welcome.append(profile.getFirstName());
+        if (profile != null && profile.getFirstName() != null) {
+            welcome.append(profile.getFirstName());
+        }
 
 
         return rootView;
@@ -75,26 +80,22 @@ public class HomeFragment extends Fragment {
         appIcons.add((ImageView) getView().findViewById(R.id.appIcon4));
         appIcons.add((ImageView) getView().findViewById(R.id.appIcon5));
 
-        for (int i = 0; i < 5; i++) {
+        ProfileManager profileManager = new ProfileManager(context);
+        Profile profile = profileManager.getCurrentProfile();
+
+        games = profile.getGames();
+
+        for (int i = 0; i < (games == null ? 0 : games.size()); i++) {
             try {
-                appPackage = PreferenceManager.getDefaultSharedPreferences(context).getString("App" + (i + 1), null);
-                packageList.add(appPackage);
-                if (appPackage == null) {
-                    appIcons.get(i).setImageResource(R.drawable.noapp);
-                } else {
-                    icon = context.getPackageManager().getApplicationIcon(appPackage);
-                    appIcons.get(i).setImageDrawable(icon);
-                }
-            } catch (Exception e) {
-
-            }
-
+                icon = context.getPackageManager().getApplicationIcon(games.get(i));
+                appIcons.get(i).setImageDrawable(icon);
+            } catch (Exception e) {}
         }
 
         app1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utilities.launchApp(context, pm, packageList.get(0));
+                Utilities.launchApp(context, pm, games.get(0));
 
             }
         });
@@ -103,28 +104,28 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Utilities.launchApp(context, pm, packageList.get(1));
+                Utilities.launchApp(context, pm, games.get(1));
             }
         });
 
         app3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utilities.launchApp(context, pm, packageList.get(2));
+                Utilities.launchApp(context, pm, games.get(2));
             }
         });
 
         app4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utilities.launchApp(context, pm, packageList.get(3));
+                Utilities.launchApp(context, pm, games.get(3));
             }
         });
 
         app5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Utilities.launchApp(context, pm, packageList.get(4));
+                Utilities.launchApp(context, pm, games.get(4));
             }
         });
 

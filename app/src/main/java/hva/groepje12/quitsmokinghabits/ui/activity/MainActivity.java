@@ -1,5 +1,6 @@
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,10 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import hva.groepje12.quitsmokinghabits.R;
@@ -35,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         if (profile.getFirstName() != null) {
             Toast.makeText(this, "Welkom " + profile.getFullName() + "!", Toast.LENGTH_LONG).show();
         } else {
-            Intent intent = new Intent(getBaseContext(), RegisterActivity.class);
-            startActivity(intent);
+            Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
+            startActivity(registerIntent);
         }
 
         setContentView(R.layout.activity_main);
@@ -76,6 +81,48 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+            alertDialogBuilder.setTitle("Vul het aantal gerookte sigaretten in na de laatste keer");
+
+            LinearLayout layout = new LinearLayout(this);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(45, 0, 45, 0);
+
+            EditText aantalGerookt = new EditText(this);
+            aantalGerookt.setInputType(InputType.TYPE_CLASS_NUMBER);
+
+            layout.addView(aantalGerookt, params);
+
+            // set prompts.xml to alertdialog builder
+            alertDialogBuilder.setView(layout);
+
+            // set dialog message
+            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Intent destination = getPackageManager().getLaunchIntentForPackage("com.halfbrick.fruitninjafree");
+                    startActivity(destination);
+                }
+            });
+
+            alertDialogBuilder.setCancelable(true).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            // show it
+            alertDialog.show();
+            aantalGerookt.requestFocus();
+        }
     }
 
 
