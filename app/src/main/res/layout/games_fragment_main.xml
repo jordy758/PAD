@@ -9,7 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <!-- Preferred Apps -->
         <ImageView
@@ -45,15 +48,23 @@
         <!-- /Preferred Apps -->
     </LinearLayout>
 
+    <View
+        android:id="@+id/horizontalRule"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#a6a6a6"
+        android:layout_below="@+id/preferred_app_layout"/>
+
     <!-- Recommend games -->
     <TextView
         android:id="@+id/recommendedGames"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/preferred_app_layout"
+        android:layout_below="@+id/horizontalRule"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:text="Aanbevolen spellen:" />
+        android:text="Aanbevolen apps" />
 
     <ListView
         android:id="@+id/recommended_game_list"
@@ -61,7 +72,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/preferred_app_layout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="30dp" />
     <!-- /Recommend games -->
 
 </RelativeLayout>

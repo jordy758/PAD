@@ -83,7 +83,13 @@ public class HomeFragment extends Fragment {
             app.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utilities.launchApp(context, packageManager, games.get(preferredAppList.indexOf(app)));
+                    if (preferredAppList.indexOf(app) < games.size()) {
+                        Utilities.launchApp(
+                                context,
+                                packageManager,
+                                games.get(preferredAppList.indexOf(app))
+                        );
+                    }
                 }
             });
         }

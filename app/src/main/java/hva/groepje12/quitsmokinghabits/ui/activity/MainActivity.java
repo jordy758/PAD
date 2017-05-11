@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-            alertDialogBuilder.setTitle("Vul het aantal gerookte sigaretten in na de laatste keer");
+            alertDialogBuilder.setTitle("Hoeveel Gerookt?");
+            alertDialogBuilder.setMessage("Vul het aantal gerookte sigaretten sinds de vorige keer in.");
 
             LinearLayout layout = new LinearLayout(this);
             layout.setOrientation(LinearLayout.VERTICAL);
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
             alertDialogBuilder.setView(layout);
 
-            alertDialogBuilder.setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setCancelable(false).setPositiveButton("Afleiding", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // Use this amount to work with the statistics
                     int aantal = Integer.parseInt(aantalGerookt.getText().toString());
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            alertDialogBuilder.setCancelable(true).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialogBuilder.setCancelable(true).setNegativeButton("Terug", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
 
                 }

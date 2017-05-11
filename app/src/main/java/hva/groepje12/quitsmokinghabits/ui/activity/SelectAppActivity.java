@@ -80,7 +80,7 @@ public class SelectAppActivity extends AppCompatActivity {
 
                 if (games.size() > appNumber) {
                     games.set(appNumber, appInfo.packageName);
-                } else {
+                } else if (!games.contains(appInfo.packageName)) {
                     games.add(appInfo.packageName);
                 }
 
