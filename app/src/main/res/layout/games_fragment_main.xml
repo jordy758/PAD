@@ -52,7 +52,7 @@
         android:id="@+id/horizontalRule"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="#a6a6a6"
+        android:background="?android:attr/dividerHorizontal"
         android:layout_below="@+id/preferred_app_layout"/>
 
     <!-- Recommend games -->
