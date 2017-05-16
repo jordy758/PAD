@@ -69,6 +69,47 @@ public class GameFragment extends Fragment {
         );
         addRecommendedGame(candyCrush);
 
+        Game instagram = new Game(
+                "Instagram",
+                "Instagram is een eenvoudige manier om de gebeurtenissen in de wereld om je heen vast te leggen en te delen.",
+                "com.instagram.android",
+                getResources().getDrawable(R.drawable.instagram)
+        );
+        addRecommendedGame(instagram);
+
+        Game subwaySurfers = new Game(
+                "Subway Surfers",
+                "Ontwijk de arriverende treinen!",
+                "com.kiloo.subwaysurf",
+                getResources().getDrawable(R.drawable.subwaysurfers)
+        );
+        addRecommendedGame(subwaySurfers);
+
+        Game clashRoyale = new Game(
+                "Clash Royale",
+                "Een realtime multiplayerspel ontworpen met aristocraten, je favoriete Clash-personages en nog veel, veel meer.",
+                "com.supercell.clashroyale",
+                getResources().getDrawable(R.drawable.clashroyale)
+        );
+        addRecommendedGame(clashRoyale);
+
+        Game colorSwitch = new Game(
+                "Color Switch",
+                "Tik de bal zorgvuldig door elk obstakel en je bal verandert van kleur met sommige power-ups.\n" +
+                        "Je moet het kleurenpatroon op elk obstakel volgen om erover heen te gaan! ",
+                "com.fortafygames.colorswitch",
+                getResources().getDrawable(R.drawable.colorswitch)
+        );
+        addRecommendedGame(colorSwitch);
+
+        Game superMario = new Game(
+                "Super Mario Run",
+                "Een nieuw soort Super Mario-game, die je met één hand kunt spelen!",
+                "com.nintendo.zara",
+                getResources().getDrawable(R.drawable.supermariorun)
+        );
+        addRecommendedGame(superMario);
+
         showRecommendedGames();
 
         return rootView;
