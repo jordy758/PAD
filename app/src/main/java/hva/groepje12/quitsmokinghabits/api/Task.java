@@ -10,10 +10,15 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 public class Task {
-    public static final String REGISTER_PROFILE = "notification/register_profile";
-    public static final String REMOVE_TIME = "notification/remove_time";
-    public static final String ADD_TIME = "notification/add_time";
+    public static final String REGISTER_PROFILE = "profile/register";
+
+    public static final String REMOVE_TIME = "alarm/remove";
+    public static final String ADD_TIME = "alarm/add";
+
+    public static final String ADD_SMOKE_DATA = "smoke_data/add";
+
     private static final String TAG = "PAD_API";
+
     private OnLoopJEvent listener;
 
     public Task(OnLoopJEvent listener) {

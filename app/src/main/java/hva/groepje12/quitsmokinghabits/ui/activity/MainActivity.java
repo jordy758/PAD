@@ -20,9 +20,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
 import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
@@ -109,18 +115,36 @@ public class MainActivity extends AppCompatActivity {
 
             alertDialogBuilder.setCancelable(false).setPositiveButton("Afleiding", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    // Use this amount to work with the statistics
-                    int aantal = Integer.parseInt(aantalGerookt.getText().toString());
+                    int amount = Integer.parseInt(aantalGerookt.getText().toString());
 
-                    Random randomGenerator = new Random();
+                    RequestParams params = new RequestParams();
+                    params.put("amount", amount);
+                    params.add("notification_token", profile.getNotificationToken());
 
-                    Profile profile = profileManager.getCurrentProfile();
-                    String randomApp = profile.getGames().get(
-                            randomGenerator.nextInt(profile.getGames().size())
-                    );
+                    Task addSmokeDataTask = new Task(new OnLoopJEvent() {
+                        @Override
+                        public void taskCompleted(JSONObject results) {
+                            Random randomGenerator = new Random();
 
-                    Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
-                    startActivity(destination);
+                            Profile profile = profileManager.getCurrentProfile();
+                            String randomApp = profile.getGames().get(
+                                    randomGenerator.nextInt(profile.getGames().size())
+                            );
+
+                            Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
+                            startActivity(destination);
+                        }
+
+                        @Override
+                        public void taskFailed(JSONObject results) {
+                        }
+
+                        @Override
+                        public void fatalError(String results) {
+                        }
+                    });
+
+                    addSmokeDataTask.execute(Task.ADD_SMOKE_DATA, params);
                 }
             });
 
