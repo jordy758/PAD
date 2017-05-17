@@ -34,8 +34,8 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
  */
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    EditText firstNameEditText, lastNameEditText, birthDateEditText;
-    Button createAccountButton;
+    EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack;
+    Button createAccountButton, increaseCigPerDay, decreaseCigPerDay, increaseCigPerPack, decreaseCigPerPack, increasePricePerPack, decreasePricePerPack;
 
     Calendar pickedTime;
 
@@ -47,6 +47,109 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         birthDateEditText = (EditText) findViewById(R.id.edit_text_birth_date);
         firstNameEditText = (EditText) findViewById(R.id.edit_text_first_name);
         lastNameEditText = (EditText) findViewById(R.id.edit_text_last_name);
+        cigarettesPerDay = (EditText)  findViewById(R.id.cigarettesPerDay);
+        cigarettesPerPack = (EditText) findViewById(R.id.cigarettesInPack);
+        pricePerPack = (EditText) findViewById(R.id.pricePerPack);
+
+        increaseCigPerDay = (Button) findViewById(R.id.cigPerDayIncrease);
+        decreaseCigPerDay = (Button)  findViewById(R.id.cigPerDayDecrease);
+        increaseCigPerPack = (Button) findViewById(R.id.cigPerPackIncrease);
+        decreaseCigPerPack = (Button) findViewById(R.id.cigPerPackDecrease);
+        increasePricePerPack = (Button) findViewById(R.id.pricePerPackIncrease);
+        decreasePricePerPack = (Button) findViewById(R.id.pricePerPackDecrease);
+
+        increaseCigPerDay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int i = Integer.parseInt(cigarettesPerDay.getText().toString()) + 1;
+                    cigarettesPerDay.setText(Integer.toString(i));
+                }
+                catch(Exception e) {
+
+                }
+            }
+        });
+
+        decreaseCigPerDay.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int i = Integer.parseInt(cigarettesPerDay.getText().toString()) - 1;
+                    if(i == -1) {
+                        i = 0;
+
+                    }
+                    cigarettesPerDay.setText(Integer.toString(i));
+                }
+                catch(Exception e) {
+                    Toast.makeText(v.getContext(), e + "",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        increaseCigPerPack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int i = Integer.parseInt(cigarettesPerPack.getText().toString()) + 1;
+                    cigarettesPerPack.setText(Integer.toString(i));
+                }
+                catch(Exception e) {
+
+                }
+            }
+        });
+
+
+        decreaseCigPerPack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    int i = Integer.parseInt(cigarettesPerPack.getText().toString()) - 1;
+                    if(i == -1) {
+                        i = 0;
+
+                    }
+                    cigarettesPerPack.setText(Integer.toString(i));
+                }
+                catch(Exception e) {
+                    Toast.makeText(v.getContext(), e + "",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        //TODO: Decimal places
+        increasePricePerPack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    double i = Double.parseDouble(pricePerPack.getText().toString()) + 1.0;
+                    pricePerPack.setText(i + "");
+                }
+                catch(Exception e) {
+
+                }
+            }
+        });
+
+        decreasePricePerPack.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    double i = Double.parseDouble(pricePerPack.getText().toString()) - 1.0;
+                    if(i < 0.0) {
+                        i = 0.0;
+
+                    }
+                    pricePerPack.setText(i + "");
+                }
+                catch(Exception e) {
+                    Toast.makeText(v.getContext(), e + "",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         createAccountButton = (Button) findViewById(R.id.button_create_account);
         createAccountButton.setOnClickListener(new OnClickListener() {
@@ -56,8 +159,18 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
+
         ProfileManager profileManager = new ProfileManager(this);
         Profile profile = profileManager.getCurrentProfile();
+
+        birthDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    datePicker(v);
+                }
+            }
+        });
 
         if (profile.getFirstName() != null) {
             firstNameEditText.setText(profile.getFirstName());
