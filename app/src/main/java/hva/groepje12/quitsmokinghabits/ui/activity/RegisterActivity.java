@@ -244,8 +244,10 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             @Override
             public void taskCompleted(JSONObject results) {
                 Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                finish();
+                //startActivity(intent);
+
             }
 
             @Override
