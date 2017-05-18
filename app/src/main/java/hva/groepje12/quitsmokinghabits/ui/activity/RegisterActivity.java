@@ -175,6 +175,9 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         if (profile.getFirstName() != null) {
             firstNameEditText.setText(profile.getFirstName());
             lastNameEditText.setText(profile.getLastName());
+            cigarettesPerDay.setText(Integer.toString(profile.getCigarettesPerDay()));
+            cigarettesPerPack.setText(Integer.toString(profile.getCigarettesPerPack()));
+            pricePerPack.setText(Double.toString(profile.getPricePerPack()));
             setDate(profile.getBirthDate());
             createAccountButton.setText("Opslaan");
         }
