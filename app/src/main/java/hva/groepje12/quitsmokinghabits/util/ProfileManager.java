@@ -52,6 +52,9 @@ public class ProfileManager {
         params.put("last_name", profile.getLastName());
         params.put("birth_date", birthDate);
         params.put("notification_token", profile.getNotificationToken());
+        params.put("cigarettes_per_pack", profile.getCigarettesPerPack());
+        params.put("cigarettes_per_day", profile.getCigarettesPerDay());
+        params.put("price_per_pack", profile.getPricePerPack());
 
         return params;
     }

@@ -200,6 +200,10 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         String firstName = this.firstNameEditText.getText().toString();
         String lastName = this.lastNameEditText.getText().toString();
         String birthDate = this.birthDateEditText.getText().toString();
+        int cigarettesPerDayValue = Integer.parseInt(cigarettesPerDay.getText().toString());
+        int cigarettesPerPackValue = Integer.parseInt(cigarettesPerPack.getText().toString());
+        double pricePerPackValue = Double.parseDouble(pricePerPack.getText().toString());
+
 
         if (firstName.isEmpty() || firstName.length() > 20) {
             this.firstNameEditText.setError("Voornaam leeg of te lang!");
@@ -221,6 +225,9 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setBirthDate(pickedTime);
+        profile.setCigarettesPerDay(cigarettesPerDayValue);
+        profile.setCigarettesPerPack(cigarettesPerPackValue);
+        profile.setPricePerPack(pricePerPackValue);
         profile.setGender(Profile.Gender.female);
 
         //Save the profile with a profile manager into the storage

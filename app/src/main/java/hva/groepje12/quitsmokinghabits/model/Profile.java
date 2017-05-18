@@ -9,8 +9,36 @@ public class Profile {
     private String lastName;
     private Calendar birthDate;
     private Gender gender;
+    private int cigarettesPerDay;
+    private int cigarettesPerPack;
+    private double pricePerPack;
     private String notificationToken;
     private List<String> alarms;
+
+    public int getCigarettesPerDay() {
+        return cigarettesPerDay;
+    }
+
+    public void setCigarettesPerDay(int cigarettesPerDay) {
+        this.cigarettesPerDay = cigarettesPerDay;
+    }
+
+    public int getCigarettesPerPack() {
+        return cigarettesPerPack;
+    }
+
+    public void setCigarettesPerPack(int cigarettesPerPack) {
+        this.cigarettesPerPack = cigarettesPerPack;
+    }
+
+    public double getPricePerPack() {
+        return pricePerPack;
+    }
+
+    public void setPricePerPack(double pricePerPack) {
+        this.pricePerPack = pricePerPack;
+    }
+
     private List<String> games;
 
     public Profile() {
