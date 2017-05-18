@@ -95,16 +95,21 @@ public class GoalFragment extends Fragment {
                 alertDialogBuilder.setCancelable(false).setPositiveButton("Toevoegen", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         String doel = doelEditText.getText().toString();
-                        String benodigePrijs = doelEditText.getText().toString();
+                        String benodigePrijs = benodigdePrijsEditText.getText().toString();
+
+                        ProfileManager profileManager = new ProfileManager(getContext());
+                        Profile profile = profileManager.getCurrentProfile();
 
                         RequestParams params = new RequestParams();
-                        params.put("name", doel);
-                        params.add("benodigde_prijs", benodigePrijs);
+                        params.put("goal", doel);
+                        params.add("price", benodigePrijs);
+                        params.add("notification_token", profile.getNotificationToken());
 
                         Task addSmokeDataTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
-
+                                //Add goal to list
+                                
                             }
 
                             @Override
@@ -116,7 +121,7 @@ public class GoalFragment extends Fragment {
                             }
                         });
 
-                        addSmokeDataTask.execute(Task.ADD_SMOKE_DATA, params);
+                        addSmokeDataTask.execute(Task.ADD_GOAL, params);
                     }
                 });
 
