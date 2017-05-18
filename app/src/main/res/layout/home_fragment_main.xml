@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,61 +14,255 @@
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:paddingBottom="10dp"
+
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+
         android:text="Welkom "
         android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/lauchFavoriteGamesTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/welcomeTextView"
-        android:layout_centerVertical="true"
-        android:text="Open je favoriete games door op de icoontjes te klikken!" />
+    <View
+        android:id="@+id/horizontalRule1"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal"
+
+        android:layout_below="@id/welcomeTextView"/>
+
+
+
 
     <LinearLayout
-        android:id="@+id/preferred_app_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/lauchFavoriteGamesTextView"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:id="@+id/bovensteKaarten"
+        android:layout_marginLeft="13dp"
+        android:layout_below="@id/horizontalRule1"
+        android:orientation="horizontal">
 
-        <!-- Preferred Apps -->
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/no_app_found" />
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_timeSinceLastCigarette"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/no_app_found" />
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/no_app_found" />
+                <ImageView
+                    android:id="@+id/img_time"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/instagram"
+                    />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/no_app_found" />
+                <TextView
+                    android:id="@+id/tv_timeNotSmoked"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_time"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="15h 23m"
+                     />
+                <TextView
+                    android:id="@+id/timeSinceLastCigaretteDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_timeNotSmoked"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp"
+                    android:text="sinds laatste sigaret"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:src="@drawable/no_app_found" />
-        <!-- /Preferred Apps -->
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_cigarettesNotSmokedToday"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/img_nocig"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/instagram"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_cigarettesNotSmokedToday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_nocig"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:textColor="#00f239"
+                    android:textStyle="bold"
+                    android:text="15"
+                    />
+                <TextView
+                    android:id="@+id/cigarettesNotTodayDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_cigarettesNotSmokedToday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp"
+                    android:text="sigaretten niet gerookt"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/bovensteKaarten"
+        android:id="@+id/ondersteKaarten"
+        android:layout_marginLeft="13dp"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_money_saved"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+            android:layout_margin="1dp"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                 >
+
+                <ImageView
+                    android:id="@+id/img_money"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/instagram"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_moneySaved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_money"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="15€"
+                    />
+                <TextView
+                    android:id="@+id/moneySavedDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_moneySaved"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp"
+                    android:text="totaal bespaard"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_cigarettesSmokedToday"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="1dp"
+            card_view:cardCornerRadius="2dp"
+            card_view:contentPadding="10dp">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:id="@+id/img_cig"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/instagram"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_cigarettesSmokedToday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/img_cig"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:textSize="20sp"
+                    android:textColor="#ff0000"
+                    android:textStyle="bold"
+                    android:text="15"
+                    />
+                <TextView
+                    android:id="@+id/cigarettesTodayDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_cigarettesSmokedToday"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:textSize="12sp"
+                    android:text="sigaretten gerookt vandaag"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/horizontalRule"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal"
+        android:layout_below="@+id/ondersteKaarten"/>
+
+    <TextView
+        android:id="@+id/motivationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/horizontalRule"
+        android:layout_centerHorizontal="true"
+        android:textStyle="italic|bold"
+
+        android:text="Inspirerende quote hier" />
+
+    <View
+        android:id="@+id/horizontalRule2"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/dividerHorizontal"
+        android:layout_below="@+id/motivationText"/>
 </RelativeLayout>

@@ -47,53 +47,5 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    public void onResume() {
-        super.onResume();
-
-        Drawable icon;
-
-        final Context context = getContext();
-        final PackageManager packageManager = getActivity().getPackageManager();
-
-        final ArrayList<ImageView> preferredAppList = new ArrayList<ImageView>();
-
-        LinearLayout preferredAppLayout = (LinearLayout) rootView.findViewById(R.id.preferred_app_layout);
-        for (int i = 0; i < preferredAppLayout.getChildCount(); i++) {
-            View view = preferredAppLayout.getChildAt(i);
-
-            if (view instanceof ImageView) {
-                preferredAppList.add((ImageView) view);
-            }
-        }
-
-        ProfileManager profileManager = new ProfileManager(context);
-        Profile profile = profileManager.getCurrentProfile();
-
-        games = profile.getGames();
-
-        for (int i = 0; i < (games == null ? 0 : games.size()); i++) {
-            try {
-                icon = context.getPackageManager().getApplicationIcon(games.get(i));
-                preferredAppList.get(i).setImageDrawable(icon);
-            } catch (Exception e) {
-            }
-        }
-
-        for (final ImageView app : preferredAppList) {
-            app.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (preferredAppList.indexOf(app) < games.size()) {
-                        Utilities.launchApp(
-                                context,
-                                packageManager,
-                                games.get(preferredAppList.indexOf(app))
-                        );
-                    }
-                }
-            });
-        }
-
-    }
 
 }
