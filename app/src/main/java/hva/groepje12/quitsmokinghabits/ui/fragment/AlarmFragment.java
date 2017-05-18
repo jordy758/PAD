@@ -27,6 +27,7 @@ import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class AlarmFragment extends Fragment {
@@ -66,6 +67,10 @@ public class AlarmFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.getView().equals(MainActivity.ALARMS_VIEW)) {
+                    return;
+                }
+
                 // Get Current time
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);

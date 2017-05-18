@@ -17,6 +17,8 @@ public class Task {
 
     public static final String ADD_SMOKE_DATA = "smoke_data/add";
 
+    public static final String ADD_GOAL = "goal/add";
+
     private static final String TAG = "PAD_API";
 
     private OnLoopJEvent listener;

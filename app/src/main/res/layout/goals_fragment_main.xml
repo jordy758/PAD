@@ -6,17 +6,17 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment">
+    tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment">
 
     <TextView
         android:id="@+id/section_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alarmen"
+        android:text="Doelen"
         android:layout_alignParentTop="true" />
 
     <ListView
-        android:id="@+id/list_times"
+        android:id="@+id/list_goals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

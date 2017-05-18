@@ -31,6 +31,13 @@
                 android:text="Maak een account aan"
                 android:textSize="24sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Om jou te kunnen helpen bij het stoppen met roken hebben wij wat persoonlijke gegevens van jou nodig!"
+                android:textSize="18sp"
+                android:layout_marginBottom="20dp" />
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

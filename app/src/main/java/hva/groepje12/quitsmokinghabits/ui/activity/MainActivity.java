@@ -32,6 +32,7 @@ import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
+import hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -39,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private ProfileManager profileManager;
+    private static String view;
+
+    public static String ALARMS_VIEW = "alarms";
+    public static String GOALS_VIEW = "goals";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +83,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 2:
+                    case 1:
+                        view = GOALS_VIEW;
+                        fab.setImageResource(R.drawable.add_white);
+                        fab.show();
+                        break;
+                    case 3:
+                        view = ALARMS_VIEW;
+                        fab.setImageResource(R.drawable.alarm_add_white);
                         fab.show();
                         break;
                     default:
@@ -186,6 +198,10 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static String getView() {
+        return view;
+    }
+
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -202,8 +218,10 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return new HomeFragment();
                 case 1:
-                    return new GameFragment();
+                    return new GoalFragment();
                 case 2:
+                    return new GameFragment();
+                case 3:
                     return new AlarmFragment();
                 default:
                     return null;
@@ -212,8 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            return 4;
         }
 
         @Override
@@ -222,9 +239,11 @@ public class MainActivity extends AppCompatActivity {
                 case 0:
                     return "HOME";
                 case 1:
-                    return "GAMES";
+                    return "DOELEN";
                 case 2:
-                    return "ALARMEN";
+                    return "AFLEIDING";
+                case 3:
+                    return "TIJDEN";
             }
             return null;
         }
