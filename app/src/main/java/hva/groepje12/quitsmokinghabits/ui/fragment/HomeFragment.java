@@ -1,48 +1,43 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.loopj.android.http.RequestParams;
 
-import org.w3c.dom.Text;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
-import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class HomeFragment extends Fragment {
 
     private List<String> games;
     private View rootView;
+    private Profile profile;
+    private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
 
     private ArrayList<String> quoteList = new ArrayList<String>();
     int max = 4;
@@ -59,22 +54,75 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
 
+        //Add inspiring dutch Quotes here
         quoteList.add("0");
         quoteList.add("1");
         quoteList.add("2");
         quoteList.add("3");
         quoteList.add("4");
 
-        ProfileManager profileManager = new ProfileManager(getContext());
-        final Profile profile = profileManager.getCurrentProfile();
-        TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
+        //Assign value to last cigarette
+        notSmokedForTextView = (TextView) rootView.findViewById(R.id.tv_timeNotSmoked);
+        todaySmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesSmokedToday);
+        moneySavedTextView = (TextView) rootView.findViewById(R.id.tv_moneySaved);
+        cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesNotSmokedToday);
 
-        if (profile != null && profile.getFirstName() != null) {
-            welcome.append(profile.getFirstName());
+        ProfileManager profileManager = new ProfileManager(getContext());
+        profile = profileManager.getCurrentProfile();
+
+        if (profile == null) {
+            return rootView;
         }
+
+        TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
+        welcome.append(profile.getFirstName());
+
+        welcome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fillTiles();
+            }
+        });
+
+        fillTiles();
         createChart();
 
         return rootView;
+    }
+
+    private void fillTiles() {
+        RequestParams params = new RequestParams();
+        params.add("notification_token", profile.getNotificationToken());
+
+        Task notSmokedForTask = new Task(new OnLoopJEvent() {
+            @Override
+            public void taskCompleted(JSONObject results) {
+                try {
+                    JSONObject tileData = results.getJSONObject("message");
+
+                    String todaySmoked = tileData.getString("smokedToday");
+                    todaySmoked = todaySmoked.equals("No smoke data found!") ? "Geen Data" : todaySmoked;
+
+                    String notSmokedFor = tileData.getString("notSmokedFor");
+                    String cigarettesSaved = tileData.getString("cigarettesSaved");
+                    String savedMoney = tileData.getString("savedMoney");
+
+                    todaySmokedTextView.setText(todaySmoked);
+                    notSmokedForTextView.setText(notSmokedFor);
+                    cigarettesNotSmokedTextView.setText(cigarettesSaved);
+                    moneySavedTextView.setText(savedMoney);
+                } catch (JSONException exception) {
+                }
+            }
+
+            @Override
+            public void taskFailed(JSONObject results) {}
+
+            @Override
+            public void fatalError(String results) {}
+        });
+
+        notSmokedForTask.execute(Task.GET_TILE_DATA, params);
     }
 
     @Override

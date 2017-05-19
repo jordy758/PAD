@@ -16,6 +16,7 @@ public class Task {
     public static final String ADD_TIME = "alarm/add";
 
     public static final String ADD_SMOKE_DATA = "smoke_data/add";
+    public static final String GET_TILE_DATA = "smoke_data/get_tile_data";
 
     public static final String ADD_GOAL = "goal/add";
 
