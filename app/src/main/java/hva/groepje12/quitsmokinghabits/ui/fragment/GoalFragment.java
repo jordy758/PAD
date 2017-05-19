@@ -13,6 +13,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,23 +51,31 @@ public class GoalFragment extends Fragment {
     private ListView goals;
     private ArrayList<ImageView> goalsList;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.goals_fragment_main, container, false);
-
+        final View rootView = inflater.inflate(R.layout.goals_fragment_main, container, false);
+        Log.e("DOEL:", "oncreate");
         goalsList = new ArrayList<ImageView>();
         goals = (ListView) rootView.findViewById(R.id.list_goals);
 
         View mainView = getActivity().findViewById(R.id.main_activity);
 
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!MainActivity.getView().equals(MainActivity.GOALS_VIEW)) {
+                    Log.e("TEST", "Goal:" + MainActivity.getView());
                     return;
                 }
-
+                Log.e("TEST", "Passed" + MainActivity.getView());
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
 
                 alertDialogBuilder.setTitle("Nieuw Doel");
@@ -140,5 +149,13 @@ public class GoalFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.e("DOEL:", "onresume");
+
     }
 }

@@ -64,6 +64,7 @@ public class AlarmFragment extends Fragment {
         timesListView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

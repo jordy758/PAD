@@ -108,7 +108,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="15"
-                    android:textColor="#00f239"
+                    android:textColor="#2baf0a"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -205,7 +205,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
                     android:text="15"
-                    android:textColor="#ff0000"
+                    android:textColor="#ed0303"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -248,4 +248,11 @@
         android:layout_marginBottom="20dp"
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
+
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_below="@id/horizontalRule2"
+        android:layout_width="match_parent"
+        android:layout_height="140dp" />
 </RelativeLayout>
