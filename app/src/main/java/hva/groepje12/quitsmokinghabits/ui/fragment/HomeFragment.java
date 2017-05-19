@@ -77,13 +77,6 @@ public class HomeFragment extends Fragment {
         TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
         welcome.append(profile.getFirstName());
 
-        welcome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fillTiles();
-            }
-        });
-
         fillTiles();
         createChart();
 
@@ -130,11 +123,13 @@ public class HomeFragment extends Fragment {
         super.onResume();
         TextView TVQuote = (TextView) rootView.findViewById(R.id.motivationText);
         TVQuote.setText(getRandomQuote());
+
+        fillTiles();
     }
 
     public void createChart() {
-
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.chart);
+
         //adding data
         final ArrayList<Entry> entries = new ArrayList<Entry>();
         entries.add(new Entry(0, 1));
