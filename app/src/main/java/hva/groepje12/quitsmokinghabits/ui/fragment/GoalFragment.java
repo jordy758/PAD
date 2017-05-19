@@ -1,15 +1,8 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
-import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
@@ -18,32 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TimePicker;
 
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
-import hva.groepje12.quitsmokinghabits.model.Game;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
-import hva.groepje12.quitsmokinghabits.ui.activity.SelectAppActivity;
-import hva.groepje12.quitsmokinghabits.util.GameInfoAdapter;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GoalFragment extends Fragment {
@@ -118,7 +101,7 @@ public class GoalFragment extends Fragment {
                             @Override
                             public void taskCompleted(JSONObject results) {
                                 //Add goal to list
-                                
+
                             }
 
                             @Override

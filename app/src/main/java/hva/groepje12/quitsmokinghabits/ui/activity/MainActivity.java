@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 
@@ -38,12 +37,19 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FloatingActionButton fab;
-    private ProfileManager profileManager;
-    private static String view;
-
+    private static final int HOME_POS = 0;
+    private static final int DOELEN_POS = 1;
+    private static final int AFLEIDING_POS = 2;
+    private static final int TIJDEN_POS = 3;
     public static String ALARMS_VIEW = "alarms";
     public static String GOALS_VIEW = "goals";
+    private static String view;
+    private FloatingActionButton fab;
+    private ProfileManager profileManager;
+
+    public static String getView() {
+        return view;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
         profileManager = new ProfileManager(this);
         final Profile profile = profileManager.getCurrentProfile();
 
-        if (profile.getFirstName() != null) {
-            Toast.makeText(this, "Welkom " + profile.getFullName() + "!", Toast.LENGTH_LONG).show();
-        } else {
+        if (profile.getFirstName() == null) {
             Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
             startActivity(registerIntent);
         }
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
+        final ViewPager mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -83,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 switch (position) {
-                    case 1:
+                    case DOELEN_POS:
                         view = GOALS_VIEW;
                         fab.setImageResource(R.drawable.add_white);
                         fab.show();
                         break;
-                    case 3:
+                    case TIJDEN_POS:
                         view = ALARMS_VIEW;
                         fab.setImageResource(R.drawable.alarm_add_white);
                         fab.show();
@@ -137,8 +141,26 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void taskCompleted(JSONObject results) {
                             Random randomGenerator = new Random();
-
                             Profile profile = profileManager.getCurrentProfile();
+
+                            if (profile.getGames() == null || profile.getGames().size() == 0) {
+                                mViewPager.setCurrentItem(AFLEIDING_POS);
+
+                                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                                alertDialog.setTitle("Geen apps ingesteld!");
+                                alertDialog.setMessage("Stel alsjeblieft wat apps in, zodat we deze voor jou kunnen starten wanneer je afgeleid wilt worden!");
+                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        }
+                                );
+                                alertDialog.show();
+                                return;
+                            }
+
                             String randomApp = profile.getGames().get(
                                     randomGenerator.nextInt(profile.getGames().size())
                             );
@@ -162,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
 
             alertDialogBuilder.setCancelable(true).setNegativeButton("Terug", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-
+                    dialog.dismiss();
                 }
             });
 
@@ -173,7 +195,6 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.show();
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,10 +219,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static String getView() {
-        return view;
-    }
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -215,13 +232,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case HOME_POS:
                     return new HomeFragment();
-                case 1:
+                case DOELEN_POS:
                     return new GoalFragment();
-                case 2:
+                case AFLEIDING_POS:
                     return new GameFragment();
-                case 3:
+                case TIJDEN_POS:
                     return new AlarmFragment();
                 default:
                     return null;

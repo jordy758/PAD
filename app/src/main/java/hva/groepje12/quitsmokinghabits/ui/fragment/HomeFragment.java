@@ -34,15 +34,14 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class HomeFragment extends Fragment {
 
+    int max = 4;
+    int min = 0;
+    Random random = new Random();
     private List<String> games;
     private View rootView;
     private Profile profile;
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
-
     private ArrayList<String> quoteList = new ArrayList<String>();
-    int max = 4;
-    int min = 0;
-    Random random = new Random();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,7 @@ public class HomeFragment extends Fragment {
         ProfileManager profileManager = new ProfileManager(getContext());
         profile = profileManager.getCurrentProfile();
 
-        if (profile == null) {
+        if (profile == null || profile.getFirstName() == null) {
             return rootView;
         }
 
@@ -110,10 +109,12 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void taskFailed(JSONObject results) {}
+            public void taskFailed(JSONObject results) {
+            }
 
             @Override
-            public void fatalError(String results) {}
+            public void fatalError(String results) {
+            }
         });
 
         notSmokedForTask.execute(Task.GET_TILE_DATA, params);

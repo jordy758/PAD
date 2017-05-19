@@ -14,6 +14,20 @@ public class Profile {
     private double pricePerPack;
     private String notificationToken;
     private List<String> alarms;
+    private List<String> games;
+
+    public Profile() {
+        alarms = new ArrayList<>();
+    }
+
+    public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+
+        alarms = new ArrayList<>();
+    }
 
     public int getCigarettesPerDay() {
         return cigarettesPerDay;
@@ -37,21 +51,6 @@ public class Profile {
 
     public void setPricePerPack(double pricePerPack) {
         this.pricePerPack = pricePerPack;
-    }
-
-    private List<String> games;
-
-    public Profile() {
-        alarms = new ArrayList<>();
-    }
-
-    public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
-
-        alarms = new ArrayList<>();
     }
 
     public List<String> getAlarms() {
