@@ -41,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
     private static final int DOELEN_POS = 1;
     private static final int AFLEIDING_POS = 2;
     private static final int TIJDEN_POS = 3;
+
     public static String ALARMS_VIEW = "alarms";
     public static String GOALS_VIEW = "goals";
     private static String view;
+    
     private FloatingActionButton fab;
     private ProfileManager profileManager;
 
@@ -111,89 +113,94 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            hoeveelGerooktPopup(profile, mViewPager);
+        }
+    }
 
-            alertDialogBuilder.setTitle("Hoeveel Gerookt?");
-            alertDialogBuilder.setMessage("Vul het aantal gerookte sigaretten sinds de vorige keer in.");
+    private void hoeveelGerooktPopup(final Profile profile, final ViewPager mViewPager) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-            LinearLayout layout = new LinearLayout(this);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(45, 0, 45, 0);
+        alertDialogBuilder.setTitle("Hoeveel Gerookt?");
+        alertDialogBuilder.setMessage("Vul het aantal gerookte sigaretten sinds de vorige keer in.");
 
-            final EditText aantalGerookt = new EditText(this);
-            aantalGerookt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(45, 0, 45, 0);
 
-            layout.addView(aantalGerookt, params);
+        final EditText aantalGerookt = new EditText(this);
+        aantalGerookt.setInputType(InputType.TYPE_CLASS_NUMBER);
 
-            alertDialogBuilder.setView(layout);
+        layout.addView(aantalGerookt, params);
 
-            alertDialogBuilder.setCancelable(false).setPositiveButton("Afleiding", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    int amount = Integer.parseInt(aantalGerookt.getText().toString());
+        alertDialogBuilder.setView(layout);
 
-                    RequestParams params = new RequestParams();
-                    params.put("amount", amount);
-                    params.add("notification_token", profile.getNotificationToken());
+        alertDialogBuilder.setCancelable(false).setPositiveButton("Afleiding", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                int amount = Integer.parseInt(aantalGerookt.getText().toString());
 
-                    Task addSmokeDataTask = new Task(new OnLoopJEvent() {
-                        @Override
-                        public void taskCompleted(JSONObject results) {
-                            Random randomGenerator = new Random();
-                            Profile profile = profileManager.getCurrentProfile();
+                RequestParams params = new RequestParams();
+                params.put("amount", amount);
+                params.add("notification_token", profile.getNotificationToken());
 
-                            if (profile.getGames() == null || profile.getGames().size() == 0) {
-                                mViewPager.setCurrentItem(AFLEIDING_POS);
+                Task addSmokeDataTask = new Task(new OnLoopJEvent() {
+                    @Override
+                    public void taskCompleted(JSONObject results) {
+                        Random randomGenerator = new Random();
+                        Profile profile = profileManager.getCurrentProfile();
 
-                                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                                alertDialog.setTitle("Geen apps ingesteld!");
-                                alertDialog.setMessage("Stel alsjeblieft wat apps in, zodat we deze voor jou kunnen starten wanneer je afgeleid wilt worden!");
-                                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                        new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.dismiss();
-                                            }
-                                        }
-                                );
-                                alertDialog.show();
-                                return;
-                            }
-
+                        if (profile.getGames() != null || profile.getGames().size() > 0) {
                             String randomApp = profile.getGames().get(
                                     randomGenerator.nextInt(profile.getGames().size())
                             );
 
                             Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
                             startActivity(destination);
+                            return;
                         }
 
-                        @Override
-                        public void taskFailed(JSONObject results) {
-                        }
+                        mViewPager.setCurrentItem(AFLEIDING_POS);
 
-                        @Override
-                        public void fatalError(String results) {
-                        }
-                    });
+                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        alertDialog.setTitle("Geen apps ingesteld!");
+                        alertDialog.setMessage("Stel alsjeblieft wat apps in, zodat we deze voor " +
+                                "jou kunnen starten wanneer je afgeleid wilt worden!");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                }
+                        );
+                        alertDialog.show();
+                    }
 
-                    addSmokeDataTask.execute(Task.ADD_SMOKE_DATA, params);
-                }
-            });
+                    @Override
+                    public void taskFailed(JSONObject results) {
+                    }
 
-            alertDialogBuilder.setCancelable(true).setNegativeButton("Terug", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.dismiss();
-                }
-            });
+                    @Override
+                    public void fatalError(String results) {
+                    }
+                });
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            // make keyboard automatically show
-            alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                addSmokeDataTask.execute(Task.ADD_SMOKE_DATA, params);
+            }
+        });
 
-            alertDialog.show();
-        }
+        alertDialogBuilder.setCancelable(true).setNegativeButton("Terug", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // make keyboard automatically show
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+
+        alertDialog.show();
     }
 
     @Override
