@@ -94,9 +94,10 @@ public class HomeFragment extends Fragment {
                     JSONObject tileData = results.getJSONObject("message");
 
                     String todaySmoked = tileData.getString("smokedToday");
-                    todaySmoked = todaySmoked.equals("No smoke data found!") ? "Geen Data" : todaySmoked;
 
                     String notSmokedFor = tileData.getString("notSmokedFor");
+                    notSmokedFor = notSmokedFor.equals("No data found!") ? "Geen Data" : notSmokedFor;
+
                     String cigarettesSaved = tileData.getString("cigarettesSaved");
                     String savedMoney = tileData.getString("savedMoney");
 
