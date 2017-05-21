@@ -63,7 +63,7 @@
                     android:layout_below="@+id/img_time"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
-                    android:text="00:00:00"
+                    android:text="Geen Data"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 

@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PAD.iml" filepath="$PROJECT_DIR$/PAD.iml" />
       <module fileurl="file://$PROJECT_DIR$/Waag Github.iml" filepath="$PROJECT_DIR$/Waag Github.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

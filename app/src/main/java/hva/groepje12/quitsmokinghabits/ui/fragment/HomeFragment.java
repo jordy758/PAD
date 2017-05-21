@@ -2,14 +2,11 @@ package hva.groepje12.quitsmokinghabits.ui.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.os.Handler;
-import android.os.SystemClock;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -28,7 +25,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
@@ -46,13 +42,6 @@ public class HomeFragment extends Fragment {
     private Profile profile;
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
     private ArrayList<String> quoteList = new ArrayList<String>();
-    
-    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L ;
-
-    Handler handler;
-
-    int Hours, Seconds, Minutes, MilliSeconds ;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,43 +79,8 @@ public class HomeFragment extends Fragment {
         fillTiles();
         createChart();
 
-        handler = new Handler() ;
-
-        StartTime = SystemClock.uptimeMillis();
-        handler.postDelayed(runnable, 0);
-
-
         return rootView;
     }
-
-    public Runnable runnable = new Runnable() {
-
-        public void run() {
-
-            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-
-            UpdateTime = TimeBuff + MillisecondTime;
-
-            Hours = Minutes / 60;
-
-            Minutes = Minutes % 60;
-
-            Seconds = (int) (UpdateTime / 1000);
-
-            Minutes = Seconds / 60;
-
-            Seconds = Seconds % 60;
-
-            MilliSeconds = (int) (UpdateTime % 1000);
-
-            notSmokedForTextView.setText("" + Hours + ":"
-                    + String.format("%02d", Minutes) + ":"
-                    + String.format("%02d", Seconds));
-
-            handler.postDelayed(this, 0);
-        }
-
-    };
 
     private void fillTiles() {
         RequestParams params = new RequestParams();
@@ -231,8 +185,6 @@ public class HomeFragment extends Fragment {
         int randomNumber = random.nextInt(max - min + 1) + min;
         return quoteList.get(randomNumber);
     }
-
-
 
 
 }
