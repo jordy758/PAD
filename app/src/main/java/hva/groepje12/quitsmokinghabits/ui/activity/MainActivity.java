@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static String ALARMS_VIEW = "alarms";
     public static String GOALS_VIEW = "goals";
     private static String view;
-    
+
     private FloatingActionButton fab;
     private ProfileManager profileManager;
 
@@ -150,31 +150,31 @@ public class MainActivity extends AppCompatActivity {
                         Random randomGenerator = new Random();
                         Profile profile = profileManager.getCurrentProfile();
 
-                        if (profile.getGames() != null || profile.getGames().size() > 0) {
-                            String randomApp = profile.getGames().get(
-                                    randomGenerator.nextInt(profile.getGames().size())
-                            );
+                        if (profile.getGames() == null || profile.getGames().size() == 0) {
+                            mViewPager.setCurrentItem(AFLEIDING_POS);
 
-                            Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
-                            startActivity(destination);
+                            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                            alertDialog.setTitle("Geen apps ingesteld!");
+                            alertDialog.setMessage("Stel alsjeblieft wat apps in, zodat we deze voor " +
+                                    "jou kunnen starten wanneer je afgeleid wilt worden!");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    }
+                            );
+                            alertDialog.show();
                             return;
                         }
 
-                        mViewPager.setCurrentItem(AFLEIDING_POS);
-
-                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
-                        alertDialog.setTitle("Geen apps ingesteld!");
-                        alertDialog.setMessage("Stel alsjeblieft wat apps in, zodat we deze voor " +
-                                "jou kunnen starten wanneer je afgeleid wilt worden!");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                }
+                        String randomApp = profile.getGames().get(
+                                randomGenerator.nextInt(profile.getGames().size())
                         );
-                        alertDialog.show();
+
+                        Intent destination = getPackageManager().getLaunchIntentForPackage(randomApp);
+                        startActivity(destination);
                     }
 
                     @Override
