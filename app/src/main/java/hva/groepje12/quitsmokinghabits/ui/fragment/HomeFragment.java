@@ -1,5 +1,9 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,8 +26,12 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
@@ -37,11 +45,49 @@ public class HomeFragment extends Fragment {
     int max = 4;
     int min = 0;
     Random random = new Random();
-    private List<String> games;
+
     private View rootView;
+
     private Profile profile;
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
-    private ArrayList<String> quoteList = new ArrayList<String>();
+
+    private ArrayList<String> quoteList = new ArrayList<>();
+
+    private BroadcastReceiver broadcastReceiver;
+    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().compareTo(Intent.ACTION_TIME_TICK) != 0) {
+                    return;
+                }
+                try {
+                    Date date = simpleDateFormat.parse(notSmokedForTextView.getText().toString());
+
+                    Calendar myDate = Calendar.getInstance();
+                    myDate.setTime(date);
+                    myDate.add(Calendar.MINUTE, 1);
+
+                    notSmokedForTextView.setText(simpleDateFormat.format(myDate.getTime()));
+                } catch (ParseException ex) {}
+            }
+        };
+
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (broadcastReceiver != null) {
+            getActivity().unregisterReceiver(broadcastReceiver);
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
