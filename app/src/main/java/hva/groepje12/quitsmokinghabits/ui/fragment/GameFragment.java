@@ -62,8 +62,7 @@ public class GameFragment extends Fragment {
 
         Game candyCrush = new Game(
                 "Candy Crush",
-                "Een kleurrijk puzzelspel met verschillende blokken in een drop down " +
-                        "achtige beleving met allemaal leuke dingen en je kan ook veel geld besteden.",
+                "Een kleurrijk puzzelspel met verschillende blokken in een drop down achtige beleving.",
                 "com.king.candycrushsaga",
                 getResources().getDrawable(R.drawable.candy_crush)
         );
@@ -79,7 +78,7 @@ public class GameFragment extends Fragment {
 
         Game subwaySurfers = new Game(
                 "Subway Surfers",
-                "Ontwijk de arriverende treinen!",
+                "Help Jake, Tricky & Fresh om te ontsnappen uit handen van de barse inspecteur en zijn hond.",
                 "com.kiloo.subwaysurf",
                 getResources().getDrawable(R.drawable.subwaysurfers)
         );
@@ -87,7 +86,7 @@ public class GameFragment extends Fragment {
 
         Game clashRoyale = new Game(
                 "Clash Royale",
-                "Een realtime multiplayerspel ontworpen met aristocraten, je favoriete Clash-personages en nog veel, veel meer.",
+                "Een realtime multiplayerspel ontworpen met aristocraten en nog veel, veel meer.",
                 "com.supercell.clashroyale",
                 getResources().getDrawable(R.drawable.clashroyale)
         );
@@ -95,8 +94,7 @@ public class GameFragment extends Fragment {
 
         Game colorSwitch = new Game(
                 "Color Switch",
-                "Tik de bal zorgvuldig door elk obstakel en je bal verandert van kleur met sommige power-ups.\n" +
-                        "Je moet het kleurenpatroon op elk obstakel volgen om erover heen te gaan! ",
+                "Tik de bal zorgvuldig door elk obstakel en je bal verandert van kleur met sommige power-ups.",
                 "com.fortafygames.colorswitch",
                 getResources().getDrawable(R.drawable.colorswitch)
         );

@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/register_text"
                 android:layout_width="match_parent"
@@ -34,14 +35,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:text="Om jou te kunnen helpen bij het stoppen met roken hebben wij wat persoonlijke gegevens van jou nodig!"
-                android:textSize="18sp"
-                android:layout_marginBottom="20dp" />
+                android:textSize="18sp" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
 
 
                 <EditText
@@ -80,9 +80,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
 
-                   android:onClick="datePicker"
                     android:hint="@string/prompt_birthDate"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:onClick="datePicker" />
 
             </LinearLayout>
 
@@ -90,12 +90,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <Button
-                android:id="@+id/cigPerDayIncrease"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:text="+"
-                android:layout_alignParentRight="true" />
+                    android:id="@+id/cigPerDayIncrease"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:text="+" />
 
                 <Button
                     android:id="@+id/cigPerDayDecrease"
@@ -103,30 +104,34 @@
                     android:layout_height="50dp"
                     android:layout_toLeftOf="@id/cigPerDayIncrease"
                     android:text="-" />
+
                 <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <EditText
-                    android:id="@+id/cigarettesPerDay"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:text="0"
-                    android:ems="10"
-                    android:hint="Aantal sigaretten per dag"
-                    android:inputType="number" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/cigarettesPerDay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:ems="10"
+                        android:hint="Aantal sigaretten per dag"
+                        android:inputType="number"
+                        android:text="0" />
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <Button
                     android:id="@+id/cigPerPackIncrease"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:text="+"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:text="+" />
 
                 <Button
                     android:id="@+id/cigPerPackDecrease"
@@ -134,24 +139,22 @@
                     android:layout_height="50dp"
                     android:layout_toLeftOf="@id/cigPerPackIncrease"
                     android:text="-" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <EditText
                         android:id="@+id/cigarettesInPack"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:text="0"
                         android:ems="10"
                         android:hint="Aantal sigaretten in een pakje"
-                        android:inputType="number" />
+                        android:inputType="number"
+                        android:text="0" />
                 </android.support.design.widget.TextInputLayout>
-
-
-
-
 
 
             </RelativeLayout>
@@ -159,20 +162,22 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/euroSign"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
                     android:layout_weight="1"
                     android:text="€"
-                    android:layout_marginTop="17dp"
                     android:textSize="18dp" />
+
                 <Button
                     android:id="@+id/pricePerPackIncrease"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:text="+"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignParentRight="true"
+                    android:text="+" />
 
                 <Button
                     android:id="@+id/pricePerPackDecrease"
@@ -180,10 +185,10 @@
                     android:layout_height="50dp"
                     android:layout_toLeftOf="@id/pricePerPackIncrease"
                     android:text="-" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
 
 
                     <EditText
@@ -192,18 +197,14 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
-                        android:text="0"
-
                         android:layout_marginLeft="10dp"
+
                         android:ems="10"
                         android:hint="Prijs per pak"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:text="0" />
 
                 </android.support.design.widget.TextInputLayout>
-
-
-
-
 
 
             </RelativeLayout>

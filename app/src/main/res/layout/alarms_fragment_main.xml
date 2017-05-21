@@ -9,17 +9,37 @@
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment">
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/alarm_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alarmen"
-        android:layout_alignParentTop="true" />
+        android:layout_marginBottom="10dp"
+        android:text="Alle tijden die jij hier registreert zullen gebruikt worden om notificaties naar jou te sturen, zodat we jou kunnen afleiden op de momenten dat jij normaal zou roken."
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/horizontalRule1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/alarm_info"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horizontalRule1"
+        android:layout_marginBottom="10dp"
+        android:text="Ingesteld Tijden"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/list_times"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/section_label" />
-
 </RelativeLayout>

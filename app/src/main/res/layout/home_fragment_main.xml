@@ -233,12 +233,13 @@
 
     <TextView
         android:id="@+id/motivationText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/horizontalRule"
         android:layout_centerHorizontal="true"
         android:text="Inspirerende quote hier"
-        android:textStyle="italic|bold" />
+        android:textAlignment="center"
+        android:textStyle="italic" />
 
     <View
         android:id="@+id/horizontalRule2"
@@ -252,7 +253,7 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
-        android:layout_below="@id/horizontalRule2"
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="140dp"
+        android:layout_below="@id/horizontalRule2" />
 </RelativeLayout>

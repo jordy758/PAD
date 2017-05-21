@@ -41,11 +41,6 @@ import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class HomeFragment extends Fragment {
-
-    int max = 4;
-    int min = 0;
-    Random random = new Random();
-
     private View rootView;
 
     private Profile profile;
@@ -74,7 +69,8 @@ public class HomeFragment extends Fragment {
                     myDate.add(Calendar.MINUTE, 1);
 
                     notSmokedForTextView.setText(simpleDateFormat.format(myDate.getTime()));
-                } catch (ParseException ex) {}
+                } catch (ParseException ex) {
+                }
             }
         };
 
@@ -100,11 +96,16 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
 
         //Add inspiring dutch Quotes here
-        quoteList.add("0");
-        quoteList.add("1");
-        quoteList.add("2");
-        quoteList.add("3");
-        quoteList.add("4");
+        quoteList.add("Sigaretten bevatten arseen, formaldehyde, lood, waterstofcyanide, stikstofoxiden, " +
+                "koolmonoxide, ammonia en 43 bekende carcinogenen (kankerverwekkers).");
+        quoteList.add("Begin jaren 50 gebruikte het sigarettenmerk Kent blauwe asbest voor het " +
+                "materiaal van de filter, dit is de gevaarlijkste vorm van asbest die er is.");
+        quoteList.add("Ureum, een chemische verbinding die een hoofdcomponent van urine is, wordt " +
+                "gebruikt om \"smaak\" aan sigaretten te geven.");
+        quoteList.add("Per jaar doet 30 procent van de rokers in Nederland één of meerdere pogingen " +
+                "om te stoppen met roken.");
+        quoteList.add("De filter werd oorspronkelijk uitgevonden in 1925 door de Hongaarse uitvinder " +
+                "Boris Aivaz, die het proces van het maken van een sigaretfilter van crêpepapier patenteerde.");
 
         //Assign value to last cigarette
         notSmokedForTextView = (TextView) rootView.findViewById(R.id.tv_timeNotSmoked);
@@ -228,7 +229,8 @@ public class HomeFragment extends Fragment {
     }
 
     public String getRandomQuote() {
-        int randomNumber = random.nextInt(max - min + 1) + min;
+        Random random = new Random();
+        int randomNumber = random.nextInt(quoteList.size());
         return quoteList.get(randomNumber);
     }
 
