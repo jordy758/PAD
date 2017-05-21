@@ -19,8 +19,8 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
@@ -34,7 +34,7 @@ public class AlarmFragment extends Fragment {
 
     private ListView timesListView;
     private ArrayAdapter<String> adapter;
-    private List<String> alarms;
+    private ArrayList<String> alarms;
 
     private ProfileManager profileManager;
     private Profile profile;

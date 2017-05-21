@@ -9,17 +9,46 @@
     tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment">
 
     <TextView
-        android:id="@+id/section_label"
+        android:id="@+id/goals_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Doelen" />
+        android:layout_marginBottom="10dp"
+        android:text="Om gemotiveerd te blijven kan je hier doelen toevoegen. Wij houden bij hoeveel je bespaard, daarmee kunnen we jou notificaties sturen wanneer je een doel bereikt hebt!"
+        android:textAlignment="center"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/horizontalRule1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/goals_info"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/dividerHorizontal" />
+
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horizontalRule1"
+        android:text="Doelen"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/horizontalRule2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/section_label"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/dividerHorizontal" />
 
     <ListView
         android:id="@+id/list_goals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/section_label" />
+        android:layout_below="@+id/horizontalRule2" />
 
 </RelativeLayout>

@@ -73,9 +73,9 @@ public class SelectAppActivity extends AppCompatActivity {
                 ProfileManager profileManager = new ProfileManager(context);
                 Profile profile = profileManager.getCurrentProfile();
 
-                List<String> games = profile.getGames();
+                ArrayList<String> games = profile.getGames();
                 if (games == null) {
-                    games = new ArrayList<String>();
+                    games = new ArrayList<>();
                 }
 
                 if (games.size() > appNumber) {

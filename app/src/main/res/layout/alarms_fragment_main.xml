@@ -31,15 +31,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/horizontalRule1"
-        android:layout_marginBottom="10dp"
         android:text="Ingesteld Tijden"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <View
+        android:id="@+id/horizontalRule2"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/section_label"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/dividerHorizontal" />
+
     <ListView
         android:id="@+id/list_times"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label" />
+        android:layout_below="@+id/horizontalRule2" />
 </RelativeLayout>

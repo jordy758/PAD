@@ -2,7 +2,6 @@ package hva.groepje12.quitsmokinghabits.model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 public class Profile {
     private String firstName;
@@ -13,11 +12,13 @@ public class Profile {
     private int cigarettesPerPack;
     private double pricePerPack;
     private String notificationToken;
-    private List<String> alarms;
-    private List<String> games;
+    private ArrayList<String> alarms;
+    private ArrayList<String> games;
+    private ArrayList<Goal> goals;
 
     public Profile() {
         alarms = new ArrayList<>();
+        goals = new ArrayList<>();
     }
 
     public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
@@ -27,6 +28,7 @@ public class Profile {
         this.gender = gender;
 
         alarms = new ArrayList<>();
+        goals = new ArrayList<>();
     }
 
     public int getCigarettesPerDay() {
@@ -53,11 +55,11 @@ public class Profile {
         this.pricePerPack = pricePerPack;
     }
 
-    public List<String> getAlarms() {
+    public ArrayList<String> getAlarms() {
         return alarms;
     }
 
-    public void setAlarms(List<String> alarms) {
+    public void setAlarms(ArrayList<String> alarms) {
         this.alarms = alarms;
     }
 
@@ -105,12 +107,20 @@ public class Profile {
         this.gender = gender;
     }
 
-    public List<String> getGames() {
+    public ArrayList<String> getGames() {
         return this.games;
     }
 
-    public void setGames(List<String> games) {
+    public void setGames(ArrayList<String> games) {
         this.games = games;
+    }
+
+    public void setGoals(ArrayList<Goal> goals) {
+        this.goals = goals;
+    }
+
+    public ArrayList<Goal> getGoals() {
+        return goals;
     }
 
     public enum Gender {male, female}

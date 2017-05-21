@@ -11,8 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -25,15 +25,19 @@ import java.util.ArrayList;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
+import hva.groepje12.quitsmokinghabits.util.GoalsAdapter;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GoalFragment extends Fragment {
+    ListView gamesList;
 
-    private ListView goals;
-    private ArrayList<ImageView> goalsList;
+    private ArrayList<Goal> goalList;
 
+    private ProfileManager profileManager;
+    private Profile profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,14 +46,31 @@ public class GoalFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.goals_fragment_main, container, false);
-        Log.e("DOEL:", "oncreate");
-        goalsList = new ArrayList<ImageView>();
-        goals = (ListView) rootView.findViewById(R.id.list_goals);
-
+        View rootView = inflater.inflate(R.layout.goals_fragment_main, container, false);
         View mainView = getActivity().findViewById(R.id.main_activity);
 
+        gamesList = (ListView) rootView.findViewById(R.id.list_goals);
+
+        profileManager = new ProfileManager(getActivity());
+        profile = profileManager.getCurrentProfile();
+
+        goalList = profile.getGoals();
+        final GoalsAdapter goalsAdapter = new GoalsAdapter(getContext(), goalList);
+        gamesList.setAdapter(goalsAdapter);
+
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
+
+        gamesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                goalList.remove(position);
+                goalsAdapter.notifyDataSetChanged();
+
+                profile.setGoals(goalList);
+                profileManager.saveToPreferences(profile);
+                return true;
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,8 +110,7 @@ public class GoalFragment extends Fragment {
                         String doel = doelEditText.getText().toString();
                         String benodigePrijs = benodigdePrijsEditText.getText().toString();
 
-                        ProfileManager profileManager = new ProfileManager(getContext());
-                        Profile profile = profileManager.getCurrentProfile();
+                        final Goal goal = new Goal(doel, Double.parseDouble(benodigePrijs));
 
                         RequestParams params = new RequestParams();
                         params.put("goal", doel);
@@ -100,8 +120,11 @@ public class GoalFragment extends Fragment {
                         Task addSmokeDataTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
-                                //Add goal to list
+                                goalList.add(goal);
+                                goalsAdapter.notifyDataSetChanged();
 
+                                profile.setGoals(goalList);
+                                profileManager.saveToPreferences(profile);
                             }
 
                             @Override
