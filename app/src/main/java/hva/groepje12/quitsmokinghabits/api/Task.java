@@ -10,10 +10,18 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 public class Task {
-    public static final String REGISTER_PROFILE = "notification/register_profile";
-    public static final String REMOVE_TIME = "notification/remove_time";
-    public static final String ADD_TIME = "notification/add_time";
+    public static final String REGISTER_PROFILE = "profile/register";
+
+    public static final String REMOVE_TIME = "alarm/remove";
+    public static final String ADD_TIME = "alarm/add";
+
+    public static final String ADD_SMOKE_DATA = "smoke_data/add";
+    public static final String GET_TILE_DATA = "smoke_data/get_tile_data";
+
+    public static final String ADD_GOAL = "goal/add";
+
     private static final String TAG = "PAD_API";
+
     private OnLoopJEvent listener;
 
     public Task(OnLoopJEvent listener) {
@@ -30,13 +38,13 @@ public class Task {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                listener.fatalError(responseString);
+                //listener.fatalError(responseString);
                 Log.e(TAG, "onFailure: " + responseString);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                listener.taskFailed(errorResponse);
+                //listener.taskFailed(errorResponse);
                 Log.e(TAG, "onFailure: " + errorResponse);
             }
         });

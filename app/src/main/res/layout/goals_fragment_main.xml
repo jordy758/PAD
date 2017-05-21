@@ -6,14 +6,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment">
+    tools:context="hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment">
 
     <TextView
-        android:id="@+id/alarm_info"
+        android:id="@+id/goals_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:text="Alle tijden die jij hier registreert zullen gebruikt worden om notificaties naar jou te sturen, zodat we jou kunnen afleiden op de momenten dat jij normaal zou roken."
+        android:text="Om gemotiveerd te blijven kan je hier doelen toevoegen. Wij houden bij hoeveel je bespaard, daarmee kunnen we jou notificaties sturen wanneer je een doel bereikt hebt!"
         android:textAlignment="center"
         android:textSize="16sp" />
 
@@ -21,7 +21,7 @@
         android:id="@+id/horizontalRule1"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/alarm_info"
+        android:layout_below="@id/goals_info"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/horizontalRule1"
-        android:text="Ingesteld Tijden"
+        android:text="Doelen"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -46,8 +46,9 @@
         android:background="?android:attr/dividerHorizontal" />
 
     <ListView
-        android:id="@+id/list_times"
+        android:id="@+id/list_goals"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/horizontalRule2" />
+
 </RelativeLayout>

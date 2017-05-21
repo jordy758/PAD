@@ -46,30 +46,20 @@ public class AppInfoAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // get the selected entry
         ApplicationInfo entry = mListAppInfo.get(position);
-
-
-        // reference to convertView
         View v = convertView;
 
-        // inflate new layout if null
         if (v == null) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             v = inflater.inflate(R.layout.listview_apps, null);
         }
 
-        // load controls from layout resources
         ImageView ivAppIcon = (ImageView) v.findViewById(R.id.appIcon);
         TextView tvAppName = (TextView) v.findViewById(R.id.appName);
-        //TextView tvPkgName = (TextView)v.findViewById(R.id.appPackage);
 
-        // set data to display
         ivAppIcon.setImageDrawable(entry.loadIcon(mPackManager));
         tvAppName.setText(entry.loadLabel(mPackManager));
-        //tvPkgName.setText(entry.packageName);
 
-        // return view
         return v;
     }
 }

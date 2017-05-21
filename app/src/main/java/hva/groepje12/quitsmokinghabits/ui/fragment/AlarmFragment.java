@@ -19,21 +19,22 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class AlarmFragment extends Fragment {
 
     private ListView timesListView;
     private ArrayAdapter<String> adapter;
-    private List<String> alarms;
+    private ArrayList<String> alarms;
 
     private ProfileManager profileManager;
     private Profile profile;
@@ -63,9 +64,14 @@ public class AlarmFragment extends Fragment {
         timesListView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!MainActivity.getView().equals(MainActivity.ALARMS_VIEW)) {
+                    return;
+                }
+
                 // Get Current time
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);

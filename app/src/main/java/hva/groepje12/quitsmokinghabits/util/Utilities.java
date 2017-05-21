@@ -5,43 +5,29 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
 
-/**
- * Created by lucas on 1-5-2017.
- */
 
 public class Utilities {
 
 
     public static List<ApplicationInfo> getInstalledApplication(Context c) {
-        List<ApplicationInfo> appList = c.getPackageManager().getInstalledApplications(PackageManager.GET_META_DATA);
+        int flags = PackageManager.GET_META_DATA |
+                PackageManager.GET_SHARED_LIBRARY_FILES |
+                PackageManager.GET_UNINSTALLED_PACKAGES;
 
         final PackageManager pm = c.getPackageManager();
+        List<ApplicationInfo> appList = pm.getInstalledApplications(flags);
 
-        for (int i = 0; i < appList.size(); i++) {
-            ApplicationInfo ai = null;
-            try {
-                ai = pm.getApplicationInfo(appList.get(i).packageName, 0);
-            } catch (Exception e) {
-            }
-
-            if (appList.get(i).loadLabel(pm) == appList.get(i).packageName) {
+        for (int i = 0; i < appList.size(); ) {
+            if ((appList.get(i).flags & ApplicationInfo.FLAG_SYSTEM) == 1) {
                 appList.remove(i);
+            } else {
+                i++;
             }
-
-
-            if ((ai.flags & ApplicationInfo.FLAG_IS_GAME) != ApplicationInfo.FLAG_IS_GAME) {
-                Log.e("PAD: ", appList.get(i).packageName + "");
-                appList.remove(i);
-
-            }
-
         }
-
 
         return appList;
     }
@@ -54,6 +40,10 @@ public class Utilities {
      */
     public static boolean launchApp(Context c, PackageManager pm, String pkgName) {
         // query the intent for lauching
+        if (pkgName == null) {
+            return false;
+        }
+
         Intent intent = pm.getLaunchIntentForPackage(pkgName);
         // if intent is available
         if (intent != null) {
