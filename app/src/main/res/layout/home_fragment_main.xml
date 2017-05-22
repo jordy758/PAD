@@ -54,7 +54,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/instagram" />
+                    android:src="@drawable/timer_black" />
 
                 <TextView
                     android:id="@+id/tv_timeNotSmoked"
@@ -98,7 +98,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/instagram" />
+                    android:src="@drawable/smoke_free_black" />
 
                 <TextView
                     android:id="@+id/tv_cigarettesNotSmokedToday"
@@ -151,7 +151,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/instagram" />
+                    android:src="@drawable/money_black" />
 
                 <TextView
                     android:id="@+id/tv_moneySaved"
@@ -195,7 +195,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_centerHorizontal="true"
-                    android:src="@drawable/instagram" />
+                    android:src="@drawable/smoke_black" />
 
                 <TextView
                     android:id="@+id/tv_cigarettesSmokedToday"

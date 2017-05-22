@@ -37,7 +37,7 @@ public class Notification {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setSmallIcon(R.drawable.cig)
+                        .setSmallIcon(R.drawable.smoke_free_white)
                         .setContentTitle(title)
                         .setContentText(text)
                         .setAutoCancel(true)
