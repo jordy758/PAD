@@ -15,16 +15,23 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Format;
 import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
@@ -32,9 +39,10 @@ import hva.groepje12.quitsmokinghabits.util.GoalsAdapter;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GoalFragment extends Fragment {
-    ListView gamesList;
+    ListView goalsListView;
 
     private ArrayList<Goal> goalList;
+    private GoalsAdapter goalsAdapter;
 
     private ProfileManager profileManager;
     private Profile profile;
@@ -49,25 +57,64 @@ public class GoalFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.goals_fragment_main, container, false);
         View mainView = getActivity().findViewById(R.id.main_activity);
 
-        gamesList = (ListView) rootView.findViewById(R.id.list_goals);
+        goalsListView = (ListView) rootView.findViewById(R.id.list_goals);
 
         profileManager = new ProfileManager(getActivity());
         profile = profileManager.getCurrentProfile();
 
+        TextView currentSaldoTextView = (TextView) rootView.findViewById(R.id.current_saldo);
+        currentSaldoTextView.append(profile.getFormattedMoneySaved());
+
         goalList = profile.getGoals();
-        final GoalsAdapter goalsAdapter = new GoalsAdapter(getContext(), goalList);
-        gamesList.setAdapter(goalsAdapter);
+        Collections.sort(goalList);
+
+        double totalSavings = profile.getMoneySaved();
+        for (Goal goal : goalList) {
+            if (goal.getAchievedAt() != null) {
+                totalSavings += goal.getPrice();
+            }
+        }
+
+        TextView totalSingsTextView = (TextView) rootView.findViewById(R.id.total_savings);
+        totalSingsTextView.append(Format.formatDoubleToPrice(totalSavings));
+
+        goalsAdapter = new GoalsAdapter(getContext(), goalList);
+        goalsListView.setAdapter(goalsAdapter);
 
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
 
-        gamesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        goalsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                goalList.remove(position);
-                goalsAdapter.notifyDataSetChanged();
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final Goal goal = goalList.get(position);
 
-                profile.setGoals(goalList);
-                profileManager.saveToPreferences(profile);
+                Task removeGoalTask = new Task(new OnLoopJEvent() {
+                    @Override
+                    public void taskCompleted(JSONObject results) {
+                        goalList.remove(goal);
+                        goalsAdapter.notifyDataSetChanged();
+
+                        profile.setGoals(goalList);
+                        profileManager.saveToPreferences(profile);
+                    }
+
+                    @Override
+                    public void taskFailed(JSONObject results) {
+                        Toast.makeText(getContext(), "Behaalde doelen kunnen niet worden verwijderd!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void fatalError(String results) {
+
+                    }
+                });
+
+                RequestParams params = new RequestParams();
+                params.add("id", Integer.toString(goal.getId()));
+
+                removeGoalTask.execute(Task.REMOVE_GOAL, params);
+
                 return true;
             }
         });
@@ -107,24 +154,32 @@ public class GoalFragment extends Fragment {
 
                 alertDialogBuilder.setCancelable(false).setPositiveButton("Toevoegen", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        String doel = doelEditText.getText().toString();
-                        String benodigePrijs = benodigdePrijsEditText.getText().toString();
-
-                        final Goal goal = new Goal(doel, Double.parseDouble(benodigePrijs));
+                        final String doel = doelEditText.getText().toString();
+                        final String benodigePrijs = benodigdePrijsEditText.getText().toString();
 
                         RequestParams params = new RequestParams();
                         params.put("goal", doel);
                         params.add("price", benodigePrijs);
-                        params.add("notification_token", profile.getNotificationToken());
 
-                        Task addSmokeDataTask = new Task(new OnLoopJEvent() {
+                        Task addGoalTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
-                                goalList.add(goal);
-                                goalsAdapter.notifyDataSetChanged();
+                                try {
+                                    JSONObject response = results.getJSONObject("response");
 
-                                profile.setGoals(goalList);
-                                profileManager.saveToPreferences(profile);
+                                    Gson gson = new GsonBuilder().create();
+                                    Goal goal = gson.fromJson(
+                                            response.getJSONObject("smoke_data").toString(),
+                                            Goal.class
+                                    );
+
+                                    goalList.add(goal);
+                                    Collections.sort(goalList);
+                                    goalsAdapter.notifyDataSetChanged();
+
+                                    profile.setGoals(goalList);
+                                    profileManager.saveToPreferences(profile);
+                                } catch (JSONException exception) {}
                             }
 
                             @Override
@@ -136,7 +191,7 @@ public class GoalFragment extends Fragment {
                             }
                         });
 
-                        addSmokeDataTask.execute(Task.ADD_GOAL, params);
+                        addGoalTask.execute(Task.ADD_GOAL, params);
                     }
                 });
 
@@ -161,7 +216,8 @@ public class GoalFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Log.e("DOEL:", "onresume");
-
+        profile = profileManager.getCurrentProfile();
+        goalList = profile.getGoals();
+        goalsAdapter.notifyDataSetChanged();
     }
 }

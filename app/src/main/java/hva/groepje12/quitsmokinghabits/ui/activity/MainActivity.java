@@ -113,11 +113,11 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
-            hoeveelGerooktPopup(profile, mViewPager);
+            hoeveelGerooktPopup(mViewPager);
         }
     }
 
-    private void hoeveelGerooktPopup(final Profile profile, final ViewPager mViewPager) {
+    private void hoeveelGerooktPopup(final ViewPager mViewPager) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setTitle("Hoeveel Gerookt?");
@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
 
                 RequestParams params = new RequestParams();
                 params.put("amount", amount);
-                params.add("notification_token", profile.getNotificationToken());
 
                 Task addSmokeDataTask = new Task(new OnLoopJEvent() {
                     @Override

@@ -14,17 +14,24 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Alarm;
+import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
@@ -216,7 +223,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             return;
         }
 
-        ProfileManager profileManager = new ProfileManager(this);
+        final ProfileManager profileManager = new ProfileManager(this);
         Profile profile = profileManager.getCurrentProfile();
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
@@ -236,11 +243,41 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         Task registerProfileTask = new Task(new OnLoopJEvent() {
             @Override
             public void taskCompleted(JSONObject results) {
-                Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                finish();
-                //startActivity(intent);
+                Profile newProfile = profileManager.getCurrentProfile();
 
+                try {
+                    JSONObject response = results.getJSONObject("response");
+                    JSONObject dbProfile = response.getJSONObject("profile");
+                    JSONArray alarms = dbProfile.getJSONArray("alarms");
+                    JSONArray goals = dbProfile.getJSONArray("saving_goals");
+
+                    ArrayList<Alarm> alarmList = new ArrayList<>();
+                    ArrayList<Goal> goalList = new ArrayList<>();
+
+                    Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+                    for (int i = 0; i < alarms.length(); i++) {
+                        Alarm alarm = gson.fromJson(alarms.get(i).toString(), Alarm.class);
+                        alarmList.add(alarm);
+                    }
+
+                    for (int i = 0; i < goals.length(); i++) {
+                        Goal goal = gson.fromJson(goals.get(i).toString(), Goal.class);
+                        goalList.add(goal);
+                    }
+
+                    newProfile.setAlarms(alarmList);
+                    newProfile.setGoals(goalList);
+                    newProfile.setMoneySaved(dbProfile.getDouble("saved_amount"));
+                    newProfile.setId(dbProfile.getInt("id"));
+                    profileManager.saveToPreferences(newProfile);
+
+                } catch(JSONException exception) {
+                    Toast.makeText(RegisterActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override

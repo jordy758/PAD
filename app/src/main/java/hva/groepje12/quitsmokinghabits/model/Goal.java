@@ -1,19 +1,21 @@
 package hva.groepje12.quitsmokinghabits.model;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
+import android.support.annotation.NonNull;
 
-public class Goal {
+import java.util.Date;
+
+public class Goal implements Comparable<Goal> {
+    private int id;
     private String goal;
     private double price;
+    private Date achieved_at;
 
-    public Goal() {
+    public int getId() {
+        return id;
     }
 
-    public Goal(String goal, double price) {
-        this.goal = goal;
-        this.price = price;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getGoal() {
@@ -25,15 +27,7 @@ public class Goal {
     }
 
     public String getFormattedPrice() {
-        NumberFormat formatter = NumberFormat.getCurrencyInstance();
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setCurrencySymbol("€");
-        dfs.setGroupingSeparator('.');
-        dfs.setMonetaryDecimalSeparator(',');
-
-        ((DecimalFormat) formatter).setDecimalFormatSymbols(dfs);
-        return formatter.format(price);
+        return Format.formatDoubleToPrice(price);
     }
 
     public double getPrice() {
@@ -42,5 +36,22 @@ public class Goal {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Date getAchievedAt() {
+        return achieved_at;
+    }
+
+    @Override
+    public int compareTo(@NonNull Goal o) {
+        if (getAchievedAt() == null) {
+            return -1;
+        }
+
+        if (o.getAchievedAt() == null) {
+            return 1;
+        }
+
+        return o.getAchievedAt().compareTo(getAchievedAt());
     }
 }

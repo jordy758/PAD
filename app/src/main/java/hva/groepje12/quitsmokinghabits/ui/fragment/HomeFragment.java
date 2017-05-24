@@ -43,7 +43,6 @@ import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 public class HomeFragment extends Fragment {
     private View rootView;
 
-    private Profile profile;
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
 
     private ArrayList<String> quoteList = new ArrayList<>();
@@ -114,7 +113,7 @@ public class HomeFragment extends Fragment {
         cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesNotSmokedToday);
 
         ProfileManager profileManager = new ProfileManager(getContext());
-        profile = profileManager.getCurrentProfile();
+        Profile profile = profileManager.getCurrentProfile();
 
         if (profile == null || profile.getFirstName() == null) {
             return rootView;
@@ -123,7 +122,6 @@ public class HomeFragment extends Fragment {
         TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
         welcome.append(profile.getFirstName());
 
-        fillTiles();
         createChart();
 
         return rootView;
@@ -131,7 +129,6 @@ public class HomeFragment extends Fragment {
 
     private void fillTiles() {
         RequestParams params = new RequestParams();
-        params.add("notification_token", profile.getNotificationToken());
 
         Task notSmokedForTask = new Task(new OnLoopJEvent() {
             @Override

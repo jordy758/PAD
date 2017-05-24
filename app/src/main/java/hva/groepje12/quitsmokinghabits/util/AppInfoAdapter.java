@@ -14,10 +14,6 @@ import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 
-/**
- * Created by lucas on 1-5-2017.
- */
-
 public class AppInfoAdapter extends BaseAdapter {
     private Context mContext;
     private List<ApplicationInfo> mListAppInfo;

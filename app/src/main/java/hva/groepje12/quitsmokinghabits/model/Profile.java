@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Profile {
+    private int id;
     private String firstName;
     private String lastName;
     private Calendar birthDate;
@@ -11,8 +12,9 @@ public class Profile {
     private int cigarettesPerDay;
     private int cigarettesPerPack;
     private double pricePerPack;
+    private double moneySaved;
     private String notificationToken;
-    private ArrayList<String> alarms;
+    private ArrayList<Alarm> alarms;
     private ArrayList<String> games;
     private ArrayList<Goal> goals;
 
@@ -21,14 +23,24 @@ public class Profile {
         goals = new ArrayList<>();
     }
 
-    public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
+    public int getId() {
+        return id;
+    }
 
-        alarms = new ArrayList<>();
-        goals = new ArrayList<>();
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getMoneySaved() {
+        return moneySaved;
+    }
+
+    public String getFormattedMoneySaved() {
+        return Format.formatDoubleToPrice(moneySaved);
+    }
+
+    public void setMoneySaved(double moneySaved) {
+        this.moneySaved = moneySaved;
     }
 
     public int getCigarettesPerDay() {
@@ -55,11 +67,11 @@ public class Profile {
         this.pricePerPack = pricePerPack;
     }
 
-    public ArrayList<String> getAlarms() {
+    public ArrayList<Alarm> getAlarms() {
         return alarms;
     }
 
-    public void setAlarms(ArrayList<String> alarms) {
+    public void setAlarms(ArrayList<Alarm> alarms) {
         this.alarms = alarms;
     }
 

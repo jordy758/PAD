@@ -14,8 +14,11 @@ import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
@@ -26,6 +29,7 @@ import java.util.Locale;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Alarm;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
@@ -34,7 +38,8 @@ public class AlarmFragment extends Fragment {
 
     private ListView timesListView;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> alarms;
+    private ArrayList<Alarm> alarms;
+    private ArrayList<String> alarmStrings;
 
     private ProfileManager profileManager;
     private Profile profile;
@@ -46,7 +51,7 @@ public class AlarmFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                              Bundle savedInstanceState) {
         final View alarmView = inflater.inflate(R.layout.alarms_fragment_main, container, false);
         View mainView = getActivity().findViewById(R.id.main_activity);
 
@@ -57,9 +62,14 @@ public class AlarmFragment extends Fragment {
         profile = profileManager.getCurrentProfile();
 
         alarms = profile.getAlarms();
+        alarmStrings = new ArrayList<>();
 
-        adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, alarms);
+        for (Alarm alarm : alarms) {
+            alarmStrings.add(alarm.getTime());
+        }
+
+        adapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
 
         timesListView.setAdapter(adapter);
 
@@ -90,12 +100,23 @@ public class AlarmFragment extends Fragment {
                         Task addTimeTask = new Task(new OnLoopJEvent() {
                             @Override
                             public void taskCompleted(JSONObject results) {
-                                alarms.add(timeString);
-                                adapter.notifyDataSetChanged();
-                                updateProfileAndList();
+                                try {
+                                    JSONObject response = results.getJSONObject("response");
 
-                                Snackbar.make(alarmView, "Tijd toegevoegd!", Snackbar.LENGTH_LONG)
-                                        .setAction("Action", null).show();
+                                    Gson gson = new GsonBuilder().create();
+                                    Alarm alarm = gson.fromJson(
+                                            response.getJSONObject("alarm").toString(),
+                                            Alarm.class
+                                    );
+
+                                    alarms.add(alarm);
+                                    alarmStrings.add(timeString);
+                                    adapter.notifyDataSetChanged();
+                                    updateProfileAndList();
+
+                                    Snackbar.make(alarmView, "Tijd toegevoegd!", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                } catch (JSONException ex) {}
                             }
 
                             @Override
@@ -110,7 +131,6 @@ public class AlarmFragment extends Fragment {
                         });
 
                         RequestParams params = new RequestParams();
-                        params.add("notification_token", profile.getNotificationToken());
                         params.add("notification_time", timeString);
 
                         addTimeTask.execute(Task.ADD_TIME, params);
@@ -131,13 +151,15 @@ public class AlarmFragment extends Fragment {
 
         timesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 final String time = (String) timesListView.getItemAtPosition(position);
 
                 Task task = new Task(new OnLoopJEvent() {
                     @Override
                     public void taskCompleted(JSONObject results) {
-                        alarms.remove(time);
+                        alarmStrings.remove(time);
+                        alarms.remove(position);
+
                         updateProfileAndList();
                     }
 
@@ -152,8 +174,7 @@ public class AlarmFragment extends Fragment {
                 });
 
                 RequestParams params = new RequestParams();
-                params.add("notification_token", profile.getNotificationToken());
-                params.add("notification_time", time);
+                params.add("id", Integer.toString(alarms.get(position).getId()));
                 task.execute(Task.REMOVE_TIME, params);
 
                 return true;

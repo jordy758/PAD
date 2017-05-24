@@ -2,10 +2,6 @@ package hva.groepje12.quitsmokinghabits.model;
 
 import android.graphics.drawable.Drawable;
 
-/**
- * Created by lucas on 5-5-2017.
- */
-
 public class Game {
     private String gameName;
     private String gameDescription;
