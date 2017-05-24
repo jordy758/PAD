@@ -169,7 +169,7 @@ public class GoalFragment extends Fragment {
 
                                     Gson gson = new GsonBuilder().create();
                                     Goal goal = gson.fromJson(
-                                            response.getJSONObject("smoke_data").toString(),
+                                            response.getJSONObject("goal").toString(),
                                             Goal.class
                                     );
 

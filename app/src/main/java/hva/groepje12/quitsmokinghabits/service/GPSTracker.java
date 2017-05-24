@@ -115,7 +115,9 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location changedLocation) {
+        location = changedLocation;
+
         ProfileManager profileManager = new ProfileManager(context);
         Profile profile = profileManager.getCurrentProfile();
 
@@ -123,7 +125,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         for (LocationData locationData : locations) {
             Location profileLocation = locationData.getLocation();
-            if (location.distanceTo(profileLocation) <= 20 && locationData.shouldSendNotification()) {
+            if (location.distanceTo(profileLocation) <= 30 && locationData.shouldSendNotification()) {
                 Intent destination = new Intent(context, MainActivity.class);
                 destination.putExtra("aantalRokenPopup", true);
 
