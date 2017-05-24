@@ -17,10 +17,13 @@ public class Profile {
     private ArrayList<Alarm> alarms;
     private ArrayList<String> games;
     private ArrayList<Goal> goals;
+    private ArrayList<LocationData> locations;
 
     public Profile() {
         alarms = new ArrayList<>();
         goals = new ArrayList<>();
+        games = new ArrayList<>();
+        locations = new ArrayList<>();
     }
 
     public int getId() {
@@ -133,6 +136,14 @@ public class Profile {
 
     public ArrayList<Goal> getGoals() {
         return goals;
+    }
+
+    public ArrayList<LocationData> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(ArrayList<LocationData> locations) {
+        this.locations = locations;
     }
 
     public enum Gender {male, female}

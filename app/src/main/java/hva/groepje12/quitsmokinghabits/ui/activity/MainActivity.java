@@ -1,10 +1,13 @@
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
+import android.Manifest;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,17 +21,25 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.LocationData;
+import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
+import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment;
@@ -51,6 +62,24 @@ public class MainActivity extends AppCompatActivity {
 
     public static String getView() {
         return view;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        GPSTracker gpsTracker = DataHolder.getGpsTracker(this);
+        if (!gpsTracker.hasPermissions()) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    1
+            );
+        }
+
+        if (!gpsTracker.isRunning()) {
+            gpsTracker.start();
+        }
     }
 
     @Override
@@ -114,6 +143,26 @@ public class MainActivity extends AppCompatActivity {
 
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
             hoeveelGerooktPopup(mViewPager);
+        }
+
+        if (extras != null && extras.getBoolean("removeLocation", false)) {
+            Gson gson = new GsonBuilder().create();
+            int locationId = extras.getInt("locationId", -1);
+
+            if (locationId < 0) {
+                return;
+            }
+
+            ArrayList<LocationData> locationDataArrayList = profile.getLocations();
+            locationDataArrayList.remove(locationId);
+
+            profile.setLocations(locationDataArrayList);
+            profileManager.saveToPreferences(profile);
+
+            Toast.makeText(this, "Locatie is verwijderd!", Toast.LENGTH_SHORT).show();
+
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(Notification.GPS_NOTIFICATION);
         }
     }
 

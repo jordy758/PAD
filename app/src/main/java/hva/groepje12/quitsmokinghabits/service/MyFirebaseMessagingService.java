@@ -42,7 +42,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Notification notification = new Notification(data.get("title"),
                 data.get("text"), destination, getApplicationContext());
-        notification.startNotification();
+        notification.startNotification(Notification.FIREBASE_NOTIFICATION);
 
     }
 }

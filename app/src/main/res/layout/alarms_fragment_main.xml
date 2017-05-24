@@ -26,11 +26,27 @@
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
 
+    <Button
+        android:id="@+id/addLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horizontalRule1"
+        android:text="Voeg Huidige locatie toe" />
+
+    <View
+        android:id="@+id/horizontalRule3"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/addLocationButton"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/dividerHorizontal" />
+
     <TextView
         android:id="@+id/section_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/horizontalRule1"
+        android:layout_below="@id/horizontalRule3"
         android:text="Ingesteld Tijden"
         android:textAlignment="center"
         android:textSize="20sp"

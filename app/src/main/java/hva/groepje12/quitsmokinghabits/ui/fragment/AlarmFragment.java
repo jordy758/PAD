@@ -1,6 +1,7 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
 import android.app.TimePickerDialog;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -30,12 +32,16 @@ import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Alarm;
+import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
+import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class AlarmFragment extends Fragment {
 
+    private Button button;
     private ListView timesListView;
     private ArrayAdapter<String> adapter;
     private ArrayList<Alarm> alarms;
@@ -57,6 +63,32 @@ public class AlarmFragment extends Fragment {
 
         timesListView = (ListView) alarmView.findViewById(R.id.list_times);
         timesListView.setLongClickable(true);
+
+        button = (Button) alarmView.findViewById(R.id.addLocationButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GPSTracker gpsTracker = DataHolder.getGpsTracker(getContext());
+                Location gpsLocation = gpsTracker.getLocation();
+
+                for (LocationData locationData : profile.getLocations()) {
+                    if (gpsLocation.distanceTo(locationData.getLocation()) <= 30) {
+                        Toast.makeText(getContext(), "This location is added already", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                LocationData newLocationData = new LocationData();
+                newLocationData.setLocation(gpsLocation);
+
+                ArrayList<LocationData> locations = profile.getLocations();
+                locations.add(newLocationData);
+
+                profileManager.saveToPreferences(profile);
+
+                Toast.makeText(getContext(), "Locatie is toegevoegd!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         profileManager = new ProfileManager(getActivity());
         profile = profileManager.getCurrentProfile();

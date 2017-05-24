@@ -33,6 +33,8 @@ import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Alarm;
 import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
+import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 /**
@@ -272,6 +274,10 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                     newProfile.setId(dbProfile.getInt("id"));
                     profileManager.saveToPreferences(newProfile);
 
+                    GPSTracker gpsTracker = DataHolder.getGpsTracker(getBaseContext());
+                    if (!gpsTracker.isRunning()) {
+                        gpsTracker.start();
+                    }
                 } catch(JSONException exception) {
                     Toast.makeText(RegisterActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 }
