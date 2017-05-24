@@ -141,10 +141,10 @@ public class GoalFragment extends Fragment {
 
                 final EditText doelEditText = new EditText(getContext());
                 final EditText benodigdePrijsEditText = new EditText(getContext());
-                doelEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                doelEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
                 doelEditText.setHint("Naam van doel");
 
-                benodigdePrijsEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                benodigdePrijsEditText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 benodigdePrijsEditText.setHint("Benodigde prijs");
 
                 layout.addView(doelEditText, params);
