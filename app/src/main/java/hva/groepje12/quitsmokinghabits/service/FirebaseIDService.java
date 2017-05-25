@@ -37,12 +37,11 @@ public class FirebaseIDService extends FirebaseInstanceIdService {
      * @param token The new token.
      */
     private void sendRegistrationToServer(String token) {
-        ProfileManager profileManager = new ProfileManager(getApplicationContext());
-
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(getApplicationContext());
         profile.setNotificationToken(token);
 
-        profileManager.saveToPreferences(profile);
+        DataHolder.saveProfileToPreferences(getApplicationContext(), profile);
+        ProfileManager profileManager = DataHolder.getProfileManager(getApplicationContext());
 
         if (profile.getFirstName() != null) {
             //Attempt to call api to register the profile

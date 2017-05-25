@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Game;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.ui.activity.SelectAppActivity;
 import hva.groepje12.quitsmokinghabits.util.GameInfoAdapter;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GameFragment extends Fragment {
 
@@ -120,8 +120,7 @@ public class GameFragment extends Fragment {
     }
 
     private void showFavoriteApps() {
-        ProfileManager profileManager = new ProfileManager(context);
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(getContext());
 
         gameStrings = profile.getGames();
 

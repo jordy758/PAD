@@ -38,7 +38,7 @@ import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Profile;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 
 public class HomeFragment extends Fragment {
     private View rootView;
@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
 
                     notSmokedForTextView.setText(simpleDateFormat.format(myDate.getTime()));
                 } catch (ParseException ex) {
+                    ex.printStackTrace();
                 }
             }
         };
@@ -112,8 +113,7 @@ public class HomeFragment extends Fragment {
         moneySavedTextView = (TextView) rootView.findViewById(R.id.tv_moneySaved);
         cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesNotSmokedToday);
 
-        ProfileManager profileManager = new ProfileManager(getContext());
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(getContext());
 
         if (profile == null || profile.getFirstName() == null) {
             return rootView;
@@ -149,6 +149,7 @@ public class HomeFragment extends Fragment {
                     cigarettesNotSmokedTextView.setText(cigarettesSaved);
                     moneySavedTextView.setText(savedMoney);
                 } catch (JSONException exception) {
+                    exception.printStackTrace();
                 }
             }
 
@@ -177,7 +178,7 @@ public class HomeFragment extends Fragment {
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.chart);
 
         //adding data
-        final ArrayList<Entry> entries = new ArrayList<Entry>();
+        final ArrayList<Entry> entries = new ArrayList<>();
         entries.add(new Entry(0, 1));
         entries.add(new Entry(1, 2));
         entries.add(new Entry(2, 12));
@@ -186,7 +187,7 @@ public class HomeFragment extends Fragment {
         entries.add(new Entry(5, 5));
         entries.add(new Entry(6, 26));
 
-        final ArrayList<String> labels = new ArrayList<String>();
+        final ArrayList<String> labels = new ArrayList<>();
         labels.add("Ma");
         labels.add("Di");
         labels.add("Wo");

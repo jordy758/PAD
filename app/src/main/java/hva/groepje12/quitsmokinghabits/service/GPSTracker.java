@@ -24,7 +24,6 @@ import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -37,7 +36,7 @@ public class GPSTracker extends Service implements LocationListener {
     Location location;
 
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BETWEEN_UPDATES = 1000 * 60 * 1;
+    private static final long MIN_TIME_BETWEEN_UPDATES = 1000 * 60 * 3;
 
     protected LocationManager locationManager;
 
@@ -118,8 +117,7 @@ public class GPSTracker extends Service implements LocationListener {
     public void onLocationChanged(Location changedLocation) {
         location = changedLocation;
 
-        ProfileManager profileManager = new ProfileManager(context);
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(context);
 
         ArrayList<LocationData> locations = profile.getLocations();
 
@@ -157,7 +155,7 @@ public class GPSTracker extends Service implements LocationListener {
         }
 
         profile.setLocations(locations);
-        profileManager.saveToPreferences(profile);
+        DataHolder.saveProfileToPreferences(context, profile);
     }
 
     @Override

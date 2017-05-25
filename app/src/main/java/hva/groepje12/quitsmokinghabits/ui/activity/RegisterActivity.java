@@ -3,6 +3,7 @@ package hva.groepje12.quitsmokinghabits.ui.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -35,7 +36,6 @@ import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.service.GPSTracker;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 /**
  * A login screen that offers login via email/password.
@@ -162,8 +162,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         });
 
 
-        ProfileManager profileManager = new ProfileManager(this);
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(this);
 
         birthDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -225,8 +224,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             return;
         }
 
-        final ProfileManager profileManager = new ProfileManager(this);
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(this);
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setBirthDate(pickedTime);
@@ -236,16 +234,15 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         profile.setGender(Profile.Gender.female);
 
         //Save the profile with a profile manager into the storage
-        profileManager.saveToPreferences(profile);
-
+        DataHolder.saveProfileToPreferences(this, profile);
 
         //Attempt to call api to register the profile
-        RequestParams params = profileManager.getParams();
+        RequestParams params = DataHolder.getProfileManager(this).getParams();
 
         Task registerProfileTask = new Task(new OnLoopJEvent() {
             @Override
             public void taskCompleted(JSONObject results) {
-                Profile newProfile = profileManager.getCurrentProfile();
+                Profile newProfile = DataHolder.getCurrentProfile(RegisterActivity.this);
 
                 try {
                     JSONObject response = results.getJSONObject("response");
@@ -272,7 +269,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                     newProfile.setGoals(goalList);
                     newProfile.setMoneySaved(dbProfile.getDouble("saved_amount"));
                     newProfile.setId(dbProfile.getInt("id"));
-                    profileManager.saveToPreferences(newProfile);
+                    DataHolder.saveProfileToPreferences(RegisterActivity.this, newProfile);
 
                     GPSTracker gpsTracker = DataHolder.getGpsTracker(getBaseContext());
                     if (!gpsTracker.isRunning()) {
@@ -283,6 +280,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                 }
 
                 Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+
+                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 finish();
             }
 

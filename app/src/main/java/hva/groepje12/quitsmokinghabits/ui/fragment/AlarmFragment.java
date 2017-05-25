@@ -37,7 +37,6 @@ import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class AlarmFragment extends Fragment {
 
@@ -46,9 +45,6 @@ public class AlarmFragment extends Fragment {
     private ArrayAdapter<String> adapter;
     private ArrayList<Alarm> alarms;
     private ArrayList<String> alarmStrings;
-
-    private ProfileManager profileManager;
-    private Profile profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +60,8 @@ public class AlarmFragment extends Fragment {
         timesListView = (ListView) alarmView.findViewById(R.id.list_times);
         timesListView.setLongClickable(true);
 
+        final Profile profile = DataHolder.getCurrentProfile(getContext());
+
         button = (Button) alarmView.findViewById(R.id.addLocationButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +71,7 @@ public class AlarmFragment extends Fragment {
 
                 for (LocationData locationData : profile.getLocations()) {
                     if (gpsLocation.distanceTo(locationData.getLocation()) <= 30) {
-                        Toast.makeText(getContext(), "This location is added already", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Deze locatie is al toegevoegd!", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -84,14 +82,15 @@ public class AlarmFragment extends Fragment {
                 ArrayList<LocationData> locations = profile.getLocations();
                 locations.add(newLocationData);
 
-                profileManager.saveToPreferences(profile);
+                DataHolder.saveProfileToPreferences(getActivity(), profile);
+
+                if (!gpsTracker.isRunning()) {
+                    gpsTracker.start();
+                }
 
                 Toast.makeText(getContext(), "Locatie is toegevoegd!", Toast.LENGTH_SHORT).show();
             }
         });
-
-        profileManager = new ProfileManager(getActivity());
-        profile = profileManager.getCurrentProfile();
 
         alarms = profile.getAlarms();
         alarmStrings = new ArrayList<>();
@@ -217,8 +216,9 @@ public class AlarmFragment extends Fragment {
     }
 
     private void updateProfileAndList() {
+        Profile profile = DataHolder.getCurrentProfile(getContext());
         profile.setAlarms(alarms);
-        profileManager.saveToPreferences(profile);
+        DataHolder.saveProfileToPreferences(getContext(), profile);
         adapter.notifyDataSetChanged();
     }
 

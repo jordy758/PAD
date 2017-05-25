@@ -23,8 +23,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
@@ -44,7 +42,6 @@ import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
     private static String view;
 
     private FloatingActionButton fab;
-    private ProfileManager profileManager;
 
     public static String getView() {
         return view;
@@ -77,8 +73,12 @@ public class MainActivity extends AppCompatActivity {
             );
         }
 
-        if (!gpsTracker.isRunning()) {
-            gpsTracker.start();
+        if (DataHolder.getCurrentProfile(this).getLocations().size() == 0) {
+            gpsTracker.stop();
+        } else {
+            if (!gpsTracker.isRunning()) {
+                gpsTracker.start();
+            }
         }
     }
 
@@ -86,8 +86,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        profileManager = new ProfileManager(this);
-        final Profile profile = profileManager.getCurrentProfile();
+        final Profile profile = DataHolder.getCurrentProfile(this);
 
         if (profile.getFirstName() == null) {
             Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
@@ -146,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (extras != null && extras.getBoolean("removeLocation", false)) {
-            Gson gson = new GsonBuilder().create();
             int locationId = extras.getInt("locationId", -1);
 
             if (locationId < 0) {
@@ -157,7 +155,12 @@ public class MainActivity extends AppCompatActivity {
             locationDataArrayList.remove(locationId);
 
             profile.setLocations(locationDataArrayList);
-            profileManager.saveToPreferences(profile);
+            DataHolder.saveProfileToPreferences(this, profile);
+
+            if (profile.getLocations().size() < 1) {
+                GPSTracker gpsTracker = DataHolder.getGpsTracker(this);
+                gpsTracker.stop();
+            }
 
             Toast.makeText(this, "Locatie is verwijderd!", Toast.LENGTH_SHORT).show();
 
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(45, 0, 45, 0);
 
         final EditText aantalGerookt = new EditText(this);
@@ -196,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void taskCompleted(JSONObject results) {
                         Random randomGenerator = new Random();
-                        Profile profile = profileManager.getCurrentProfile();
+                        Profile profile = DataHolder.getCurrentProfile(MainActivity.this);
 
                         if (profile.getGames() == null || profile.getGames().size() == 0) {
                             mViewPager.setCurrentItem(AFLEIDING_POS);

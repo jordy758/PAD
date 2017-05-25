@@ -18,8 +18,8 @@ import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.util.AppInfoAdapter;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 import hva.groepje12.quitsmokinghabits.util.Utilities;
 
 public class SelectAppActivity extends AppCompatActivity {
@@ -70,8 +70,7 @@ public class SelectAppActivity extends AppCompatActivity {
                 ApplicationInfo appInfo = (ApplicationInfo) appInfoAdapter.getItem(pos);
                 // launch the selected application
 
-                ProfileManager profileManager = new ProfileManager(context);
-                Profile profile = profileManager.getCurrentProfile();
+                Profile profile = DataHolder.getCurrentProfile(SelectAppActivity.this);
 
                 ArrayList<String> games = profile.getGames();
                 if (games == null) {
@@ -85,7 +84,7 @@ public class SelectAppActivity extends AppCompatActivity {
                 }
 
                 profile.setGames(games);
-                profileManager.saveToPreferences(profile);
+                DataHolder.saveProfileToPreferences(SelectAppActivity.this, profile);
 
                 finish();
             }

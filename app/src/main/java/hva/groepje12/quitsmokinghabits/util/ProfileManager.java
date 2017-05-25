@@ -16,10 +16,8 @@ public class ProfileManager {
 
     private SharedPreferences prefs;
     private Profile profile;
-    private Context context;
 
     public ProfileManager(Context context) {
-        this.context = context;
         prefs = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
 
         try {

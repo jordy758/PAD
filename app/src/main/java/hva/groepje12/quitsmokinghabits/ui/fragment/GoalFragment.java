@@ -34,18 +34,15 @@ import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Format;
 import hva.groepje12.quitsmokinghabits.model.Goal;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 import hva.groepje12.quitsmokinghabits.util.GoalsAdapter;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GoalFragment extends Fragment {
     ListView goalsListView;
 
     private ArrayList<Goal> goalList;
     private GoalsAdapter goalsAdapter;
-
-    private ProfileManager profileManager;
-    private Profile profile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,8 +56,7 @@ public class GoalFragment extends Fragment {
 
         goalsListView = (ListView) rootView.findViewById(R.id.list_goals);
 
-        profileManager = new ProfileManager(getActivity());
-        profile = profileManager.getCurrentProfile();
+        final Profile profile = DataHolder.getCurrentProfile(getContext());
 
         TextView currentSaldoTextView = (TextView) rootView.findViewById(R.id.current_saldo);
         currentSaldoTextView.append(profile.getFormattedMoneySaved());
@@ -95,7 +91,7 @@ public class GoalFragment extends Fragment {
                         goalsAdapter.notifyDataSetChanged();
 
                         profile.setGoals(goalList);
-                        profileManager.saveToPreferences(profile);
+                        DataHolder.saveProfileToPreferences(getContext(), profile);
                     }
 
                     @Override
@@ -136,7 +132,7 @@ public class GoalFragment extends Fragment {
                 LinearLayout layout = new LinearLayout(getContext());
                 layout.setOrientation(LinearLayout.VERTICAL);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.setMargins(45, 0, 45, 0);
 
                 final EditText doelEditText = new EditText(getContext());
@@ -178,8 +174,10 @@ public class GoalFragment extends Fragment {
                                     goalsAdapter.notifyDataSetChanged();
 
                                     profile.setGoals(goalList);
-                                    profileManager.saveToPreferences(profile);
-                                } catch (JSONException exception) {}
+                                    DataHolder.saveProfileToPreferences(getContext(), profile);
+                                } catch (JSONException exception) {
+                                    exception.printStackTrace();
+                                }
                             }
 
                             @Override
@@ -210,14 +208,5 @@ public class GoalFragment extends Fragment {
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        profile = profileManager.getCurrentProfile();
-        goalList = profile.getGoals();
-        goalsAdapter.notifyDataSetChanged();
     }
 }
