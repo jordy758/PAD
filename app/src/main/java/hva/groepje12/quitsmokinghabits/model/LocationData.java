@@ -1,12 +1,13 @@
 package hva.groepje12.quitsmokinghabits.model;
 
 import android.location.Location;
+import android.location.LocationManager;
 
 import java.util.Date;
 
 public class LocationData {
     private float accuracy, speed;
-    private double altitude, longitude, latitude;
+    private double longitude, latitude;
     private String provider;
 
     private Date lastAccessed;
@@ -14,23 +15,15 @@ public class LocationData {
     private long MAX_DURATION = 30 * 60 * 1000;
 
     public Location getLocation() {
-        Location location = new Location("");
-        location.setAccuracy(accuracy);
-        location.setAltitude(altitude);
+        Location location = new Location(LocationManager.GPS_PROVIDER);
         location.setLongitude(longitude);
         location.setLatitude(latitude);
-        location.setProvider(provider);
-        location.setSpeed(speed);
         return location;
     }
 
     public void setLocation(Location location) {
-        this.accuracy = location.getAccuracy();
-        this.altitude = location.getAltitude();
         this.longitude = location.getLongitude();
         this.latitude = location.getLatitude();
-        this.provider = location.getProvider();
-        this.speed = location.getSpeed();
     }
 
     public void setLastAccessed(Date lastAccessed) {
@@ -51,10 +44,6 @@ public class LocationData {
 
     public void setSpeed(float speed) {
         this.speed = speed;
-    }
-
-    public void setAltitude(double altitude) {
-        this.altitude = altitude;
     }
 
     public void setLongitude(double longitude) {
