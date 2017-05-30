@@ -67,12 +67,4 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/horizontalRule2" />
 
-    <Button
-        android:id="@+id/addLoc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/horizontalRule3"
-        android:text="Location" />
 </RelativeLayout>
