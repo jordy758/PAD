@@ -1,6 +1,7 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +37,7 @@ import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.service.GPSTracker;
+import hva.groepje12.quitsmokinghabits.ui.activity.LocationActivity;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class AlarmFragment extends Fragment {
@@ -179,7 +181,13 @@ public class AlarmFragment extends Fragment {
                 Toast.makeText(getActivity(), itemValue, Toast.LENGTH_SHORT).show();
             }
         });
-
+        Button location = (Button) alarmView.findViewById(R.id.addLoc) ;
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationActivity();
+            }
+        });
         timesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -213,6 +221,11 @@ public class AlarmFragment extends Fragment {
         });
 
         return alarmView;
+    }
+
+    public void locationActivity() {
+        Intent myIntent = new Intent(getActivity(), LocationActivity.class);
+        startActivity(myIntent);
     }
 
     private void updateProfileAndList() {

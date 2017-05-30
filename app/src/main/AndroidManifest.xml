@@ -30,7 +30,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
@@ -48,12 +47,14 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/cig" />
 
-        <activity android:name=".ui.activity.SelectAppActivity"
+        <activity
+            android:name=".ui.activity.SelectAppActivity"
             android:label="Selecteer een app">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
         </activity>
+        <activity android:name=".ui.activity.LocationActivity"></activity>
     </application>
 
 </manifest>

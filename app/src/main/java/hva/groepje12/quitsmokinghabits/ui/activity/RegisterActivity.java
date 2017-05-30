@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,9 +43,9 @@ import hva.groepje12.quitsmokinghabits.service.GPSTracker;
  */
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack;
+    EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack, stopDate;
     Button createAccountButton, increaseCigPerDay, decreaseCigPerDay, increaseCigPerPack, decreaseCigPerPack, increasePricePerPack, decreasePricePerPack;
-
+    String clicked;
     Calendar pickedTime;
 
     @Override
@@ -58,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         cigarettesPerDay = (EditText) findViewById(R.id.cigarettesPerDay);
         cigarettesPerPack = (EditText) findViewById(R.id.cigarettesInPack);
         pricePerPack = (EditText) findViewById(R.id.pricePerPack);
+        stopDate = (EditText) findViewById(R.id.stopDate);
 
         increaseCigPerDay = (Button) findViewById(R.id.cigPerDayIncrease);
         decreaseCigPerDay = (Button) findViewById(R.id.cigPerDayDecrease);
@@ -169,6 +171,17 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     datePicker(v);
+                    clicked = "birthDate";
+                }
+            }
+        });
+
+        stopDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    datePicker(v);
+                    clicked = "stopDate";
                 }
             }
         });
@@ -182,6 +195,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             setDate(profile.getBirthDate());
             createAccountButton.setText("Opslaan");
         }
+        
     }
 
     public void datePicker(View view) {
@@ -192,13 +206,21 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     private void setDate(final Calendar calendar) {
         pickedTime = calendar;
         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        birthDateEditText.setText(dateFormat.format(calendar.getTime()));
+        if(clicked == "birthDate") {
+            birthDateEditText.setText(dateFormat.format(calendar.getTime()));
+        }
+        else{
+            stopDate.setText(dateFormat.format(calendar.getTime()));
+        }
+
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         Calendar cal = new GregorianCalendar(year, month, day);
         setDate(cal);
     }
+
+
 
     private void registerUser() {
         String firstName = this.firstNameEditText.getText().toString();
