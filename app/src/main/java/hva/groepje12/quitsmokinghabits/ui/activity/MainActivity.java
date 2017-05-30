@@ -142,10 +142,14 @@ public class MainActivity extends AppCompatActivity {
 
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
             hoeveelGerooktPopup(mViewPager);
+            getIntent().removeExtra("aantalRokenPopup");
         }
 
         if (extras != null && extras.getBoolean("removeLocation", false)) {
             int locationId = extras.getInt("locationId", -1);
+
+            getIntent().removeExtra("removeLocation");
+            getIntent().removeExtra("locationId");
 
             if (locationId < 0) {
                 return;

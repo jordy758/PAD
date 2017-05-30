@@ -33,11 +33,18 @@
         android:layout_below="@id/horizontalRule1"
         android:text="Voeg Huidige locatie toe" />
 
+    <Button
+        android:id="@+id/startMaps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addLocationButton"
+        android:text="Voeg Huidige locatie toe" />
+
     <View
         android:id="@+id/horizontalRule3"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/addLocationButton"
+        android:layout_below="@id/startMaps"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />

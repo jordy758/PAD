@@ -37,6 +37,7 @@ import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.service.GPSTracker;
+import hva.groepje12.quitsmokinghabits.ui.activity.GoogleMapsActivity;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class AlarmFragment extends Fragment {
@@ -62,6 +63,14 @@ public class AlarmFragment extends Fragment {
         timesListView.setLongClickable(true);
 
         final Profile profile = DataHolder.getCurrentProfile(getContext());
+
+        Button maps = (Button) alarmView.findViewById(R.id.startMaps);
+        maps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), GoogleMapsActivity.class));
+            }
+        });
 
         button = (Button) alarmView.findViewById(R.id.addLocationButton);
         button.setOnClickListener(new View.OnClickListener() {

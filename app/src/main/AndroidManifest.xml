@@ -17,6 +17,10 @@
             android:name=".ui.activity.RegisterActivity"
             android:label="Registreer" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyARXXdECQ9X4CAPoCAAaooklXrS-1-nIec" />
+
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:process=":remote" />
@@ -54,7 +58,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />
         </activity>
-        <activity android:name=".ui.activity.LocationActivity"></activity>
+
+        <activity android:name=".ui.activity.GoogleMapsActivity"></activity>
     </application>
 
 </manifest>
