@@ -3,7 +3,6 @@ package hva.groepje12.quitsmokinghabits.model;
 import android.location.Location;
 import android.location.LocationManager;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

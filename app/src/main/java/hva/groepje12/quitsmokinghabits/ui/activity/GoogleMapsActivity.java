@@ -16,20 +16,6 @@
 
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.loopj.android.http.RequestParams;
-
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
@@ -38,7 +24,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -47,19 +32,20 @@ import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
-import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
-import hva.groepje12.quitsmokinghabits.api.Task;
-import hva.groepje12.quitsmokinghabits.model.Alarm;
 import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
@@ -78,15 +64,13 @@ public class GoogleMapsActivity extends AppCompatActivity
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
-    private Marker currentMarker = null;
-
     /**
      * Request code for location permission request.
      *
      * @see #onRequestPermissionsResult(int, String[], int[])
      */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-
+    private Marker currentMarker = null;
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
@@ -154,21 +138,21 @@ public class GoogleMapsActivity extends AppCompatActivity
         for (LocationData locationData : profile.getLocations()) {
             mMap.addMarker(
                     new MarkerOptions().position(
-                        new LatLng(
-                            locationData.getLocation().getLatitude(),
-                            locationData.getLocation().getLongitude())
-                        )
-            );
-
-            GPSTracker gpsTracker = DataHolder.getGpsTracker(GoogleMapsActivity.this);
-            Location location = gpsTracker.getLocation();
-
-            map.animateCamera(
-                CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(location.getLatitude(), location.getLongitude()), 9
-                )
+                            new LatLng(
+                                    locationData.getLocation().getLatitude(),
+                                    locationData.getLocation().getLongitude())
+                    )
             );
         }
+
+        GPSTracker gpsTracker = DataHolder.getGpsTracker(GoogleMapsActivity.this);
+        Location location = gpsTracker.getLocation();
+
+        map.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(location.getLatitude(), location.getLongitude()), 9
+                )
+        );
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override

@@ -8,6 +8,7 @@ public class Profile {
     private String firstName;
     private String lastName;
     private Calendar birthDate;
+    private Calendar stopDate;
     private Gender gender;
     private int cigarettesPerDay;
     private int cigarettesPerPack;
@@ -26,6 +27,14 @@ public class Profile {
         locations = new ArrayList<>();
     }
 
+    public Calendar getStopDate() {
+        return stopDate;
+    }
+
+    public void setStopDate(Calendar stopDate) {
+        this.stopDate = stopDate;
+    }
+
     public int getId() {
         return id;
     }
@@ -38,12 +47,12 @@ public class Profile {
         return moneySaved;
     }
 
-    public String getFormattedMoneySaved() {
-        return Format.formatDoubleToPrice(moneySaved);
-    }
-
     public void setMoneySaved(double moneySaved) {
         this.moneySaved = moneySaved;
+    }
+
+    public String getFormattedMoneySaved() {
+        return Format.formatDoubleToPrice(moneySaved);
     }
 
     public int getCigarettesPerDay() {
@@ -130,12 +139,12 @@ public class Profile {
         this.games = games;
     }
 
-    public void setGoals(ArrayList<Goal> goals) {
-        this.goals = goals;
-    }
-
     public ArrayList<Goal> getGoals() {
         return goals;
+    }
+
+    public void setGoals(ArrayList<Goal> goals) {
+        this.goals = goals;
     }
 
     public ArrayList<LocationData> getLocations() {

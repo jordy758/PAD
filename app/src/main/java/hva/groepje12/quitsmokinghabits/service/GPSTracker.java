@@ -27,18 +27,14 @@ import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
 public class GPSTracker extends Service implements LocationListener {
 
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
+    private static final long MIN_TIME_BETWEEN_UPDATES = 1000 * 60 * 3;
     private final Context context;
-
+    protected LocationManager locationManager;
     boolean isGPSEnabled = false;
     boolean isNetworkEnabled = false;
     boolean isRunning = false;
-
     Location location;
-
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10;
-    private static final long MIN_TIME_BETWEEN_UPDATES = 1000 * 60 * 3;
-
-    protected LocationManager locationManager;
 
     public GPSTracker(Context context) {
         this.context = context;

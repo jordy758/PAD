@@ -15,15 +15,14 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class Notification {
 
+    public static int FIREBASE_NOTIFICATION = 1;
+    public static int ALARM_NOTIFICATION = 2;
+    public static int GPS_NOTIFICATION = 3;
     private String title, text;
     private Context context;
     private Class<?> internDestination;
     private Intent intentDestination;
     private Action action;
-
-    public static int FIREBASE_NOTIFICATION = 1;
-    public static int ALARM_NOTIFICATION = 2;
-    public static int GPS_NOTIFICATION = 3;
 
     public Notification(String title, String text, Class<?> internDestination, Context context) {
         this.title = title;

@@ -8,11 +8,11 @@ public class Alarm {
         return id;
     }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getTime() {
         return time.substring(0, 5);
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

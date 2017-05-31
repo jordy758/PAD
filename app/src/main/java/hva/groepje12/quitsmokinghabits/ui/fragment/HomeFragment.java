@@ -41,15 +41,11 @@ import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
 
 public class HomeFragment extends Fragment {
-    private View rootView;
-
-    private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
-
-    private ArrayList<String> quoteList = new ArrayList<>();
-
-    private BroadcastReceiver broadcastReceiver;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
+    private View rootView;
+    private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
+    private ArrayList<String> quoteList = new ArrayList<>();
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     public void onStart() {

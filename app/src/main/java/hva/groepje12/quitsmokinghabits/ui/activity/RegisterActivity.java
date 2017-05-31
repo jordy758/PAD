@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -43,10 +42,10 @@ import hva.groepje12.quitsmokinghabits.service.GPSTracker;
  */
 public class RegisterActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack, stopDate;
+    EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack, stopDateEditText;
     Button createAccountButton, increaseCigPerDay, decreaseCigPerDay, increaseCigPerPack, decreaseCigPerPack, increasePricePerPack, decreasePricePerPack;
     String clicked;
-    Calendar pickedTime;
+    Calendar birthDate, stopDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         cigarettesPerDay = (EditText) findViewById(R.id.cigarettesPerDay);
         cigarettesPerPack = (EditText) findViewById(R.id.cigarettesInPack);
         pricePerPack = (EditText) findViewById(R.id.pricePerPack);
-        stopDate = (EditText) findViewById(R.id.stopDate);
+        stopDateEditText = (EditText) findViewById(R.id.stopDate);
 
         increaseCigPerDay = (Button) findViewById(R.id.cigPerDayIncrease);
         decreaseCigPerDay = (Button) findViewById(R.id.cigPerDayDecrease);
@@ -176,10 +175,10 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             }
         });
 
-        stopDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        stopDateEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
+                if (hasFocus) {
                     datePicker(v);
                     clicked = "stopDate";
                 }
@@ -192,10 +191,14 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             cigarettesPerDay.setText(Integer.toString(profile.getCigarettesPerDay()));
             cigarettesPerPack.setText(Integer.toString(profile.getCigarettesPerPack()));
             pricePerPack.setText(Double.toString(profile.getPricePerPack()));
+
+            clicked = "birthDate";
             setDate(profile.getBirthDate());
+            clicked = "stopDate";
+            setDate(profile.getStopDate());
             createAccountButton.setText("Opslaan");
         }
-        
+
     }
 
     public void datePicker(View view) {
@@ -204,13 +207,13 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     }
 
     private void setDate(final Calendar calendar) {
-        pickedTime = calendar;
         final DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-        if(clicked == "birthDate") {
+        if (clicked.equals("stopDate")) {
+            stopDate = calendar;
+            stopDateEditText.setText(dateFormat.format(calendar.getTime()));
+        } else {
+            birthDate = calendar;
             birthDateEditText.setText(dateFormat.format(calendar.getTime()));
-        }
-        else{
-            stopDate.setText(dateFormat.format(calendar.getTime()));
         }
 
     }
@@ -221,11 +224,10 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
     }
 
 
-
     private void registerUser() {
         String firstName = this.firstNameEditText.getText().toString();
         String lastName = this.lastNameEditText.getText().toString();
-        String birthDate = this.birthDateEditText.getText().toString();
+        String birthDateString = this.birthDateEditText.getText().toString();
         int cigarettesPerDayValue = Integer.parseInt(cigarettesPerDay.getText().toString());
         int cigarettesPerPackValue = Integer.parseInt(cigarettesPerPack.getText().toString());
         double pricePerPackValue = Double.parseDouble(pricePerPack.getText().toString());
@@ -241,7 +243,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             return;
         }
 
-        if (birthDate.isEmpty()) {
+        if (birthDateString.isEmpty()) {
             this.birthDateEditText.setError("Vul een geboortedatum in!");
             return;
         }
@@ -249,7 +251,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         Profile profile = DataHolder.getCurrentProfile(this);
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
-        profile.setBirthDate(pickedTime);
+        profile.setBirthDate(birthDate);
+        profile.setStopDate(stopDate);
         profile.setCigarettesPerDay(cigarettesPerDayValue);
         profile.setCigarettesPerPack(cigarettesPerPackValue);
         profile.setPricePerPack(pricePerPackValue);
@@ -297,7 +300,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                     if (!gpsTracker.isRunning()) {
                         gpsTracker.start();
                     }
-                } catch(JSONException exception) {
+                } catch (JSONException exception) {
                     Toast.makeText(RegisterActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 

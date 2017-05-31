@@ -45,6 +45,10 @@ public class ProfileManager {
         String birthDate = birth.get(Calendar.YEAR) + "-" + (birth.get(Calendar.MONTH) + 1) +
                 "-" + birth.get(Calendar.DAY_OF_MONTH);
 
+        Calendar stop = profile.getBirthDate();
+        String stopDate = stop.get(Calendar.YEAR) + "-" + (stop.get(Calendar.MONTH) + 1) +
+                "-" + stop.get(Calendar.DAY_OF_MONTH);
+
         RequestParams params = new RequestParams();
         params.put("first_name", profile.getFirstName());
         params.put("last_name", profile.getLastName());
@@ -52,6 +56,7 @@ public class ProfileManager {
         params.put("cigarettes_per_pack", profile.getCigarettesPerPack());
         params.put("cigarettes_per_day", profile.getCigarettesPerDay());
         params.put("price_per_pack", profile.getPricePerPack());
+        params.put("stop_date", stopDate);
 
         return params;
     }

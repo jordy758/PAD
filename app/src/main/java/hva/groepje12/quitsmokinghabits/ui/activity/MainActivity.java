@@ -72,14 +72,6 @@ public class MainActivity extends AppCompatActivity {
                     1
             );
         }
-
-        if (DataHolder.getCurrentProfile(this).getLocations().size() == 0) {
-            gpsTracker.stop();
-        } else {
-            if (!gpsTracker.isRunning()) {
-                gpsTracker.start();
-            }
-        }
     }
 
     @Override
@@ -160,11 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
             profile.setLocations(locationDataArrayList);
             DataHolder.saveProfileToPreferences(this, profile);
-
-            if (profile.getLocations().size() < 1) {
-                GPSTracker gpsTracker = DataHolder.getGpsTracker(this);
-                gpsTracker.stop();
-            }
 
             Toast.makeText(this, "Locatie is verwijderd!", Toast.LENGTH_SHORT).show();
 

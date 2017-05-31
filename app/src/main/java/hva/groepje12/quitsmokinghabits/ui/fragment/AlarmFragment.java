@@ -55,7 +55,7 @@ public class AlarmFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         final View alarmView = inflater.inflate(R.layout.alarms_fragment_main, container, false);
         View mainView = getActivity().findViewById(R.id.main_activity);
 
@@ -156,7 +156,8 @@ public class AlarmFragment extends Fragment {
 
                                     Snackbar.make(alarmView, "Tijd toegevoegd!", Snackbar.LENGTH_LONG)
                                             .setAction("Action", null).show();
-                                } catch (JSONException ex) {}
+                                } catch (JSONException ex) {
+                                }
                             }
 
                             @Override
@@ -224,7 +225,6 @@ public class AlarmFragment extends Fragment {
 
         return alarmView;
     }
-
 
 
     private void updateProfileAndList() {
