@@ -17,8 +17,25 @@
         android:layout_below="@id/map"
         android:text="Verwijder aangeklikte locatie" />
 
+    <TextView
+        android:id="@+id/informationTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Als je de aangeklikte locatie wilt koppelen aan tijden, dan kan dat hier! Als je dat niet doet gaat hij altijd af wanneer jij hier bent."
+        android:textAlignment="center"
+        android:layout_below="@id/removeLocationButton"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/removeLocationButton"/>
+        android:layout_below="@id/informationTextView"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/mapsFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/alarm_add_white" />
 </RelativeLayout>

@@ -3,16 +3,33 @@ package hva.groepje12.quitsmokinghabits.model;
 import android.location.Location;
 import android.location.LocationManager;
 
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class LocationData {
-    private float accuracy, speed;
     private double longitude, latitude;
-    private String provider;
-
     private Date lastAccessed;
+    private ArrayList<Calendar> times;
 
     private long MAX_DURATION = 30 * 60 * 1000;
+
+    public LocationData() {
+        this.times = new ArrayList<>();
+    }
+
+    public void addTime(Calendar time) {
+        this.times.add(time);
+    }
+
+    public ArrayList<Calendar> getTimes() {
+        return this.times;
+    }
+
+    public void setTimes(ArrayList<Calendar> times) {
+        this.times = times;
+    }
 
     public Location getLocation() {
         Location location = new Location(LocationManager.GPS_PROVIDER);
@@ -38,19 +55,7 @@ public class LocationData {
         return (new Date().getTime() - this.lastAccessed.getTime()) >= MAX_DURATION;
     }
 
-    public void setAccuracy(float accuracy) {
-        this.accuracy = accuracy;
-    }
-
-    public void setSpeed(float speed) {
-        this.speed = speed;
-    }
-
     public void setLongitude(double longitude) {
         this.longitude = longitude;
-    }
-
-    public void setProvider(String provider) {
-        this.provider = provider;
     }
 }

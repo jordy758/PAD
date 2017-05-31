@@ -26,24 +26,40 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.loopj.android.http.RequestParams;
 
 import android.Manifest;
+import android.app.TimePickerDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
+import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
+import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Alarm;
 import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
@@ -87,6 +103,46 @@ public class GoogleMapsActivity extends AppCompatActivity
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.mapsFab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!MainActivity.getView().equals(MainActivity.ALARMS_VIEW)) {
+                    return;
+                }
+
+                // Get Current time
+                final Calendar c = Calendar.getInstance();
+                int hour = c.get(Calendar.HOUR_OF_DAY);
+                int minute = c.get(Calendar.MINUTE);
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(GoogleMapsActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Calendar time = Calendar.getInstance();
+                        time.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        time.set(Calendar.MINUTE, minute);
+
+                        Profile profile = DataHolder.getCurrentProfile(getBaseContext());
+                        ArrayList<LocationData> locationDatas = profile.getLocations();
+
+                        LatLng markerPos = currentMarker.getPosition();
+                        for (LocationData locationData : locationDatas) {
+                            Location location = locationData.getLocation();
+                            if (location.getLongitude() == markerPos.longitude && location.getLatitude() == markerPos.latitude) {
+                                int index = locationDatas.indexOf(locationData);
+                                locationData.addTime(time);
+                                locationDatas.set(index, locationData);
+                            }
+                        }
+                        DataHolder.saveProfileToPreferences(GoogleMapsActivity.this, profile);
+                    }
+                }, hour, minute, false);
+
+                timePickerDialog.show();
+            }
+        });
     }
 
     @Override
@@ -109,7 +165,7 @@ public class GoogleMapsActivity extends AppCompatActivity
 
             map.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(location.getLatitude(), location.getLongitude()), 17
+                    new LatLng(location.getLatitude(), location.getLongitude()), 9
                 )
             );
         }
