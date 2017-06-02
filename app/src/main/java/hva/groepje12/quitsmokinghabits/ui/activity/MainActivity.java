@@ -309,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     return "AFLEIDING";
                 case 3:
-                    return "TIJDEN";
+                    return "MOMENTEN";
             }
             return null;
         }

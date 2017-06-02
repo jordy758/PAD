@@ -53,8 +53,4 @@ public class LocationData {
 
         return (new Date().getTime() - this.lastAccessed.getTime()) >= MAX_DURATION;
     }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
 }

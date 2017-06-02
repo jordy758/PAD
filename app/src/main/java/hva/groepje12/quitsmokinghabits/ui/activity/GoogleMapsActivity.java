@@ -28,7 +28,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -41,9 +44,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.Locale;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.LocationData;
@@ -71,6 +76,13 @@ public class GoogleMapsActivity extends AppCompatActivity
      */
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Marker currentMarker = null;
+    private ArrayAdapter<String> adapter;
+    private ArrayList<String> alarmStrings;
+    private FloatingActionButton fab;
+    private TextView informationTextView, timesInformationTextView;
+    private Button removeLocationButton, linkTimesButton;
+    private ListView timesListView;
+
     /**
      * Flag indicating whether a requested permission has been denied after returning in
      * {@link #onRequestPermissionsResult(int, String[], int[])}.
@@ -84,11 +96,28 @@ public class GoogleMapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_google_maps);
 
+        try {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (Exception e) {
+        }
+
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.mapsFab);
+        linkTimesButton = (Button) findViewById(R.id.linkTimesButton);
+        removeLocationButton = (Button) findViewById(R.id.removeLocationButton);
+        informationTextView = (TextView) findViewById(R.id.informationTextView);
+        timesInformationTextView = (TextView) findViewById(R.id.timesInformationTextView);
+        timesListView = (ListView) findViewById(R.id.datesListView);
+
+        alarmStrings = new ArrayList<>();
+        adapter = new ArrayAdapter<>(GoogleMapsActivity.this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
+        timesListView.setAdapter(adapter);
+
+
+        fab = (FloatingActionButton) findViewById(R.id.mapsFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +125,6 @@ public class GoogleMapsActivity extends AppCompatActivity
                     return;
                 }
 
-                // Get Current time
                 final Calendar c = Calendar.getInstance();
                 int hour = c.get(Calendar.HOUR_OF_DAY);
                 int minute = c.get(Calendar.MINUTE);
@@ -107,6 +135,10 @@ public class GoogleMapsActivity extends AppCompatActivity
                         Calendar time = Calendar.getInstance();
                         time.set(Calendar.HOUR_OF_DAY, hourOfDay);
                         time.set(Calendar.MINUTE, minute);
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        alarmStrings.add(simpleDateFormat.format(time.getTime()));
+                        adapter.notifyDataSetChanged();
 
                         Profile profile = DataHolder.getCurrentProfile(getBaseContext());
                         ArrayList<LocationData> locationDatas = profile.getLocations();
@@ -125,6 +157,17 @@ public class GoogleMapsActivity extends AppCompatActivity
                 }, hour, minute, false);
 
                 timePickerDialog.show();
+            }
+        });
+
+        linkTimesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab.setVisibility(View.VISIBLE);
+                timesListView.setVisibility(View.VISIBLE);
+                linkTimesButton.setVisibility(View.INVISIBLE);
+                informationTextView.setVisibility(View.INVISIBLE);
+                timesInformationTextView.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -174,6 +217,14 @@ public class GoogleMapsActivity extends AppCompatActivity
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                informationTextView.setText("Wil je deze locatie koppelen aan tijden? Dan krijg je alleen een melding op die tijdstippen op die locatie");
+                removeLocationButton.setVisibility(View.VISIBLE);
+                linkTimesButton.setVisibility(View.VISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+                timesListView.setVisibility(View.INVISIBLE);
+                informationTextView.setVisibility(View.VISIBLE);
+                timesInformationTextView.setVisibility(View.INVISIBLE);
+
                 currentMarker = marker;
                 return false;
             }
@@ -196,8 +247,15 @@ public class GoogleMapsActivity extends AppCompatActivity
                     }
                 }
                 DataHolder.saveProfileToPreferences(GoogleMapsActivity.this, profile);
-
                 currentMarker.remove();
+
+                informationTextView.setVisibility(View.VISIBLE);
+                informationTextView.setText("Klik op een locatie om deze aan te passen of te verwijderen. Je kan ook locaties toevoegen door op de plek te klikken!");
+                removeLocationButton.setVisibility(View.INVISIBLE);
+                linkTimesButton.setVisibility(View.INVISIBLE);
+                timesListView.setVisibility(View.INVISIBLE);
+                fab.setVisibility(View.INVISIBLE);
+                timesInformationTextView.setVisibility(View.INVISIBLE);
             }
         });
 

@@ -44,7 +44,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
 
     EditText firstNameEditText, lastNameEditText, birthDateEditText, cigarettesPerDay, cigarettesPerPack, pricePerPack, stopDateEditText;
     Button createAccountButton, increaseCigPerDay, decreaseCigPerDay, increaseCigPerPack, decreaseCigPerPack, increasePricePerPack, decreasePricePerPack;
-    String clicked;
+    static String clicked;
     Calendar birthDate, stopDate;
 
     @Override
@@ -327,9 +327,15 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            int year = Calendar.getInstance().get(Calendar.YEAR) - 20;
-            int month = 0;
-            int day = 1;
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            int month = Calendar.getInstance().get(Calendar.MONTH);
+            int day = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
+
+            if (clicked.equals("birthDate")) {
+                year -= 20;
+            } else {
+                month = month < (12 - 3) ? month + 3 : month;
+            }
 
             DatePickerDialog dpd = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog,
                     (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);

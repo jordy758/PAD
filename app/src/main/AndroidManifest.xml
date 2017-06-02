@@ -59,7 +59,13 @@
                 android:value=".ui.activity.MainActivity" />
         </activity>
 
-        <activity android:name=".ui.activity.GoogleMapsActivity"></activity>
+        <activity
+            android:name=".ui.activity.GoogleMapsActivity"
+            android:label="Ingestelde locaties">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
