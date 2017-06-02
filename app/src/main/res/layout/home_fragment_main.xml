@@ -276,18 +276,21 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/addNowTimeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Tijd" />
 
         <Button
+            android:id="@+id/addNowLocationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Locatie" />
 
         <Button
+            android:id="@+id/addNowTimeAndLocationButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

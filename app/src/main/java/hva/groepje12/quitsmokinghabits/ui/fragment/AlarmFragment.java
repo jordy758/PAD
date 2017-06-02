@@ -2,7 +2,6 @@ package hva.groepje12.quitsmokinghabits.ui.fragment;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -33,10 +32,8 @@ import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
 import hva.groepje12.quitsmokinghabits.model.Alarm;
-import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
-import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.activity.GoogleMapsActivity;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
@@ -69,36 +66,6 @@ public class AlarmFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), GoogleMapsActivity.class));
-            }
-        });
-
-        button = (Button) alarmView.findViewById(R.id.addLocationButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GPSTracker gpsTracker = DataHolder.getGpsTracker(getContext());
-                Location gpsLocation = gpsTracker.getLocation();
-
-                for (LocationData locationData : profile.getLocations()) {
-                    if (gpsLocation.distanceTo(locationData.getLocation()) <= 30) {
-                        Toast.makeText(getContext(), "Deze locatie is al toegevoegd!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-
-                LocationData newLocationData = new LocationData();
-                newLocationData.setLocation(gpsLocation);
-
-                ArrayList<LocationData> locations = profile.getLocations();
-                locations.add(newLocationData);
-
-                DataHolder.saveProfileToPreferences(getActivity(), profile);
-
-                if (!gpsTracker.isRunning()) {
-                    gpsTracker.start();
-                }
-
-                Toast.makeText(getContext(), "Locatie is toegevoegd!", Toast.LENGTH_SHORT).show();
             }
         });
 

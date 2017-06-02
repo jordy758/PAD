@@ -27,17 +27,10 @@
         android:background="?android:attr/dividerHorizontal" />
 
     <Button
-        android:id="@+id/addLocationButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/horizontalRule1"
-        android:text="Voeg Huidige locatie toe" />
-
-    <Button
         android:id="@+id/startMaps"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addLocationButton"
+        android:layout_below="@id/horizontalRule1"
         android:text="Bekijk al mijn locaties" />
 
     <View
