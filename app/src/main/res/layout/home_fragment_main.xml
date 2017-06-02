@@ -23,7 +23,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:layout_below="@id/welcomeTextView"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
 
@@ -43,7 +43,7 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             card_view:cardCornerRadius="2dp"
-            card_view:contentPadding="10dp">
+            card_view:contentPadding="5dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -87,7 +87,7 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             card_view:cardCornerRadius="2dp"
-            card_view:contentPadding="10dp">
+            card_view:contentPadding="5dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -140,7 +140,7 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             card_view:cardCornerRadius="2dp"
-            card_view:contentPadding="10dp">
+            card_view:contentPadding="5dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -184,7 +184,7 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             card_view:cardCornerRadius="2dp"
-            card_view:contentPadding="10dp">
+            card_view:contentPadding="5dp">
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -228,32 +228,69 @@
         android:layout_height="1dp"
         android:layout_below="@+id/ondersteKaarten"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
 
     <TextView
-        android:id="@+id/motivationText"
-        android:layout_width="fill_parent"
+        android:id="@+id/onderDeLijnTextView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/horizontalRule"
-        android:layout_centerHorizontal="true"
-        android:text="Inspirerende quote hier"
+        android:layout_below="@id/horizontalRule"
+        android:text="Zorg dat je op of onder de rode lijn blijft om je doel te behalen!"
+        android:layout_marginBottom="10dp"
         android:textAlignment="center"
-        android:textStyle="italic" />
+        android:textSize="17dp" />
+
+    <org.eazegraph.lib.charts.ValueLineChart xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/smokeChart"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_below="@id/onderDeLijnTextView"
+        app:egIndicatorLineColor="#FE6DA8"
+        app:egLegendHeight="40dp" />
+
 
     <View
         android:id="@+id/horizontalRule2"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/motivationText"
-        android:layout_marginBottom="20dp"
+        android:layout_below="@+id/smokeChart"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:background="?android:attr/dividerHorizontal" />
 
-
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+    <TextView
+        android:id="@+id/quickAddTextView"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_below="@id/horizontalRule2" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/horizontalRule2"
+        android:text="Klik op onderstaande knoppen om je huidige locatie, tijd of de combinatie ervan op te slaan!"
+        android:textSize="15dp"
+        android:textAlignment="center" />
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/quickAddLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quickAddTextView"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Tijd" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Locatie" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Tijd en Locatie" />
+    </android.support.v7.widget.LinearLayoutCompat>
 </RelativeLayout>

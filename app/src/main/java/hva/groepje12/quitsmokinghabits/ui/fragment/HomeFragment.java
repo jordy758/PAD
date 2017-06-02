@@ -12,17 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.eazegraph.lib.charts.ValueLineChart;
+import org.eazegraph.lib.models.LegendModel;
+import org.eazegraph.lib.models.ValueLinePoint;
+import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -164,62 +159,40 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        TextView TVQuote = (TextView) rootView.findViewById(R.id.motivationText);
-        TVQuote.setText(getRandomQuote());
+//        TextView TVQuote = (TextView) rootView.findViewById(R.id.motivationText);
+//        TVQuote.setText(getRandomQuote());
 
         fillTiles();
     }
 
     public void createChart() {
-        LineChart lineChart = (LineChart) rootView.findViewById(R.id.chart);
+        ValueLineChart mCubicValueLineChart = (ValueLineChart) rootView.findViewById(R.id.smokeChart);
 
-        //adding data
-        final ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(0, 1));
-        entries.add(new Entry(1, 2));
-        entries.add(new Entry(2, 12));
-        entries.add(new Entry(3, 3));
-        entries.add(new Entry(4, 14));
-        entries.add(new Entry(5, 5));
-        entries.add(new Entry(6, 26));
+        ValueLineSeries mySeries = new ValueLineSeries();
+        mySeries.setColor(Color.GREEN);
 
-        final ArrayList<String> labels = new ArrayList<>();
-        labels.add("Ma");
-        labels.add("Di");
-        labels.add("Wo");
-        labels.add("Do");
-        labels.add("Vr");
-        labels.add("Za");
-        labels.add("Zo");
+        mySeries.addPoint(new ValueLinePoint("Jan", 20f));
+        mySeries.addPoint(new ValueLinePoint("Feb", 18f));
+        mySeries.addPoint(new ValueLinePoint("Mar", 13f));
+        mySeries.addPoint(new ValueLinePoint("Apr", 10f));
+        mySeries.addPoint(new ValueLinePoint("Mai", 8f));
 
-        IAxisValueFormatter formatter = new IAxisValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, AxisBase axis) {
-                return labels.get((int) value);
-            }
-        };
+        ValueLineSeries preferedSeries = new ValueLineSeries();
+        preferedSeries.setColor(Color.parseColor("#E91E63"));
 
-        IValueFormatter dataFormat = new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
-                return (int) value + "";
-            }
-        };
+        preferedSeries.addPoint(new ValueLinePoint("Jan", 20f));
+        preferedSeries.addPoint(new ValueLinePoint("Feb", 15f));
+        preferedSeries.addPoint(new ValueLinePoint("Mar", 10f));
+        preferedSeries.addPoint(new ValueLinePoint("Apr", 5f));
+        preferedSeries.addPoint(new ValueLinePoint("Mai", 0f));
 
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(formatter);
-
-        LineDataSet dataset = new LineDataSet(entries, "aantal sigaretten");
-
-        LineData data = new LineData(dataset);
-
-        lineChart.setData(data);
-        lineChart.getDescription().setText("");
-        lineChart.setTouchEnabled(false);
-        dataset.setColors(Color.RED);
-        data.setValueTextSize(10);
-        data.setValueFormatter(dataFormat);
+        mCubicValueLineChart.addSeries(mySeries);
+        mCubicValueLineChart.addSeries(preferedSeries);
+        ArrayList<LegendModel> legendModels = new ArrayList<>();
+        legendModels.add(new LegendModel("Jij"));
+        legendModels.add(new LegendModel("Perfecte Lijn"));
+        mCubicValueLineChart.addLegend(legendModels);
+        mCubicValueLineChart.startAnimation();
     }
 
     public String getRandomQuote() {
