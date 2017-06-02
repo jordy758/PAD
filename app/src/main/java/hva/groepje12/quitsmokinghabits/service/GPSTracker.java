@@ -17,6 +17,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import hva.groepje12.quitsmokinghabits.R;
@@ -114,44 +115,65 @@ public class GPSTracker extends Service implements LocationListener {
         location = changedLocation;
 
         Profile profile = DataHolder.getCurrentProfile(context);
-
         ArrayList<LocationData> locations = profile.getLocations();
 
         for (LocationData locationData : locations) {
             Location profileLocation = locationData.getLocation();
             if (location.distanceTo(profileLocation) <= 30 && locationData.shouldSendNotification()) {
-                Intent destination = new Intent(context, MainActivity.class);
-                destination.putExtra("aantalRokenPopup", true);
+                if (locationData.getTimes().size() < 1) {
+                    showNotification(locations, locationData);
+                }
 
-                Intent removeIntent = new Intent(context, MainActivity.class);
-                removeIntent.putExtra("removeLocation", true);
-                removeIntent.putExtra("locationId", locations.indexOf(locationData));
+                for (Calendar calendar : locationData.getTimes()) {
+                    Calendar dummy = Calendar.getInstance();
+                    dummy.add(Calendar.MINUTE, -10);
+                    Date tenBefore = dummy.getTime();
+                    dummy.add(Calendar.MINUTE, 20);
+                    Date tenAfter = dummy.getTime();
 
-                PendingIntent pendingIntent = PendingIntent.getActivity(context, 12345, removeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    Date date = calendar.getTime();
 
-                NotificationCompat.Action action = new NotificationCompat.Action(
-                        R.drawable.location_off_black,
-                        "Verwijder Locatie",
-                        pendingIntent
-                );
-
-                Notification notification = new Notification(
-                        "Ingesteld plek gevonden!",
-                        "Hoi " + profile.getFirstName() + ", je bent op een ingestelde plek, laten we gaan beginnen!",
-                        destination,
-                        context
-                );
-                notification.addAction(action);
-                notification.startNotification(Notification.GPS_NOTIFICATION);
-
-                locations.remove(locationData);
-                locationData.setLastAccessed(new Date());
-                locations.add(locationData);
+                    if (date.after(tenBefore) && date.before(tenAfter)) {
+                        showNotification(locations, locationData);
+                    }
+                }
             }
         }
 
         profile.setLocations(locations);
         DataHolder.saveProfileToPreferences(context, profile);
+    }
+
+    public void showNotification(ArrayList<LocationData> locations, LocationData locationData) {
+        Profile profile = DataHolder.getCurrentProfile(context);
+
+        Intent destination = new Intent(context, MainActivity.class);
+        destination.putExtra("aantalRokenPopup", true);
+
+        Intent removeIntent = new Intent(context, MainActivity.class);
+        removeIntent.putExtra("removeLocation", true);
+        removeIntent.putExtra("locationId", locations.indexOf(locationData));
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 12345, removeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action action = new NotificationCompat.Action(
+                R.drawable.location_off_black,
+                "Verwijder Locatie",
+                pendingIntent
+        );
+
+        Notification notification = new Notification(
+                "Ingesteld plek gevonden!",
+                "Hoi " + profile.getFirstName() + ", je bent op een ingestelde plek, laten we gaan beginnen!",
+                destination,
+                context
+        );
+        notification.addAction(action);
+        notification.startNotification(Notification.GPS_NOTIFICATION);
+
+        locations.remove(locationData);
+        locationData.setLastAccessed(new Date());
+        locations.add(locationData);
     }
 
     @Override

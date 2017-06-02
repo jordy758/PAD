@@ -243,8 +243,13 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             return;
         }
 
-        if (birthDateString.isEmpty()) {
-            this.birthDateEditText.setError("Vul een geboortedatum in!");
+        if (birthDateString.isEmpty() || birthDate == null || birthDate.after(Calendar.getInstance())) {
+            this.birthDateEditText.setError("Vul een geldige geboortedatum in!");
+            return;
+        }
+
+        if (stopDate == null || stopDate.before(Calendar.getInstance())) {
+            stopDateEditText.setError("De stop datum moet in de toekomst liggen!");
             return;
         }
 
@@ -341,7 +346,6 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                     (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
 
             dpd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
             return dpd;
         }
     }

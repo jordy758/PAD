@@ -28,6 +28,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -82,6 +83,7 @@ public class GoogleMapsActivity extends AppCompatActivity
     private TextView informationTextView, timesInformationTextView;
     private Button removeLocationButton, linkTimesButton;
     private ListView timesListView;
+    private LocationData currentLocation;
 
     /**
      * Flag indicating whether a requested permission has been denied after returning in
@@ -115,7 +117,26 @@ public class GoogleMapsActivity extends AppCompatActivity
         adapter = new ArrayAdapter<>(GoogleMapsActivity.this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
         timesListView.setAdapter(adapter);
+        timesListView.setLongClickable(true);
 
+        timesListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Profile profile = DataHolder.getCurrentProfile(GoogleMapsActivity.this);
+
+                ArrayList<Calendar> times = currentLocation.getTimes();
+                times.remove(position);
+
+                ArrayList<LocationData> locationDatas = profile.getLocations();
+                LocationData locationData = locationDatas.get(locationDatas.indexOf(currentLocation));
+                locationData.setTimes(times);
+
+                DataHolder.saveProfileToPreferences(GoogleMapsActivity.this, profile);
+                alarmStrings.remove(position);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
 
         fab = (FloatingActionButton) findViewById(R.id.mapsFab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +158,7 @@ public class GoogleMapsActivity extends AppCompatActivity
                         time.set(Calendar.MINUTE, minute);
 
                         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        alarmStrings.add(simpleDateFormat.format(time.getTime()));
+                        alarmStrings.add("Rond " + simpleDateFormat.format(time.getTime()) + " uur");
                         adapter.notifyDataSetChanged();
 
                         Profile profile = DataHolder.getCurrentProfile(getBaseContext());
@@ -189,7 +210,7 @@ public class GoogleMapsActivity extends AppCompatActivity
         }
 
         GPSTracker gpsTracker = DataHolder.getGpsTracker(GoogleMapsActivity.this);
-        Location location = gpsTracker.getLocation();
+        final Location location = gpsTracker.getLocation();
 
         map.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
@@ -224,6 +245,26 @@ public class GoogleMapsActivity extends AppCompatActivity
                 timesListView.setVisibility(View.INVISIBLE);
                 informationTextView.setVisibility(View.VISIBLE);
                 timesInformationTextView.setVisibility(View.INVISIBLE);
+
+                Profile profile = DataHolder.getCurrentProfile(GoogleMapsActivity.this);
+                alarmStrings.removeAll(alarmStrings);
+                for (LocationData locationData : profile.getLocations()) {
+                    if (locationData.getLocation().getLatitude() != marker.getPosition().latitude) {
+                        continue;
+                    }
+
+                    if (locationData.getLocation().getLongitude() != marker.getPosition().longitude) {
+                        continue;
+                    }
+
+                    currentLocation = locationData;
+
+                    for (Calendar time : locationData.getTimes()) {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                        alarmStrings.add("Rond " + simpleDateFormat.format(time.getTime()) + " uur");
+                    }
+                }
+                adapter.notifyDataSetChanged();
 
                 currentMarker = marker;
                 return false;
