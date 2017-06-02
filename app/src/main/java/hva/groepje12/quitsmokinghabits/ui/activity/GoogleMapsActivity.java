@@ -34,7 +34,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -231,43 +230,17 @@ public class GoogleMapsActivity extends AppCompatActivity
                 locationData.setLocation(temp);
                 locations.add(locationData);
                 DataHolder.saveProfileToPreferences(GoogleMapsActivity.this, profile);
-                mMap.addMarker(new MarkerOptions().position(latLng));
+
+                Marker marker = mMap.addMarker(new MarkerOptions().position(latLng));
+                showMarkerInfo(marker);
             }
         });
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                informationTextView.setText("Wil je deze locatie koppelen aan tijden? Dan krijg je alleen een melding op die tijdstippen op die locatie");
-                removeLocationButton.setVisibility(View.VISIBLE);
-                linkTimesButton.setVisibility(View.VISIBLE);
-                fab.setVisibility(View.INVISIBLE);
-                timesListView.setVisibility(View.INVISIBLE);
-                informationTextView.setVisibility(View.VISIBLE);
-                timesInformationTextView.setVisibility(View.INVISIBLE);
-
-                Profile profile = DataHolder.getCurrentProfile(GoogleMapsActivity.this);
-                alarmStrings.removeAll(alarmStrings);
-                for (LocationData locationData : profile.getLocations()) {
-                    if (locationData.getLocation().getLatitude() != marker.getPosition().latitude) {
-                        continue;
-                    }
-
-                    if (locationData.getLocation().getLongitude() != marker.getPosition().longitude) {
-                        continue;
-                    }
-
-                    currentLocation = locationData;
-
-                    for (Calendar time : locationData.getTimes()) {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                        alarmStrings.add("Rond " + simpleDateFormat.format(time.getTime()) + " uur");
-                    }
-                }
-                adapter.notifyDataSetChanged();
-
-                currentMarker = marker;
-                return false;
+                showMarkerInfo(marker);
+                return true;
             }
         });
 
@@ -304,6 +277,40 @@ public class GoogleMapsActivity extends AppCompatActivity
         enableMyLocation();
     }
 
+    private void showMarkerInfo(Marker marker) {
+        informationTextView.setText("Wil je deze locatie koppelen aan tijden? Dan krijg je alleen een melding op die tijdstippen op die locatie");
+        removeLocationButton.setVisibility(View.VISIBLE);
+        linkTimesButton.setVisibility(View.VISIBLE);
+        fab.setVisibility(View.INVISIBLE);
+        timesListView.setVisibility(View.INVISIBLE);
+        informationTextView.setVisibility(View.VISIBLE);
+        timesInformationTextView.setVisibility(View.INVISIBLE);
+
+        Profile profile = DataHolder.getCurrentProfile(GoogleMapsActivity.this);
+        alarmStrings.removeAll(alarmStrings);
+        for (LocationData locationData : profile.getLocations()) {
+            if (locationData.getLocation().getLatitude() != marker.getPosition().latitude) {
+                continue;
+            }
+
+            if (locationData.getLocation().getLongitude() != marker.getPosition().longitude) {
+                continue;
+            }
+
+            currentLocation = locationData;
+
+            for (Calendar time : locationData.getTimes()) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+                alarmStrings.add("Rond " + simpleDateFormat.format(time.getTime()) + " uur");
+            }
+        }
+        adapter.notifyDataSetChanged();
+
+        currentMarker = marker;
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()), 250, null);
+    }
+
     /**
      * Enables the My Location layer if the fine location permission has been granted.
      */
@@ -321,9 +328,6 @@ public class GoogleMapsActivity extends AppCompatActivity
 
     @Override
     public boolean onMyLocationButtonClick() {
-        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
         return false;
     }
 
