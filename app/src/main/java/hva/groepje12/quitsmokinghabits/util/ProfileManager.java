@@ -45,7 +45,7 @@ public class ProfileManager {
         String birthDate = birth.get(Calendar.YEAR) + "-" + (birth.get(Calendar.MONTH) + 1) +
                 "-" + birth.get(Calendar.DAY_OF_MONTH);
 
-        Calendar stop = profile.getBirthDate();
+        Calendar stop = profile.getStopDate();
         String stopDate = stop.get(Calendar.YEAR) + "-" + (stop.get(Calendar.MONTH) + 1) +
                 "-" + stop.get(Calendar.DAY_OF_MONTH);
 

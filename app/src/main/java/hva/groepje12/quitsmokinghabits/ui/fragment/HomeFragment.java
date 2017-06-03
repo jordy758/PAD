@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +39,6 @@ public class HomeFragment extends Fragment {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private View rootView;
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
-    private ArrayList<String> quoteList = new ArrayList<>();
     private BroadcastReceiver broadcastReceiver;
 
     @Override
@@ -91,8 +91,6 @@ public class HomeFragment extends Fragment {
         moneySavedTextView = (TextView) rootView.findViewById(R.id.tv_moneySaved);
         cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.cigarettesNotSmokedTodayTextView);
 
-        createChart();
-
         return rootView;
     }
 
@@ -112,6 +110,21 @@ public class HomeFragment extends Fragment {
 
                     String cigarettesSaved = tileData.getString("cigarettesSaved");
                     String savedMoney = tileData.getString("savedMoney");
+
+                    JSONArray perfectLine = tileData.getJSONArray("perfectLine");
+                    JSONArray myLine = tileData.getJSONArray("myLine");
+
+                    ArrayList<Integer> perfectLineArrayList = new ArrayList<>();
+                    ArrayList<Integer> myLineArrayList = new ArrayList<>();
+                    for (int i = 0; i < perfectLine.length(); i++) {
+                        perfectLineArrayList.add(perfectLine.getInt(i));
+                    }
+
+                    for (int i = 0; i < myLine.length(); i++) {
+                        myLineArrayList.add(myLine.getInt(i));
+                    }
+
+                    createChart(perfectLineArrayList, myLineArrayList);
 
                     todaySmokedTextView.setText(todaySmoked);
                     notSmokedForTextView.setText(notSmokedFor);
@@ -140,29 +153,20 @@ public class HomeFragment extends Fragment {
         fillTiles();
     }
 
-    public void createChart() {
+    public void createChart(List<Integer> perfectLine, List<Integer> myLine) {
         LineChart lineChart = (LineChart) rootView.findViewById(R.id.smokeChart);
 
         final ArrayList<Entry> myEntries = new ArrayList<>();
-        myEntries.add(new Entry(0, 20));
-        myEntries.add(new Entry(1, 18));
-//        myEntries.add(new Entry(2, 13));
-//        myEntries.add(new Entry(3, 10));
-//        myEntries.add(new Entry(4, 8));
+        int i = 0;
+        for(Integer dat : perfectLine) {
+            myEntries.add(new Entry((i++), dat));
+        }
 
         final ArrayList<Entry> perfectEntries = new ArrayList<>();
-        perfectEntries.add(new Entry(0, 20));
-        perfectEntries.add(new Entry(1, 15));
-        perfectEntries.add(new Entry(2, 10));
-        perfectEntries.add(new Entry(3, 5));
-        perfectEntries.add(new Entry(4, 0));
-
-        final ArrayList<String> labels = new ArrayList<>();
-        labels.add("Jan");
-        labels.add("Feb");
-        labels.add("Maa");
-        labels.add("Mei");
-        labels.add("Jun");
+        i = 0;
+        for(Integer dat : myLine) {
+            perfectEntries.add(new Entry((i++), dat));
+        }
 
         List<ILineDataSet> lines = new ArrayList<>();
         LineDataSet myEntriesLine = new LineDataSet(myEntries, "Mijn lijn");
@@ -186,6 +190,8 @@ public class HomeFragment extends Fragment {
 //        lineChart.getAxisRight().setEnabled(false);
         lineChart.getDescription().setText("");
         lineChart.setData(new LineData(lines));
+        lineChart.invalidate();
+        lineChart.animate();
     }
 
 }
