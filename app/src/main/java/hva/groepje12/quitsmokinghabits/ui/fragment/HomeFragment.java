@@ -158,13 +158,13 @@ public class HomeFragment extends Fragment {
 
         final ArrayList<Entry> myEntries = new ArrayList<>();
         int i = 0;
-        for(Integer dat : perfectLine) {
+        for(Integer dat : myLine) {
             myEntries.add(new Entry((i++), dat));
         }
 
         final ArrayList<Entry> perfectEntries = new ArrayList<>();
         i = 0;
-        for(Integer dat : myLine) {
+        for(Integer dat : perfectLine) {
             perfectEntries.add(new Entry((i++), dat));
         }
 
