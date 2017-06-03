@@ -12,12 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.loopj.android.http.RequestParams;
 
-import org.eazegraph.lib.charts.ValueLineChart;
-import org.eazegraph.lib.models.LegendModel;
-import org.eazegraph.lib.models.ValueLinePoint;
-import org.eazegraph.lib.models.ValueLineSeries;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,14 +27,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
-import hva.groepje12.quitsmokinghabits.model.Profile;
-import hva.groepje12.quitsmokinghabits.service.DataHolder;
 
 public class HomeFragment extends Fragment {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -92,14 +91,6 @@ public class HomeFragment extends Fragment {
         moneySavedTextView = (TextView) rootView.findViewById(R.id.tv_moneySaved);
         cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.cigarettesNotSmokedTodayTextView);
 
-        Profile profile = DataHolder.getCurrentProfile(getContext());
-        if (profile == null || profile.getFirstName() == null) {
-            return rootView;
-        }
-
-        TextView welcome = (TextView) rootView.findViewById(R.id.welcomeTextView);
-        welcome.append(profile.getFirstName());
-
         createChart();
 
         return rootView;
@@ -146,47 +137,55 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        TextView TVQuote = (TextView) rootView.findViewById(R.id.motivationText);
-//        TVQuote.setText(getRandomQuote());
-
         fillTiles();
     }
 
     public void createChart() {
-        ValueLineChart mCubicValueLineChart = (ValueLineChart) rootView.findViewById(R.id.smokeChart);
+        LineChart lineChart = (LineChart) rootView.findViewById(R.id.smokeChart);
 
-        ValueLineSeries mySeries = new ValueLineSeries();
-        mySeries.setColor(Color.GREEN);
+        final ArrayList<Entry> myEntries = new ArrayList<>();
+        myEntries.add(new Entry(0, 20));
+        myEntries.add(new Entry(1, 18));
+//        myEntries.add(new Entry(2, 13));
+//        myEntries.add(new Entry(3, 10));
+//        myEntries.add(new Entry(4, 8));
 
-        mySeries.addPoint(new ValueLinePoint("Jan", 20f));
-        mySeries.addPoint(new ValueLinePoint("Feb", 18f));
-        mySeries.addPoint(new ValueLinePoint("Mar", 13f));
-        mySeries.addPoint(new ValueLinePoint("Apr", 10f));
-        mySeries.addPoint(new ValueLinePoint("Mai", 8f));
+        final ArrayList<Entry> perfectEntries = new ArrayList<>();
+        perfectEntries.add(new Entry(0, 20));
+        perfectEntries.add(new Entry(1, 15));
+        perfectEntries.add(new Entry(2, 10));
+        perfectEntries.add(new Entry(3, 5));
+        perfectEntries.add(new Entry(4, 0));
 
-        ValueLineSeries preferedSeries = new ValueLineSeries();
-        preferedSeries.setColor(Color.parseColor("#E91E63"));
+        final ArrayList<String> labels = new ArrayList<>();
+        labels.add("Jan");
+        labels.add("Feb");
+        labels.add("Maa");
+        labels.add("Mei");
+        labels.add("Jun");
 
-        preferedSeries.addPoint(new ValueLinePoint("Jan", 20f));
-        preferedSeries.addPoint(new ValueLinePoint("Feb", 15f));
-        preferedSeries.addPoint(new ValueLinePoint("Mar", 10f));
-        preferedSeries.addPoint(new ValueLinePoint("Apr", 5f));
-        preferedSeries.addPoint(new ValueLinePoint("Mai", 0f));
+        List<ILineDataSet> lines = new ArrayList<>();
+        LineDataSet myEntriesLine = new LineDataSet(myEntries, "Mijn lijn");
+        LineDataSet perfectEntriesLine = new LineDataSet(perfectEntries, "Afbouw Lijn");
+        myEntriesLine.setColor(Color.RED);
+        myEntriesLine.setFillColor(Color.RED);
+        myEntriesLine.setDrawFilled(true);
+        myEntriesLine.setDrawCircles(false);
+        myEntriesLine.setDrawValues(false);
+        perfectEntriesLine.setColor(Color.GREEN);
+        perfectEntriesLine.setFillColor(Color.GREEN);
+        perfectEntriesLine.setDrawFilled(true);
+        perfectEntriesLine.setDrawCircles(false);
+        perfectEntriesLine.setDrawValues(false);
+        lines.add(myEntriesLine);
+        lines.add(perfectEntriesLine);
 
-        mCubicValueLineChart.addSeries(mySeries);
-        mCubicValueLineChart.addSeries(preferedSeries);
-        ArrayList<LegendModel> legendModels = new ArrayList<>();
-        legendModels.add(new LegendModel("Jij"));
-        legendModels.add(new LegendModel("Perfecte Lijn"));
-        mCubicValueLineChart.addLegend(legendModels);
-        mCubicValueLineChart.startAnimation();
+        lineChart.setTouchEnabled(false);
+        lineChart.getXAxis().setEnabled(false);
+//        lineChart.getAxisLeft().setEnabled(false);
+//        lineChart.getAxisRight().setEnabled(false);
+        lineChart.getDescription().setText("");
+        lineChart.setData(new LineData(lines));
     }
-
-    public String getRandomQuote() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(quoteList.size());
-        return quoteList.get(randomNumber);
-    }
-
 
 }
