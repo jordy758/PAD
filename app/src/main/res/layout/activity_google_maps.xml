@@ -28,7 +28,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:text="Klik op een locatie om deze aan te passen of te verwijderen. Je kan ook locaties toevoegen door op de plek te klikken!"
+        android:text="Klik op een marker om deze locatie aan te passen of te verwijderen. Je kan ook locaties toevoegen door op de gewenste plek op de map te klikken!"
         android:textAlignment="center"
         android:textSize="20dp" />
 
@@ -45,15 +45,15 @@
         android:id="@+id/timesInformationTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/removeLocationButton"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:text="Wij houden rekening met een speling van 20 minuten! Als jij dus 10:00 uur kiest, kan de notificatie tussen 9:50 en 10:10 binnenkomen!"
         android:textAlignment="center"
         android:textSize="20dp"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        android:layout_alignBaseline="@+id/informationTextView"
+        android:layout_alignBottom="@+id/informationTextView"
+        android:layout_alignStart="@+id/informationTextView" />
 
     <ListView
         android:id="@+id/datesListView"

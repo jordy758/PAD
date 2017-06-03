@@ -5,18 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.loopj.android.http.RequestParams;
 
 import org.eazegraph.lib.charts.ValueLineChart;
@@ -37,11 +32,8 @@ import java.util.Random;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
-import hva.groepje12.quitsmokinghabits.model.Alarm;
-import hva.groepje12.quitsmokinghabits.model.LocationData;
 import hva.groepje12.quitsmokinghabits.model.Profile;
 import hva.groepje12.quitsmokinghabits.service.DataHolder;
-import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 
 public class HomeFragment extends Fragment {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -49,7 +41,6 @@ public class HomeFragment extends Fragment {
     private TextView notSmokedForTextView, todaySmokedTextView, moneySavedTextView, cigarettesNotSmokedTextView;
     private ArrayList<String> quoteList = new ArrayList<>();
     private BroadcastReceiver broadcastReceiver;
-    private Button addNowTimeAndLocationButton, addNowTimeButton, addNowLocationButton;
 
     @Override
     public void onStart() {
@@ -96,119 +87,12 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.home_fragment_main, container, false);
 
         //Assign value to last cigarette
-        notSmokedForTextView = (TextView) rootView.findViewById(R.id.tv_timeNotSmoked);
+        notSmokedForTextView = (TextView) rootView.findViewById(R.id.timeNotSmokedTextView);
         todaySmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesSmokedToday);
         moneySavedTextView = (TextView) rootView.findViewById(R.id.tv_moneySaved);
-        cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.tv_cigarettesNotSmokedToday);
-
-        addNowTimeButton = (Button) rootView.findViewById(R.id.addNowTimeButton);
-        addNowLocationButton = (Button) rootView.findViewById(R.id.addNowLocationButton);
-        addNowTimeAndLocationButton = (Button) rootView.findViewById(R.id.addNowTimeAndLocationButton);
-
-        addNowTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar time = Calendar.getInstance();
-
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                final String timeString = simpleDateFormat.format(time.getTime());
-
-                Task addTimeTask = new Task(new OnLoopJEvent() {
-                    @Override
-                    public void taskCompleted(JSONObject results) {
-                        try {
-                            JSONObject response = results.getJSONObject("response");
-
-                            Gson gson = new GsonBuilder().create();
-                            Alarm alarm = gson.fromJson(
-                                    response.getJSONObject("alarm").toString(),
-                                    Alarm.class
-                            );
-
-                            Profile profile = DataHolder.getCurrentProfile(getContext());
-                            ArrayList<Alarm> alarms = profile.getAlarms();
-                            alarms.add(alarm);
-                            profile.setAlarms(alarms);
-
-                            DataHolder.saveProfileToPreferences(getContext(), profile);
-
-                            Toast.makeText(getContext(), "Tijd toegevoegd!", Toast.LENGTH_SHORT).show();
-                        } catch (JSONException ex) {
-                        }
-                    }
-
-                    @Override
-                    public void taskFailed(JSONObject results) {
-                        Toast.makeText(getContext(), "Tijd bestaat al!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void fatalError(String results) {
-                    }
-                });
-
-                RequestParams params = new RequestParams();
-                params.add("notification_time", timeString);
-
-                addTimeTask.execute(Task.ADD_TIME, params);
-            }
-        });
-
-        addNowLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Profile profile = DataHolder.getCurrentProfile(getContext());
-                GPSTracker gpsTracker = DataHolder.getGpsTracker(getContext());
-                Location gpsLocation = gpsTracker.getLocation();
-
-                for (LocationData locationData : profile.getLocations()) {
-                    if (gpsLocation.distanceTo(locationData.getLocation()) <= 30) {
-                        Toast.makeText(getContext(), "Deze locatie is al toegevoegd!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-
-                LocationData newLocationData = new LocationData();
-                newLocationData.setLocation(gpsLocation);
-
-                ArrayList<LocationData> locations = profile.getLocations();
-                locations.add(newLocationData);
-
-                DataHolder.saveProfileToPreferences(getActivity(), profile);
-                Toast.makeText(getContext(), "Locatie is toegevoegd!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        addNowTimeAndLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Profile profile = DataHolder.getCurrentProfile(getContext());
-                GPSTracker gpsTracker = DataHolder.getGpsTracker(getContext());
-                Location gpsLocation = gpsTracker.getLocation();
-
-                for (LocationData locationData : profile.getLocations()) {
-                    if (gpsLocation.distanceTo(locationData.getLocation()) <= 30) {
-                        Toast.makeText(getContext(), "Deze locatie is al toegevoegd!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-
-                LocationData newLocationData = new LocationData();
-                newLocationData.setLocation(gpsLocation);
-                ArrayList<Calendar> calendars = newLocationData.getTimes();
-                calendars.add(Calendar.getInstance());
-                newLocationData.setTimes(calendars);
-
-                ArrayList<LocationData> locations = profile.getLocations();
-                locations.add(newLocationData);
-
-                DataHolder.saveProfileToPreferences(getActivity(), profile);
-                Toast.makeText(getContext(), "Locatie met tijd is toegevoegd!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        cigarettesNotSmokedTextView = (TextView) rootView.findViewById(R.id.cigarettesNotSmokedTodayTextView);
 
         Profile profile = DataHolder.getCurrentProfile(getContext());
-
         if (profile == null || profile.getFirstName() == null) {
             return rootView;
         }
