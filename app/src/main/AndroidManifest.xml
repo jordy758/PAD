@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +16,10 @@
         <activity
             android:name=".ui.activity.RegisterActivity"
             android:label="Registreer" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyARXXdECQ9X4CAPoCAAaooklXrS-1-nIec" />
 
         <receiver
             android:name=".receiver.AlarmReceiver"
@@ -29,7 +34,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <service android:name=".service.MyFirebaseMessagingService">
@@ -47,8 +51,17 @@
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/cig" />
 
-        <activity android:name=".ui.activity.SelectAppActivity"
+        <activity
+            android:name=".ui.activity.SelectAppActivity"
             android:label="Selecteer een app">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".ui.activity.GoogleMapsActivity"
+            android:label="Ingestelde locaties">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activity.MainActivity" />

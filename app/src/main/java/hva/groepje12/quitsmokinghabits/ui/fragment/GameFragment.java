@@ -16,14 +16,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.model.Game;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 import hva.groepje12.quitsmokinghabits.ui.activity.SelectAppActivity;
 import hva.groepje12.quitsmokinghabits.util.GameInfoAdapter;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class GameFragment extends Fragment {
 
@@ -33,6 +32,7 @@ public class GameFragment extends Fragment {
 
     private ArrayList<Game> gamesList;
     private ArrayList<ImageView> preferredAppList;
+    private ArrayList<String> gameStrings;
 
     private Intent selectAppIntent;
     private PackageManager packageManager;
@@ -43,8 +43,8 @@ public class GameFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.games_fragment_main, container, false);
         context = getContext();
 
-        gamesList = new ArrayList<Game>();
-        preferredAppList = new ArrayList<ImageView>();
+        gamesList = new ArrayList<>();
+        preferredAppList = new ArrayList<>();
 
         LinearLayout preferredAppLayout = (LinearLayout) rootView.findViewById(R.id.preferred_app_layout);
         for (int i = 0; i < preferredAppLayout.getChildCount(); i++) {
@@ -120,14 +120,13 @@ public class GameFragment extends Fragment {
     }
 
     private void showFavoriteApps() {
-        ProfileManager profileManager = new ProfileManager(context);
-        Profile profile = profileManager.getCurrentProfile();
+        Profile profile = DataHolder.getCurrentProfile(getContext());
 
-        List<String> games = profile.getGames();
+        gameStrings = profile.getGames();
 
-        for (int i = 0; i < (games == null ? 0 : games.size()); i++) {
+        for (int i = 0; i < (gameStrings == null ? 0 : gameStrings.size()); i++) {
             try {
-                Drawable icon = context.getPackageManager().getApplicationIcon(games.get(i));
+                Drawable icon = context.getPackageManager().getApplicationIcon(gameStrings.get(i));
                 preferredAppList.get(i).setImageDrawable(icon);
             } catch (Exception e) {
             }
@@ -137,11 +136,38 @@ public class GameFragment extends Fragment {
             app.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    selectAppIntent.putExtra("appNumber", preferredAppList.indexOf(app));
-                    startActivity(selectAppIntent);
+                    int index = preferredAppList.indexOf(app);
+
+                    if (gameStrings.size() <= index) {
+                        chooseApp(preferredAppList.indexOf(app));
+                        return;
+                    }
+
+                    String packageName = gameStrings.get(index);
+                    Intent intent = packageManager.getLaunchIntentForPackage(packageName);
+
+                    if (intent == null) {
+                        chooseApp(index);
+                        return;
+                    }
+
+                    startActivity(packageManager.getLaunchIntentForPackage(packageName));
+                }
+            });
+
+            app.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    chooseApp(preferredAppList.indexOf(app));
+                    return true;
                 }
             });
         }
+    }
+
+    private void chooseApp(int appNumber) {
+        selectAppIntent.putExtra("appNumber", appNumber);
+        startActivity(selectAppIntent);
     }
 
     private void addRecommendedGame(Game game) {

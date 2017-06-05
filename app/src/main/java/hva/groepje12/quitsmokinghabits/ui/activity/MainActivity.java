@@ -1,10 +1,13 @@
 package hva.groepje12.quitsmokinghabits.ui.activity;
 
+import android.Manifest;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,22 +21,27 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.LocationData;
+import hva.groepje12.quitsmokinghabits.model.Notification;
 import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
+import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.fragment.AlarmFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GameFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.GoalFragment;
 import hva.groepje12.quitsmokinghabits.ui.fragment.HomeFragment;
-import hva.groepje12.quitsmokinghabits.util.ProfileManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,18 +55,30 @@ public class MainActivity extends AppCompatActivity {
     private static String view;
 
     private FloatingActionButton fab;
-    private ProfileManager profileManager;
 
     public static String getView() {
         return view;
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        GPSTracker gpsTracker = DataHolder.getGpsTracker(this);
+        if (!gpsTracker.hasPermissions()) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    1
+            );
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        profileManager = new ProfileManager(this);
-        final Profile profile = profileManager.getCurrentProfile();
+        final Profile profile = DataHolder.getCurrentProfile(this);
 
         if (profile.getFirstName() == null) {
             Intent registerIntent = new Intent(getBaseContext(), RegisterActivity.class);
@@ -113,11 +133,34 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null && extras.getBoolean("aantalRokenPopup", false)) {
-            hoeveelGerooktPopup(profile, mViewPager);
+            hoeveelGerooktPopup(mViewPager);
+            getIntent().removeExtra("aantalRokenPopup");
+        }
+
+        if (extras != null && extras.getBoolean("removeLocation", false)) {
+            int locationId = extras.getInt("locationId", -1);
+
+            getIntent().removeExtra("removeLocation");
+            getIntent().removeExtra("locationId");
+
+            if (locationId < 0) {
+                return;
+            }
+
+            ArrayList<LocationData> locationDataArrayList = profile.getLocations();
+            locationDataArrayList.remove(locationId);
+
+            profile.setLocations(locationDataArrayList);
+            DataHolder.saveProfileToPreferences(this, profile);
+
+            Toast.makeText(this, "Locatie is verwijderd!", Toast.LENGTH_SHORT).show();
+
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.cancel(Notification.GPS_NOTIFICATION);
         }
     }
 
-    private void hoeveelGerooktPopup(final Profile profile, final ViewPager mViewPager) {
+    private void hoeveelGerooktPopup(final ViewPager mViewPager) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
         alertDialogBuilder.setTitle("Hoeveel Gerookt?");
@@ -126,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(45, 0, 45, 0);
 
         final EditText aantalGerookt = new EditText(this);
@@ -142,13 +185,12 @@ public class MainActivity extends AppCompatActivity {
 
                 RequestParams params = new RequestParams();
                 params.put("amount", amount);
-                params.add("notification_token", profile.getNotificationToken());
 
                 Task addSmokeDataTask = new Task(new OnLoopJEvent() {
                     @Override
                     public void taskCompleted(JSONObject results) {
                         Random randomGenerator = new Random();
-                        Profile profile = profileManager.getCurrentProfile();
+                        Profile profile = DataHolder.getCurrentProfile(MainActivity.this);
 
                         if (profile.getGames() == null || profile.getGames().size() == 0) {
                             mViewPager.setCurrentItem(AFLEIDING_POS);
@@ -267,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 case 2:
                     return "AFLEIDING";
                 case 3:
-                    return "TIJDEN";
+                    return "MOMENTEN";
             }
             return null;
         }

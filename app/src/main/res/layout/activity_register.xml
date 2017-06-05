@@ -118,7 +118,7 @@
                         android:ems="10"
                         android:hint="Aantal sigaretten per dag"
                         android:inputType="number"
-                        android:text="0" />
+                        android:text="21" />
                 </android.support.design.widget.TextInputLayout>
             </RelativeLayout>
 
@@ -153,7 +153,7 @@
                         android:ems="10"
                         android:hint="Aantal sigaretten in een pakje"
                         android:inputType="number"
-                        android:text="0" />
+                        android:text="21" />
                 </android.support.design.widget.TextInputLayout>
 
 
@@ -190,7 +190,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-
                     <EditText
                         android:id="@+id/pricePerPack"
                         android:layout_width="wrap_content"
@@ -198,14 +197,32 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-
                         android:ems="10"
                         android:hint="Prijs per pak"
                         android:inputType="numberDecimal"
-                        android:text="0" />
+                        android:text="6.30" />
 
                 </android.support.design.widget.TextInputLayout>
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/stopDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Gewenste stop datum"
+                        android:inputType="date"
+                        android:onClick="datePicker" />
+                </android.support.design.widget.TextInputLayout>
 
             </RelativeLayout>
 

@@ -4,31 +4,55 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Profile {
+    private int id;
     private String firstName;
     private String lastName;
     private Calendar birthDate;
+    private Calendar stopDate;
     private Gender gender;
     private int cigarettesPerDay;
     private int cigarettesPerPack;
     private double pricePerPack;
+    private double moneySaved;
     private String notificationToken;
-    private ArrayList<String> alarms;
+    private ArrayList<Alarm> alarms;
     private ArrayList<String> games;
     private ArrayList<Goal> goals;
+    private ArrayList<LocationData> locations;
 
     public Profile() {
         alarms = new ArrayList<>();
         goals = new ArrayList<>();
+        games = new ArrayList<>();
+        locations = new ArrayList<>();
     }
 
-    public Profile(String firstName, String lastName, Calendar birthDate, Gender gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
+    public Calendar getStopDate() {
+        return stopDate;
+    }
 
-        alarms = new ArrayList<>();
-        goals = new ArrayList<>();
+    public void setStopDate(Calendar stopDate) {
+        this.stopDate = stopDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getMoneySaved() {
+        return moneySaved;
+    }
+
+    public void setMoneySaved(double moneySaved) {
+        this.moneySaved = moneySaved;
+    }
+
+    public String getFormattedMoneySaved() {
+        return Format.formatDoubleToPrice(moneySaved);
     }
 
     public int getCigarettesPerDay() {
@@ -55,11 +79,11 @@ public class Profile {
         this.pricePerPack = pricePerPack;
     }
 
-    public ArrayList<String> getAlarms() {
+    public ArrayList<Alarm> getAlarms() {
         return alarms;
     }
 
-    public void setAlarms(ArrayList<String> alarms) {
+    public void setAlarms(ArrayList<Alarm> alarms) {
         this.alarms = alarms;
     }
 
@@ -115,12 +139,20 @@ public class Profile {
         this.games = games;
     }
 
+    public ArrayList<Goal> getGoals() {
+        return goals;
+    }
+
     public void setGoals(ArrayList<Goal> goals) {
         this.goals = goals;
     }
 
-    public ArrayList<Goal> getGoals() {
-        return goals;
+    public ArrayList<LocationData> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(ArrayList<LocationData> locations) {
+        this.locations = locations;
     }
 
     public enum Gender {male, female}

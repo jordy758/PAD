@@ -12,7 +12,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Notification notification = new Notification("Quit smoking habits", "Bla test", MainActivity.class, context);
-        notification.startNotification();
+        notification.startNotification(Notification.ALARM_NOTIFICATION);
     }
 
 }
