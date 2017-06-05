@@ -253,7 +253,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/horizontalRule3"
         android:text="Zorg dat je op of onder de groene lijn blijft om je stop datum te behalen!"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:textAlignment="center"
         android:textSize="17dp" />
 

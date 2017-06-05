@@ -34,6 +34,8 @@ import java.util.Locale;
 import hva.groepje12.quitsmokinghabits.R;
 import hva.groepje12.quitsmokinghabits.api.OnLoopJEvent;
 import hva.groepje12.quitsmokinghabits.api.Task;
+import hva.groepje12.quitsmokinghabits.model.Profile;
+import hva.groepje12.quitsmokinghabits.service.DataHolder;
 
 public class HomeFragment extends Fragment {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -122,6 +124,11 @@ public class HomeFragment extends Fragment {
 
                     for (int i = 0; i < myLine.length(); i++) {
                         myLineArrayList.add(myLine.getInt(i));
+                    }
+
+                    if (myLine.length() == 0) {
+                        Profile profile = DataHolder.getCurrentProfile(getActivity());
+                        myLineArrayList.add(profile.getCigarettesPerDay());
                     }
 
                     createChart(perfectLineArrayList, myLineArrayList);
