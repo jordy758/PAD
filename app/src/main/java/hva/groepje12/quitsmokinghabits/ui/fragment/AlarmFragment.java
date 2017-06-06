@@ -1,10 +1,13 @@
 package hva.groepje12.quitsmokinghabits.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -44,6 +47,8 @@ import hva.groepje12.quitsmokinghabits.service.GPSTracker;
 import hva.groepje12.quitsmokinghabits.ui.activity.GoogleMapsActivity;
 import hva.groepje12.quitsmokinghabits.ui.activity.MainActivity;
 
+import static hva.groepje12.quitsmokinghabits.R.id.container;
+
 public class AlarmFragment extends Fragment {
 
     private ListView timesListView;
@@ -62,7 +67,7 @@ public class AlarmFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View alarmView = inflater.inflate(R.layout.alarms_fragment_main, container, false);
         View mainView = getActivity().findViewById(R.id.main_activity);
-
+        Context context = getContext();
         timesListView = (ListView) alarmView.findViewById(R.id.list_times);
         timesListView.setLongClickable(true);
 
@@ -132,14 +137,18 @@ public class AlarmFragment extends Fragment {
             }
         });
 
+        AsyncTaskRunner runner = new AsyncTaskRunner(context, alarmView);
+
+        runner.execute();
+
         alarms = profile.getAlarms();
         alarmStrings = new ArrayList<>();
 
-        for (Alarm alarm : alarms) {
-            alarmStrings.add("Elke dag om " + alarm.getTime());
-        }
+//        for (Alarm alarm : alarms) {
+//            alarmStrings.add("Elke dag om " + alarm.getTime());
+//        }
 
-        for (LocationData locationData : profile.getLocations()) {
+        /*for (LocationData locationData : profile.getLocations()) {
             Location location = locationData.getLocation();
             Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
             List<Address> addresses = new ArrayList<>();
@@ -158,12 +167,12 @@ public class AlarmFragment extends Fragment {
                     alarmStrings.add("Op locatie " + addresses.get(0).getAddressLine(0) + " rond " + simpleDateFormat.format(calendar.getTime()));
                 }
             }
-        }
+        }*/
 
-        adapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
-
-        timesListView.setAdapter(adapter);
+    //    adapter = new ArrayAdapter<>(getActivity().getApplicationContext(),
+     //           android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
+//
+     //   timesListView.setAdapter(adapter);
 
         FloatingActionButton fab = (FloatingActionButton) mainView.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -290,4 +299,81 @@ public class AlarmFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+}
+
+ class AsyncTaskRunner extends AsyncTask<String, String, String> {
+     private ArrayAdapter<String> adapter;
+
+     View mRootView;
+     ProgressDialog progressDialog;
+     Context mContext;
+     ArrayList<String> alarmStrings = new ArrayList<>();
+
+     public AsyncTaskRunner (Context context, View rootView){
+         mRootView = rootView;
+         mContext = context;
+     }
+
+    @Override
+    protected String doInBackground(String... params) {
+        Profile profile = DataHolder.getCurrentProfile(mContext);
+         ArrayList<Alarm> alarms = profile.getAlarms();
+
+
+        for (Alarm alarm : alarms) {
+            alarmStrings.add("Elke dag om " + alarm.getTime());
+        }
+
+
+        for (LocationData locationData : profile.getLocations()) {
+            Location location = locationData.getLocation();
+            Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+            List<Address> addresses = new ArrayList<>();
+
+            try {
+                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            } catch (IOException ex) {
+            }
+
+            if (locationData.getTimes().size() < 1) {
+                alarmStrings.add("Op locatie " + addresses.get(0).getAddressLine(0));
+            } else {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+                for (Calendar calendar : locationData.getTimes()) {
+                    alarmStrings.add("Op locatie " + addresses.get(0).getAddressLine(0) + " rond " + simpleDateFormat.format(calendar.getTime()));
+                }
+            }
+        }
+        return null;
+    }
+
+
+    @Override
+    protected void onPostExecute(String result) {
+
+        ListView timesListView = (ListView) mRootView.findViewById(R.id.list_times);
+        adapter = new ArrayAdapter<>(mContext.getApplicationContext(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, alarmStrings);
+
+        timesListView.setAdapter(adapter);
+
+        progressDialog.dismiss();
+
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        progressDialog = ProgressDialog.show(mContext,
+                "Laden...",
+                "Momenten ophalen...");
+    }
+
+
+    @Override
+    protected void onProgressUpdate(String... text) {
+
+
+    }
 }
