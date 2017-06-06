@@ -3,10 +3,13 @@ package hva.groepje12.quitsmokinghabits.ui.activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -199,6 +202,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
             createAccountButton.setText("Opslaan");
         }
 
+
     }
 
     public void datePicker(View view) {
@@ -225,12 +229,15 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
 
 
     private void registerUser() {
+
         String firstName = this.firstNameEditText.getText().toString();
+
         String lastName = this.lastNameEditText.getText().toString();
         String birthDateString = this.birthDateEditText.getText().toString();
         int cigarettesPerDayValue = Integer.parseInt(cigarettesPerDay.getText().toString());
         int cigarettesPerPackValue = Integer.parseInt(cigarettesPerPack.getText().toString());
         double pricePerPackValue = Double.parseDouble(pricePerPack.getText().toString());
+
 
 
         if (firstName.isEmpty() || firstName.length() > 20) {
@@ -254,6 +261,8 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         }
 
         Profile profile = DataHolder.getCurrentProfile(this);
+
+        final boolean firstTime = profile.getFirstName() == null;
         profile.setFirstName(firstName);
         profile.setLastName(lastName);
         profile.setBirthDate(birthDate);
@@ -262,6 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
         profile.setCigarettesPerPack(cigarettesPerPackValue);
         profile.setPricePerPack(pricePerPackValue);
         profile.setGender(Profile.Gender.female);
+
 
         //Save the profile with a profile manager into the storage
         DataHolder.saveProfileToPreferences(this, profile);
@@ -309,10 +319,23 @@ public class RegisterActivity extends AppCompatActivity implements DatePickerDia
                     Toast.makeText(RegisterActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
                 }
 
-                Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+                if (firstTime) {
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setTitle("Welkom bij Quit Smoking Habits")
+                            .setMessage("Deze app helpt je met het stoppen met roken door je af te leiden op de momenten dat je normaal rookt. Dit wordt gedaan op een tijd of locatie deze kun je instellen bij het tabje \"Momenten\". Voeg ook meteen je eerste spaardoel toe bij het tabje \"Doelen\".")
+                            .setNeutralButton("Laten we beginnen!", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            })
+                            .show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Profiel is opgeslagen!", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
 
-                startActivity(new Intent(RegisterActivity.this, MainActivity.class));
-                finish();
             }
 
             @Override
